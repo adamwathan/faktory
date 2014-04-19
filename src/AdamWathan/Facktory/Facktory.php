@@ -1,6 +1,7 @@
 <?php namespace AdamWathan\Facktory;
 
 use Faker\Factory as Faker;
+use Illuminate\Support\Collection;
 
 class Facktory
 {
@@ -27,21 +28,50 @@ class Facktory
 	{
 		$result = [];
 		foreach ($attributes as $attribute => $type) {
-			$args = [];
-			if (is_array($type)) {
-				reset($type);
-				$key = key($type);
-				$args = $type[$key];
-				$type = $key;
-			}
-			$result[$attribute] = static::generateAttribute($type, $args);
+			$result[$attribute] = static::generateAttribute($type);
 		}
 		return $result;
 	}
 
-	protected static function generateAttribute($type, $args = [])
+	protected static function generateAttribute($type)
 	{
+		if (static::isRelationship($type)) {
+			return static::generateRelationship($type);
+		}
+		list($type, $args) = static::extractArguments($type);
 		$faker = Faker::create();
 		return call_user_func_array([$faker, $type], $args);
+	}
+
+	protected static function isRelationship($type)
+	{
+		if (! is_array($type)) {
+			return false;
+		}
+		list($key, $params) = static::extractArguments($type);
+		if ($key === ':hasMany') {
+			return true;
+		}
+	}
+
+	protected static function generateRelationship($relationship)
+	{
+		list($relationshipType, list($model, $count)) = static::extractArguments($relationship);
+		// dd($relationshipType, $model, $count);
+		$result = new Collection;
+		foreach (range(1, $count) as $index) {
+			$result[] = static::build($model);
+		}
+		return $result;
+	}
+
+	protected static function extractArguments($type)
+	{
+		if (! is_array($type)) {
+			return [$type, []];
+		}
+		reset($type);
+		$key = key($type);
+		return [$key, $type[$key]];
 	}
 }
