@@ -4,7 +4,7 @@ class Factory
 {
 	protected $model;
 	protected $attributes;
-	protected static $sequence = 0;
+	protected $sequence = 0;
 
 	public function __construct($model, $attributes = [])
 	{
@@ -25,7 +25,7 @@ class Factory
 	protected function getAttribute($key)
 	{
 		if (is_callable($this->attributes[$key])) {
-			return $this->attributes[$key]($this, static::$sequence);
+			return $this->attributes[$key]($this, $this->sequence);
 		}
 		return $this->attributes[$key];
 	}
@@ -45,14 +45,21 @@ class Factory
 		$instance = $this->newModel();
 		$attributes = array_merge($this->attributes, $override_attributes);
 		foreach ($attributes as $attribute => $value) {
-			if(is_callable($value)) {
-				$instance->{$attribute} = $value($this, static::$sequence);
+			if (is_callable($value)) {
+				$instance->{$attribute} = $value($this, $this->sequence);
 				continue;
 			}
 			$instance->{$attribute} = $value;
 		}
-		static::$sequence++;
+		$this->sequence++;
 		return $instance;
+	}
+
+	public function buildList($count, $override_attributes)
+	{
+		return array_map(function($i) use ($override_attributes) {
+			return $this->build($override_attributes);
+		}, range(1, $count));
 	}
 
 	public function create($override_attributes)
@@ -60,6 +67,13 @@ class Factory
 		$instance = $this->build($override_attributes);
 		$instance->save();
 		return $instance;
+	}
+
+	public function createList($count, $override_attributes)
+	{
+		return array_map(function($i) use ($override_attributes) {
+			return $this->create($override_attributes);
+		}, range(1, $count));
 	}
 
 	public function sequence($attribute, $callback)

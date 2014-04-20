@@ -30,6 +30,16 @@ class Facktory
 		return static::getFactory($name)->create($attributes);
 	}
 
+	public static function buildList($name, $count, $attributes = [])
+	{
+		return static::getFactory($name)->buildList($count, $attributes);
+	}
+
+	public static function createList($name, $count, $attributes = [])
+	{
+		return static::getFactory($name)->createList($count, $attributes);
+	}
+
 	protected static function getFactory($model)
 	{
 		return static::$factories[$model];
