@@ -1,8 +1,12 @@
 # Facktory
 
+Facktory is an attempt at porting [FactoryGirl](https://github.com/thoughtbot/factory_girl/) to PHP. It's still in it's early stages, but give it a go if you're interested, and open issues for the features it's missing that you think are really important.
+
 ## Example Usage
 
 ### Defining factories
+
+Define factories anywhere you want. I've been creatings a `factories.php` file in my tests directory and autoloading it through Composer.
 
 ```php
 // factories.php
