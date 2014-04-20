@@ -5,14 +5,20 @@ class Factory
 	protected $model;
 	protected $attributes;
 
-	public function __construct($model)
+	public function __construct($model, $attributes = [])
 	{
 		$this->model = $model;
+		$this->attributes = $attributes;
 	}
 
 	public function __set($key, $value)
 	{
 		$this->setAttribute($key, $value);
+	}
+
+	public function setAttributes($attributes)
+	{
+		$this->attributes = $attributes;
 	}
 
 	protected function setAttribute($key, $value)
@@ -30,8 +36,19 @@ class Factory
 		return $instance;
 	}
 
-	protected function newModel()
+	protected function newModel($attributes = [])
 	{
-		return new $this->model;
+		$model = $this->model;
+		return new $model($attributes);
+	}
+
+	public function nest($name, $definitionCallback)
+	{
+		$attributes = $this->attributes;
+		$callback = function($f) use ($definitionCallback, $attributes) {
+			$f->setAttributes($attributes);
+			$definitionCallback($f);
+		};
+		Facktory::add([$name, $this->model], $callback);
 	}
 }
