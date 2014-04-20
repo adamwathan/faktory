@@ -51,9 +51,8 @@ class Factory
 
 	public function add($name, $definitionCallback)
 	{
-		$attributes = $this->attributes;
-		$callback = function($f) use ($definitionCallback, $attributes) {
-			$f->setAttributes($attributes);
+		$callback = function($f) use ($definitionCallback) {
+			$f->setAttributes($this->attributes);
 			$definitionCallback($f);
 		};
 		Facktory::add([$name, $this->model], $callback);
