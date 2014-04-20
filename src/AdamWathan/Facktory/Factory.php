@@ -4,7 +4,7 @@ class Factory
 {
     protected $model;
     protected $attributes;
-    protected $sequence = 0;
+    protected $sequence = 1;
 
     public function __construct($model, $attributes = [])
     {
