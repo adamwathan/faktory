@@ -38,6 +38,32 @@ Facktory::add('Album', function($f) {
         $f->release_date = new DateTime;
     });
 });
+
+
+
+// Fields that need to be unique can be defined
+// as functions that take an instance of the
+// current factory and an autoincrementing
+// index
+Facktory::add('User', function($f) {
+    $f->username = function($f, $i) {
+        return 'johndoe'.$i;
+    };
+});
+
+
+
+// Fields that depend on other fields can be
+// defined as functions that take an instance
+// of the current factory and an autoincrementing
+// index
+Facktory::add('User', function($f) {
+    $f->first_name = 'John';
+    $f->last_name = 'Doe';
+    $f->full_name = function($f, $i) {
+        return "{$f->first_name} {$f->last_name}";
+    };
+});
 ```
 
 ### Using factories
