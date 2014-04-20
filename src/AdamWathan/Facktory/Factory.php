@@ -12,6 +12,11 @@ class Factory
         $this->attributes = $attributes;
     }
 
+    public static function make($model, $attributes = [])
+    {
+        return new static($model, $attributes);
+    }
+
     public function __set($key, $value)
     {
         $this->setAttribute($key, $value);

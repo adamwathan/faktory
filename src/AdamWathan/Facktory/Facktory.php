@@ -7,7 +7,7 @@ class Facktory
     public static function add($name, $definitionCallback)
     {
         list($name, $model) = static::extractNameAndModel($name);
-        $factory = new Factory($model);
+        $factory = Factory::make($model);
         $definitionCallback($factory);
         static::$factories[$name] = $factory;
     }
