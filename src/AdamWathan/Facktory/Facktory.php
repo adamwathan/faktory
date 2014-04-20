@@ -20,9 +20,14 @@ class Facktory
 		return [$name[0], $name[1]];
 	}
 
-	public static function build($model, $attributes = [])
+	public static function build($name, $attributes = [])
 	{
-		return static::getFactory($model)->build($attributes);
+		return static::getFactory($name)->build($attributes);
+	}
+
+	public static function create($name, $attributes = [])
+	{
+		return static::getFactory($name)->create($attributes);
 	}
 
 	protected static function getFactory($model)

@@ -36,6 +36,13 @@ class Factory
 		return $instance;
 	}
 
+	public function create($override_attributes)
+	{
+		$instance = $this->build($override_attributes);
+		$instance->save();
+		return $instance;
+	}
+
 	protected function newModel($attributes = [])
 	{
 		$model = $this->model;
