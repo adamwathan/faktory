@@ -95,9 +95,10 @@ class Factory
 
     public function createList($count, $override_attributes)
     {
+        $override_attributes = $this->expandAttributesForList($override_attributes, $count);
         return array_map(function($i) use ($override_attributes) {
-            return $this->create($override_attributes);
-        }, range(1, $count));
+            return $this->create($override_attributes[$i]);
+        }, range(0, $count - 1));
     }
 
     public function sequence($attribute, $callback)
