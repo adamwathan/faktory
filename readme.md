@@ -11,7 +11,7 @@ Things I'd like to add next:
 
 ### Defining factories
 
-Define factories anywhere you want. I've been creatings a `factories.php` file in my tests directory and autoloading it through Composer.
+Define factories anywhere you want. I've been creating a `factories.php` file in my tests directory and autoloading it through Composer.
 
 ```php
 // factories.php
