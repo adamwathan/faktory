@@ -43,7 +43,6 @@ Facktory::add('Album', function($f) {
     $f->name = 'Diary of a madman';
 
     $f->add('album_with_release_date', function($f) {
-        $f->name = 'Diary of a madman';
         $f->release_date = new DateTime;
     });
 });
