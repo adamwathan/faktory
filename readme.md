@@ -39,11 +39,11 @@ Facktory::add(['album_with_release_date', 'Album'], function($f) {
 
 // Inherit properties from an existing factory
 // by nesting another definition inside of it
-Facktory::add('Album', function($f) {
-    $f->name = 'Diary of a madman';
+Facktory::add(['basic_user', 'User'], function($f) {
+    $f->name = 'John Doe';
 
-    $f->add('album_with_release_date', function($f) {
-        $f->release_date = new DateTime;
+    $f->add('admin', function($f) {
+        $f->is_admin = true;
     });
 });
 
