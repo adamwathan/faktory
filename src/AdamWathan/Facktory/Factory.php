@@ -42,7 +42,7 @@ class Factory
 		return new $model($attributes);
 	}
 
-	public function nest($name, $definitionCallback)
+	public function add($name, $definitionCallback)
 	{
 		$attributes = $this->attributes;
 		$callback = function($f) use ($definitionCallback, $attributes) {
