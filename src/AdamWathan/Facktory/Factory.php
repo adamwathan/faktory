@@ -66,9 +66,24 @@ class Factory
 
     public function buildList($count, $override_attributes)
     {
+        $override_attributes = $this->expandAttributesForList($override_attributes, $count);
         return array_map(function($i) use ($override_attributes) {
-            return $this->build($override_attributes);
-        }, range(1, $count));
+            return $this->build($override_attributes[$i]);
+        }, range(0, $count - 1));
+    }
+
+    protected function expandAttributesForList($attributes, $count)
+    {
+        return array_map(function($i) use ($attributes) {
+            return $this->extractAttributesForIndex($i, $attributes);
+        }, range(0, $count - 1));
+    }
+
+    protected function extractAttributesForIndex($i, $attributes)
+    {
+        return array_map(function($value) use ($i) {
+            return is_array($value) ? $value[$i] : $value;
+        }, $attributes);
     }
 
     public function create($override_attributes)
