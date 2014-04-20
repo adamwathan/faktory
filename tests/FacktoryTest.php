@@ -118,6 +118,22 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Ozzy Osbourne', $album->artist);
     }
 
+    public function test_can_override_parent_attribute_with_default_attribute_in_nested_factory()
+    {
+        Facktory::add(['basic_album', 'Album'], function($f) {
+            $f->name = 'Bark at the moon';
+            $f->artist = 'Ozzy Osbourne';
+            $f->add('album_by_black_sabbath', function($f) {
+                $f->artist = 'Black Sabbath';
+            });
+        });
+        $album = Facktory::build('album_by_black_sabbath');
+
+        $this->assertInstanceOf('Album', $album);
+        $this->assertSame('Bark at the moon', $album->name);
+        $this->assertSame('Black Sabbath', $album->artist);
+    }
+
     public function test_can_add_calculated_attributes()
     {
         Facktory::add(['album_with_artist', 'Album'], function($f) {
