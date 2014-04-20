@@ -6,7 +6,9 @@ class Facktory
 
 	public static function add($model, $definition)
 	{
-		static::$factories[$model] = new Factory($model, $definition);
+		$factory = new Factory($model);
+		$definition($factory);
+		static::$factories[$model] = $factory;
 	}
 
 	public static function build($model, $attributes = [])
