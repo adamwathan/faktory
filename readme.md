@@ -113,4 +113,15 @@ $album = Facktory::build('Album', [
     'songs' => Facktory::buildList('Song', 5, [ 'length' => 100 ]
     ),
 ]);
+
+// Add a nested relationship where each item is different,
+// but using buildList
+$album = Facktory::build('Album', [
+    'name' => 'Bark at the moon',
+    'songs' => [
+        Facktory::buildList('Song', 4, [
+            'length' => [143, 251, 167, 229]
+        ]),
+    ],
+]);
 ```
