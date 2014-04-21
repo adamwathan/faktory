@@ -4,6 +4,7 @@ class Factory
 {
     protected $model;
     protected $attributes;
+    protected $coordinator;
     protected $sequence = 1;
 
     public function __construct($model, $attributes = [])
@@ -15,6 +16,11 @@ class Factory
     public static function make($model, $attributes = [])
     {
         return new static($model, $attributes);
+    }
+
+    public function setCoordinator($coordinator)
+    {
+        $this->coordinator = $coordinator;
     }
 
     public function __set($key, $value)
@@ -118,6 +124,6 @@ class Factory
             $f->setAttributes($this->attributes);
             $definitionCallback($f);
         };
-        Facktory::add([$name, $this->model], $callback);
+        $this->coordinator->add([$name, $this->model], $callback);
     }
 }

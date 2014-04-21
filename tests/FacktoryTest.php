@@ -4,17 +4,13 @@ use AdamWathan\Facktory\Facktory;
 
 class FacktoryTest extends \PHPUnit_Framework_TestCase
 {
-    public function tearDown()
-    {
-        Facktory::clear();
-    }
-
     public function test_can_define_basic_factory()
     {
-        Facktory::add('Album', function($f) {
+        $facktory = new Facktory;
+        $facktory->add('Album', function($f) {
             $f->name = 'Bark at the moon';
         });
-        $album = Facktory::build('Album');
+        $album = $facktory->build('Album');
 
         $this->assertInstanceOf('Album', $album);
         $this->assertSame('Bark at the moon', $album->name);
@@ -22,11 +18,12 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_override_attribute()
     {
-        Facktory::add('Album', function($f) {
+        $facktory = new Facktory;
+        $facktory->add('Album', function($f) {
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
         });
-        $album = Facktory::build('Album', [
+        $album = $facktory->build('Album', [
             'name' => 'Diary of a madman'
         ]);
 
@@ -37,11 +34,12 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_define_factory_with_name()
     {
-        Facktory::add(['album_with_artist', 'Album'], function($f) {
+        $facktory = new Facktory;
+        $facktory->add(['album_with_artist', 'Album'], function($f) {
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
         });
-        $album = Facktory::build('album_with_artist');
+        $album = $facktory->build('album_with_artist');
 
         $this->assertInstanceOf('Album', $album);
         $this->assertSame('Bark at the moon', $album->name);
@@ -50,11 +48,12 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_define_factory_with_name_and_override_attribute()
     {
-        Facktory::add(['album_with_artist', 'Album'], function($f) {
+        $facktory = new Facktory;
+        $facktory->add(['album_with_artist', 'Album'], function($f) {
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
         });
-        $album = Facktory::build('album_with_artist', [
+        $album = $facktory->build('album_with_artist', [
             'artist' => 'Randy Rhoads'
             ]);
 
@@ -65,13 +64,14 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_nest_factory_and_inherit_attributes()
     {
-        Facktory::add('Album', function($f) {
+        $facktory = new Facktory;
+        $facktory->add('Album', function($f) {
             $f->name = 'Bark at the moon';
             $f->add('album_with_artist', function($f) {
                 $f->artist = 'Ozzy Osbourne';
             });
         });
-        $album = Facktory::build('album_with_artist');
+        $album = $facktory->build('album_with_artist');
 
         $this->assertInstanceOf('Album', $album);
         $this->assertSame('Bark at the moon', $album->name);
@@ -80,13 +80,14 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_nest_factory_and_override_attribute()
     {
-        Facktory::add('Album', function($f) {
+        $facktory = new Facktory;
+        $facktory->add('Album', function($f) {
             $f->name = 'Bark at the moon';
             $f->add('album_with_artist', function($f) {
                 $f->artist = 'Ozzy Osbourne';
             });
         });
-        $album = Facktory::build('album_with_artist', ['artist' => 'Randy Rhoads']);
+        $album = $facktory->build('album_with_artist', ['artist' => 'Randy Rhoads']);
 
         $this->assertInstanceOf('Album', $album);
         $this->assertSame('Bark at the moon', $album->name);
@@ -95,13 +96,14 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_nest_factory_and_override_parent_attribute()
     {
-        Facktory::add('Album', function($f) {
+        $facktory = new Facktory;
+        $facktory->add('Album', function($f) {
             $f->name = 'Bark at the moon';
             $f->add('album_with_artist', function($f) {
                 $f->artist = 'Ozzy Osbourne';
             });
         });
-        $album = Facktory::build('album_with_artist', ['name' => 'Diary of a madman']);
+        $album = $facktory->build('album_with_artist', ['name' => 'Diary of a madman']);
 
         $this->assertInstanceOf('Album', $album);
         $this->assertSame('Diary of a madman', $album->name);
@@ -110,13 +112,14 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_nest_factory_inside_named_factory()
     {
-        Facktory::add(['basic_album', 'Album'], function($f) {
+        $facktory = new Facktory;
+        $facktory->add(['basic_album', 'Album'], function($f) {
             $f->name = 'Bark at the moon';
             $f->add('album_with_artist', function($f) {
                 $f->artist = 'Ozzy Osbourne';
             });
         });
-        $album = Facktory::build('album_with_artist');
+        $album = $facktory->build('album_with_artist');
 
         $this->assertInstanceOf('Album', $album);
         $this->assertSame('Bark at the moon', $album->name);
@@ -125,14 +128,15 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_override_parent_attribute_with_default_attribute_in_nested_factory()
     {
-        Facktory::add(['basic_album', 'Album'], function($f) {
+        $facktory = new Facktory;
+        $facktory->add(['basic_album', 'Album'], function($f) {
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
             $f->add('album_by_black_sabbath', function($f) {
                 $f->artist = 'Black Sabbath';
             });
         });
-        $album = Facktory::build('album_by_black_sabbath');
+        $album = $facktory->build('album_by_black_sabbath');
 
         $this->assertInstanceOf('Album', $album);
         $this->assertSame('Bark at the moon', $album->name);
@@ -141,14 +145,15 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_add_calculated_attributes()
     {
-        Facktory::add(['album_with_artist', 'Album'], function($f) {
+        $facktory = new Facktory;
+        $facktory->add(['album_with_artist', 'Album'], function($f) {
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
             $f->display_title = function($f) {
                 return "{$f->artist} - {$f->name}";
             };
         });
-        $album = Facktory::build('album_with_artist');
+        $album = $facktory->build('album_with_artist');
 
         $this->assertInstanceOf('Album', $album);
         $this->assertSame('Bark at the moon', $album->name);
@@ -158,15 +163,16 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_add_sequenced_attribute()
     {
-        Facktory::add(['album_with_artist', 'Album'], function($f) {
+        $facktory = new Facktory;
+        $facktory->add(['album_with_artist', 'Album'], function($f) {
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
             $f->id = function($f, $i) {
                 return $i;
             };
         });
-        $album1 = Facktory::build('album_with_artist');
-        $album2 = Facktory::build('album_with_artist');
+        $album1 = $facktory->build('album_with_artist');
+        $album2 = $facktory->build('album_with_artist');
 
         $this->assertInstanceOf('Album', $album1);
         $this->assertSame('Bark at the moon', $album1->name);
@@ -181,11 +187,12 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_build_list_of_objects()
     {
-        Facktory::add(['album_with_artist', 'Album'], function($f) {
+        $facktory = new Facktory;
+        $facktory->add(['album_with_artist', 'Album'], function($f) {
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
         });
-        $albums = Facktory::buildList('album_with_artist', 5);
+        $albums = $facktory->buildList('album_with_artist', 5);
 
         $this->assertSame(5, count($albums));
         foreach ($albums as $album) {
@@ -197,11 +204,12 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_can_override_attribute_when_building_list()
     {
-        Facktory::add(['album_with_artist', 'Album'], function($f) {
+        $facktory = new Facktory;
+        $facktory->add(['album_with_artist', 'Album'], function($f) {
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
         });
-        $albums = Facktory::buildList('album_with_artist', 5, [
+        $albums = $facktory->buildList('album_with_artist', 5, [
             'artist' => 'Dio'
         ]);
 
@@ -215,11 +223,12 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_can_override_attributes_independently_when_building_list()
     {
-        Facktory::add(['album_with_artist', 'Album'], function($f) {
+        $facktory = new Facktory;
+        $facktory->add(['album_with_artist', 'Album'], function($f) {
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
         });
-        $albums = Facktory::buildList('album_with_artist', 5, [
+        $albums = $facktory->buildList('album_with_artist', 5, [
             'artist' => [
                 'Dio',
                 'Black Sabbath',
@@ -253,12 +262,13 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_can_override_attributes_independently_and_as_a_group_when_building_list()
     {
-        Facktory::add(['album_with_artist', 'Album'], function($f) {
+        $facktory = new Facktory;
+        $facktory->add(['album_with_artist', 'Album'], function($f) {
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
             $f->release_date = '1983-11-15';
         });
-        $albums = Facktory::buildList('album_with_artist', 3, [
+        $albums = $facktory->buildList('album_with_artist', 3, [
             'artist' => [
                 'Dio',
                 'Black Sabbath',
@@ -288,20 +298,21 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_lazy_evaluate_related_class_before_defining_related_factory()
     {
-        Facktory::add(['hit_song', 'Song'], function($f) {
+        $facktory = new Facktory;
+        $facktory->add(['hit_song', 'Song'], function($f) use ($facktory) {
             $f->name = 'Suicide solution';
             $f->length = 125;
-            $f->album = function() {
-                return Facktory::build('album_with_artist');
+            $f->album = function() use ($facktory) {
+                return $facktory->build('album_with_artist');
             };
         });
 
-        Facktory::add(['album_with_artist', 'Album'], function($f) {
+        $facktory->add(['album_with_artist', 'Album'], function($f) {
             $f->name = 'Blizzard of Ozz';
             $f->artist = 'Ozzy Osbourne';
         });
 
-        $song = Facktory::build('hit_song');
+        $song = $facktory->build('hit_song');
 
         $this->assertInstanceOf('Song', $song);
         $this->assertSame('Blizzard of Ozz', $song->album->name);
@@ -310,12 +321,13 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_use_closures_as_overrides()
     {
-        Facktory::add(['hit_song', 'Song'], function($f) {
+        $facktory = new Facktory;
+        $facktory->add(['hit_song', 'Song'], function($f) {
             $f->name = 'Suicide solution';
             $f->length = 125;
         });
 
-        $song = Facktory::build('hit_song', [
+        $song = $facktory->build('hit_song', [
             'length' => function() {
                 return 50;
             }
@@ -326,12 +338,13 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_closures_overrides_still_receive_params()
     {
-        Facktory::add(['hit_song', 'Song'], function($f) {
+        $facktory = new Facktory;
+        $facktory->add(['hit_song', 'Song'], function($f) {
             $f->name = 'Suicide solution';
             $f->length = 125;
         });
 
-        $song = Facktory::build('hit_song', [
+        $song = $facktory->build('hit_song', [
             'length' => function($f, $i) {
                 return $f->name . $i;
             }

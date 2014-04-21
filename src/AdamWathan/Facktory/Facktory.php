@@ -2,22 +2,18 @@
 
 class Facktory
 {
-    protected static $factories = [];
+    protected $factories = [];
 
-    public static function add($name, $definitionCallback)
+    public function add($name, $definitionCallback)
     {
-        list($name, $model) = static::extractNameAndModel($name);
+        list($name, $model) = $this->extractNameAndModel($name);
         $factory = Factory::make($model);
+        $factory->setCoordinator($this);
+        $this->addFactory($name, $factory);
         $definitionCallback($factory);
-        static::$factories[$name] = $factory;
     }
 
-    public static function clear()
-    {
-        static::$factories = [];
-    }
-
-    protected static function extractNameAndModel($name)
+    protected function extractNameAndModel($name)
     {
         if (! is_array($name)) {
             return [$name, $name];
@@ -25,28 +21,33 @@ class Facktory
         return [$name[0], $name[1]];
     }
 
-    public static function build($name, $attributes = [])
+    protected function addFactory($name, $factory)
     {
-        return static::getFactory($name)->build($attributes);
+        $this->factories[$name] = $factory;
     }
 
-    public static function create($name, $attributes = [])
+    public function build($name, $attributes = [])
     {
-        return static::getFactory($name)->create($attributes);
+        return $this->getFactory($name)->build($attributes);
     }
 
-    public static function buildList($name, $count, $attributes = [])
+    public function create($name, $attributes = [])
     {
-        return static::getFactory($name)->buildList($count, $attributes);
+        return $this->getFactory($name)->create($attributes);
     }
 
-    public static function createList($name, $count, $attributes = [])
+    public function buildList($name, $count, $attributes = [])
     {
-        return static::getFactory($name)->createList($count, $attributes);
+        return $this->getFactory($name)->buildList($count, $attributes);
     }
 
-    protected static function getFactory($model)
+    public function createList($name, $count, $attributes = [])
     {
-        return static::$factories[$model];
+        return $this->getFactory($name)->createList($count, $attributes);
+    }
+
+    protected function getFactory($model)
+    {
+        return $this->factories[$model];
     }
 }
