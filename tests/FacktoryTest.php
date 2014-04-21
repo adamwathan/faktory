@@ -307,6 +307,38 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Blizzard of Ozz', $song->album->name);
         $this->assertSame('Ozzy Osbourne', $song->album->artist);
     }
+
+    public function test_can_use_closures_as_overrides()
+    {
+        Facktory::add(['hit_song', 'Song'], function($f) {
+            $f->name = 'Suicide solution';
+            $f->length = 125;
+        });
+
+        $song = Facktory::build('hit_song', [
+            'length' => function() {
+                return 50;
+            }
+        ]);
+
+        $this->assertSame(50, $song->length);
+    }
+
+    public function test_closures_overrides_still_receive_params()
+    {
+        Facktory::add(['hit_song', 'Song'], function($f) {
+            $f->name = 'Suicide solution';
+            $f->length = 125;
+        });
+
+        $song = Facktory::build('hit_song', [
+            'length' => function($f, $i) {
+                return $f->name . $i;
+            }
+        ]);
+
+        $this->assertSame('Suicide solution1', $song->length);
+    }
 }
 
 class Album {}
