@@ -76,6 +76,8 @@ if (App::environment() === 'testing') {
 }
 ```
 
+There's probably a better solution for this but I haven't thought much about it yet. Maybe `bootstrap/autoload.php` makes more sense.
+
 
 ```php
 /*
