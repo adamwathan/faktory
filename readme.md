@@ -68,16 +68,12 @@ $facktory = new AdamWathan\Facktory\Facktory;
 
 Define factories anywhere you want.
 
-In Laravel 4, I've been creating a `factories.php` file in my tests directory and requiring it at the bottom of `app/bootstrap/global.php` like so:
+In Laravel 4, I've been creating a `factories.php` file in my tests directory and adding it to `app/bootstrap/testing.php` like so:
 
 ```php
-if (App::environment() === 'testing') {
-    require app_path().'/tests/factories.php';
-}
+// app/bootstrap/testing.php
+require app_path().'/tests/factories.php';
 ```
-
-There's probably a better solution for this but I haven't thought much about it yet. Maybe `bootstrap/autoload.php` makes more sense.
-
 
 ```php
 /*
