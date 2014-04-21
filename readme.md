@@ -140,10 +140,19 @@ $album = Facktory::build('Album', [
 // but using buildList
 $album = Facktory::build('Album', [
     'name' => 'Bark at the moon',
-    'songs' => [
-        Facktory::buildList('Song', 4, [
+    'songs' => Facktory::buildList('Song', 4, [
+        'length' => [143, 251, 167, 229]
+    ]),
+]);
+
+// Add a nested relationship using buildList, but wrap
+// it in a collection
+$album = Facktory::build('Album', [
+    'name' => 'Bark at the moon',
+    'songs' => function() {
+        return new Collection(Facktory::buildList('Song', 4, [
             'length' => [143, 251, 167, 229]
-        ]),
-    ],
+        ]));
+    }
 ]);
 ```
