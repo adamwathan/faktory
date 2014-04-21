@@ -12,6 +12,11 @@ class Facktory
         static::$factories[$name] = $factory;
     }
 
+    public static function clear()
+    {
+        static::$factories = [];
+    }
+
     protected static function extractNameAndModel($name)
     {
         if (! is_array($name)) {

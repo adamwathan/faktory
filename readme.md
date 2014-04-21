@@ -72,6 +72,28 @@ Facktory::add('User', function($f) {
         return "{$f->first_name} {$f->last_name}";
     };
 });
+
+
+// You can lazy evaluate anything by sticking it in
+// a function, including adding a related object from
+// a factory that hasn't even been defined yet.
+Facktory::add(['hit_song', 'Song'], function($f) {
+    $f->name = 'Suicide solution';
+    $f->length = 125;
+
+    // This would throw an error
+    $f->album = Facktory::build('album_with_artist');
+
+    // But this will work
+    $f->album = function() {
+        return Facktory::build('album_with_artist');
+    };
+});
+
+Facktory::add(['album_with_artist', 'Album'], function($f) {
+    $f->name = 'Blizzard of Ozz';
+    $f->artist = 'Ozzy Osbourne';
+});
 ```
 
 ### Using factories

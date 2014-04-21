@@ -4,6 +4,11 @@ use AdamWathan\Facktory\Facktory;
 
 class FacktoryTest extends \PHPUnit_Framework_TestCase
 {
+    public function tearDown()
+    {
+        Facktory::clear();
+    }
+
     public function test_can_define_basic_factory()
     {
         Facktory::add('Album', function($f) {
@@ -279,6 +284,28 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Bark at the moon', $albums[2]->name);
         $this->assertSame('Diamondhead', $albums[2]->artist);
         $this->assertSame('2001-05-06', $albums[2]->release_date);
+    }
+
+    public function test_can_lazy_evaluate_related_class_before_defining_related_factory()
+    {
+        Facktory::add(['hit_song', 'Song'], function($f) {
+            $f->name = 'Suicide solution';
+            $f->length = 125;
+            $f->album = function() {
+                return Facktory::build('album_with_artist');
+            };
+        });
+
+        Facktory::add(['album_with_artist', 'Album'], function($f) {
+            $f->name = 'Blizzard of Ozz';
+            $f->artist = 'Ozzy Osbourne';
+        });
+
+        $song = Facktory::build('hit_song');
+
+        $this->assertInstanceOf('Song', $song);
+        $this->assertSame('Blizzard of Ozz', $song->album->name);
+        $this->assertSame('Ozzy Osbourne', $song->album->artist);
     }
 }
 
