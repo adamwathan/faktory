@@ -1,12 +1,13 @@
 {
     "name": "adamwathan/facktory",
-    "description": "",
+    "description": "An attempt at bring the wonders of Ruby's FactoryGirl to PHP",
     "authors": [
         {
             "name": "Adam Wathan",
             "email": "adam.wathan@gmail.com"
         }
     ],
+    "license": "MIT",
     "require": {
         "php": ">=5.3.0"
     },
