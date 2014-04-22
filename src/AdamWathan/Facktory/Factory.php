@@ -107,11 +107,6 @@ class Factory
         }, range(0, $count - 1));
     }
 
-    public function sequence($attribute, $callback)
-    {
-        $this->setAttribute($attribute, $callback);
-    }
-
     protected function newModel($attributes = [])
     {
         $model = $this->model;

@@ -336,7 +336,7 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(50, $song->length);
     }
 
-    public function test_closures_overrides_still_receive_params()
+    public function test_closure_overrides_still_receive_params()
     {
         $facktory = new Facktory;
         $facktory->add(['hit_song', 'Song'], function($f) {
