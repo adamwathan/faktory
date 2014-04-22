@@ -1,6 +1,7 @@
 <?php namespace AdamWathan\Facktory;
 
 use AdamWathan\Facktory\Strategy\Build as BuildStrategy;
+use AdamWathan\Facktory\Strategy\Create as CreateStrategy;
 
 class Factory
 {
@@ -61,6 +62,21 @@ class Factory
         return $this->newInstance($strategy, $override_attributes);
     }
 
+    public function create($override_attributes)
+    {
+        // $strategy = CreateStrategy::make($this->model, $this->sequence);
+        // return $this->newInstance($strategy, $override_attributes);
+
+        $precedents = $this->createPrecedentRelationships();
+        foreach ($precedents as $precedent) {
+            $override_attributes[$precedent['foreign_key']] = $precedent['model']->getKey();
+        }
+        $instance = $this->build($override_attributes);
+        $instance->save();
+        $this->createDependentRelationships($instance);
+        return $instance;
+    }
+
     protected function newInstance($strategy, $override_attributes)
     {
         $strategy->attributes($this->mergeAttributes($override_attributes));
@@ -94,18 +110,6 @@ class Factory
         return array_map(function($value) use ($i) {
             return is_array($value) ? $value[$i] : $value;
         }, $attributes);
-    }
-
-    public function create($override_attributes)
-    {
-        $precedents = $this->createPrecedentRelationships();
-        foreach ($precedents as $precedent) {
-            $override_attributes[$precedent['foreign_key']] = $precedent['model']->getKey();
-        }
-        $instance = $this->build($override_attributes);
-        $instance->save();
-        $this->createDependentRelationships($instance);
-        return $instance;
     }
 
     protected function createPrecedentRelationships()
