@@ -25,7 +25,7 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
         });
         $album = $facktory->build('Album', [
             'name' => 'Diary of a madman'
-        ]);
+            ]);
 
         $this->assertInstanceOf('Album', $album);
         $this->assertSame('Diary of a madman', $album->name);
@@ -211,7 +211,7 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
         });
         $albums = $facktory->buildList('album_with_artist', 5, [
             'artist' => 'Dio'
-        ]);
+            ]);
 
         $this->assertSame(5, count($albums));
         foreach ($albums as $album) {
@@ -230,13 +230,13 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
         });
         $albums = $facktory->buildList('album_with_artist', 5, [
             'artist' => [
-                'Dio',
-                'Black Sabbath',
-                'Diamondhead',
-                'Iron Maiden',
-                'Judas Priest'
+            'Dio',
+            'Black Sabbath',
+            'Diamondhead',
+            'Iron Maiden',
+            'Judas Priest'
             ]
-        ]);
+            ]);
 
         $this->assertSame(5, count($albums));
         $this->assertInstanceOf('Album', $albums[0]);
@@ -270,14 +270,14 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
         });
         $albums = $facktory->buildList('album_with_artist', 3, [
             'artist' => [
-                'Dio',
-                'Black Sabbath',
-                'Diamondhead',
-                'Iron Maiden',
-                'Judas Priest'
+            'Dio',
+            'Black Sabbath',
+            'Diamondhead',
+            'Iron Maiden',
+            'Judas Priest'
             ],
             'release_date' => '2001-05-06'
-        ]);
+            ]);
 
         $this->assertSame(3, count($albums));
         $this->assertInstanceOf('Album', $albums[0]);
@@ -331,7 +331,7 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
             'length' => function() {
                 return 50;
             }
-        ]);
+            ]);
 
         $this->assertSame(50, $song->length);
     }
@@ -348,9 +348,31 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
             'length' => function($f, $i) {
                 return $f->name . $i;
             }
-        ]);
+            ]);
 
         $this->assertSame('Suicide solution1', $song->length);
+    }
+
+    /**
+     * This would throw an error if any database access was attempted.
+     * Weird test with no assertion, but it will catch issues if a
+     * refactoring causes the build method to hit the database on a
+     * relationship call.
+     */
+    public function test_relationship_methods_are_ignored_on_build()
+    {
+        $facktory = new Facktory;
+        $facktory->add(['album_with_5_songs', 'Album'], function($f) {
+            $f->name = 'Destroy Erase Improve';
+            $f->release_date = new DateTime;
+            $f->hasMany('song', 'album_id', 5);
+        });
+        $facktory->add(['song', 'Song'], function($f) {
+            $f->name = 'Concatenation';
+            $f->length = 257;
+        });
+
+        $album = $facktory->build('album_with_5_songs');
     }
 }
 
