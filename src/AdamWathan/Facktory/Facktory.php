@@ -46,8 +46,15 @@ class Facktory
         return $this->getFactory($name)->createList($count, $attributes);
     }
 
-    public function getFactory($model)
+    public function getFactory($name)
     {
-        return $this->factories[$model];
+        return $this->factories[$name];
+    }
+
+    public function getLazyFactory($name)
+    {
+        return function() use ($name) {
+            return $this->getFactory($name);
+        };
     }
 }

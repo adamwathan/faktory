@@ -3,6 +3,7 @@
 use AdamWathan\Facktory\Strategy\Build as BuildStrategy;
 use AdamWathan\Facktory\Strategy\Create as CreateStrategy;
 use AdamWathan\Facktory\Relationship\BelongsTo;
+use AdamWathan\Facktory\Relationship\HasMany;
 
 class Factory
 {
@@ -160,35 +161,20 @@ class Factory
         $this->coordinator->add([$name, $this->model], $callback);
     }
 
+    public function belongsTo($name, $foreign_key, $attributes = [])
+    {
+        $factory = $this->coordinator->getLazyFactory($name);
+        return new BelongsTo($factory, $foreign_key, $attributes);
+    }
+
     public function hasMany($name, $foreign_key, $count, $attributes = [])
     {
-        $relationship = [
-        'name' => $name,
-        'foreign_key' => $foreign_key,
-        'count' => $count,
-        'attributes' => $attributes,
-        ];
-        $this->addDependentRelationship($relationship);
+        $factory = $this->coordinator->getLazyFactory($name);
+        return new HasMany($factory, $foreign_key, $count, $attributes);
     }
 
     public function hasOne($name, $foreign_key, $attributes = [])
     {
-        $this->hasMany($name, $foreign_key, 1, $attributes);
-    }
-
-    protected function addDependentRelationship($relationship)
-    {
-        $this->dependentRelationships[] = $relationship;
-    }
-
-    public function belongsTo($name, $foreign_key, $attributes = [])
-    {
-        $factory = $this->coordinator->getFactory($name);
-        return new BelongsTo($factory, $foreign_key, $attributes);
-    }
-
-    protected function addPrecedentRelationship($relationship)
-    {
-        $this->precedentRelationships[] = $relationship;
+        return $this->hasMany($name, $foreign_key, 1, $attributes);
     }
 }

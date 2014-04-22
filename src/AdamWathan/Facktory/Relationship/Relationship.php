@@ -1,6 +1,6 @@
 <?php namespace AdamWathan\Facktory\Relationship;
 
-class HasMany
+abstract class Relationship
 {
-
+	abstract public function build();
 }

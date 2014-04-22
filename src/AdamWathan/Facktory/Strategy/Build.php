@@ -1,12 +1,12 @@
 <?php namespace AdamWathan\Facktory\Strategy;
 
-use AdamWathan\Facktory\Relationship\BelongsTo;
+use AdamWathan\Facktory\Relationship\Relationship;
 
 class Build extends Strategy
 {
     public function newInstance()
     {
-        $this->createPrecedents();
+        $this->buildRelationships();
         $instance = $this->newModel();
         foreach ($this->attributes as $attribute => $value) {
             $instance->{$attribute} = $this->getAttributeValue($value);
@@ -14,14 +14,14 @@ class Build extends Strategy
         return $instance;
     }
 
-    protected function createPrecedents()
+    protected function buildRelationships()
     {
         foreach ($this->attributes as $attribute => $value) {
-            if (! $value instanceof BelongsTo) {
+            if (! $value instanceof Relationship) {
                 continue;
             }
-            $precedent = $this->createPrecedent($value);
-            $this->setAttribute($attribute, $precedent);
+            $relationship = $this->buildRelationship($value);
+            $this->setAttribute($attribute, $relationship);
         }
     }
 
@@ -30,10 +30,9 @@ class Build extends Strategy
         $this->attributes[$attribute] = $value;
     }
 
-    protected function createPrecedent($relationship)
+    protected function buildRelationship($relationship)
     {
-        $instance = $relationship->factory->build($relationship->attributes);
-        return $instance;
+        return $relationship->build();
     }
 
     protected function getAttributeValue($value)
