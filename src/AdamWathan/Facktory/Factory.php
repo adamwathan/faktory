@@ -10,8 +10,6 @@ class Factory
 {
     protected $model;
     protected $attributes;
-    protected $dependentRelationships = [];
-    protected $precedentRelationships = [];
     protected $coordinator;
     protected $sequence = 1;
 
@@ -69,15 +67,6 @@ class Factory
     {
         $strategy = CreateStrategy::make($this->model, $this->sequence);
         return $this->newInstance($strategy, $override_attributes);
-
-        $precedents = $this->createPrecedentRelationships();
-        foreach ($precedents as $precedent) {
-            $override_attributes[$precedent['foreign_key']] = $precedent['model']->getKey();
-        }
-        $instance = $this->build($override_attributes);
-        $instance->save();
-        $this->createDependentRelationships($instance);
-        return $instance;
     }
 
     protected function newInstance($strategy, $override_attributes)
@@ -115,42 +104,12 @@ class Factory
         }, $attributes);
     }
 
-    protected function createPrecedentRelationships()
-    {
-        $precedents = [];
-        foreach ($this->precedentRelationships as $relationship) {
-            $model = $this->coordinator->create($relationship['name'], $relationship['attributes']);
-            $precedents[] = ['model' => $model, 'foreign_key' => $relationship['foreign_key']];
-        }
-        return $precedents;
-    }
-
-    protected function createDependentRelationships($instance)
-    {
-        foreach ($this->dependentRelationships as $relationship) {
-            $this->createHasMany($relationship, $instance);
-        }
-    }
-
-    protected function createHasMany($relationship, $instance)
-    {
-        $attributes = $relationship['attributes'];
-        $attributes[$relationship['foreign_key']] = $instance->getKey();
-        $this->coordinator->createList($relationship['name'], $relationship['count'], $attributes);
-    }
-
     public function createList($count, $override_attributes)
     {
         $override_attributes = $this->expandAttributesForList($override_attributes, $count);
         return array_map(function($i) use ($override_attributes) {
             return $this->create($override_attributes[$i]);
         }, range(0, $count - 1));
-    }
-
-    protected function newModel($attributes = [])
-    {
-        $model = $this->model;
-        return new $model($attributes);
     }
 
     public function add($name, $definitionCallback)
