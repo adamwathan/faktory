@@ -168,7 +168,7 @@ class Factory
         return new BelongsTo($factory, $foreign_key, $attributes);
     }
 
-    public function hasMany($name, $foreign_key, $count, $attributes = [])
+    public function hasMany($name, $count, $foreign_key, $attributes = [])
     {
         $factory = $this->coordinator->getLazyFactoryCallback($name);
         return new HasMany($factory, $foreign_key, $count, $attributes);
