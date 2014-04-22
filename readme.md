@@ -57,7 +57,9 @@ $facktory = new AdamWathan\Facktory\Facktory;
 
 > Note: When using outside of Laravel 4 and not having access to the `Facktory` facade, you will need to make sure you `use` your `$facktory` instance in any nested closures that need to generate other objects. Sucks but that's PHP.
 
-## Defining factories
+## Using Facktory
+
+### Defining factories
 
 Define factories anywhere you want.
 
@@ -68,7 +70,7 @@ In Laravel 4, I've been creating a `factories.php` file in my tests directory an
 require app_path().'/tests/factories.php';
 ```
 
-### Basic definition
+#### Basic definition
 
 The most basic factory definition requires a class name and a closure that defines the default attributes for the factory. This will define a factory named after that class that generates instances of that same class.
 
@@ -84,6 +86,50 @@ Facktory::add('Song', function($f) {
 });
 ```
 
+### Using factories
+
+Once you have your factories defined, you can very easily generate objects for your tests.
+
+Objects can be generated using one of two different build strategies.
+
+- `build` creates objects in memory only, without persisting them.
+- `create` creates objects and persists them to whatever database you have set up in your testing environment.
+
+> Note: The `create` strategy is meant for Laravel 4's Eloquent ORM, but as long as your objects implement a `save()` method, it should work outside of Eloquent.
+
+To generate an object, simply call `build` or `create` and pass in the name of the factory you want to generate the object from.
+
+```php
+// Returns an Album object with the default attribute values
+$album = Facktory::build('Album');
+$album->name;
+// 'Diary of a madman'
+$album->release_date;
+// '1981-11-07'
+
+
+// Create a basic instance from a named factory and persist it to
+// the database
+$album = Facktory::create('album_with_release_date');
+$album->id
+// 1
+```
+
+You can optionally pass an array of attribute overrides as a second argument:
+
+```php
+// Create an instance and override some properties
+$album = Facktory::build('Album', [
+    'name' => 'Bark at the moon',
+    ]),
+]);
+
+$album->name;
+// 'Bark at the moon'
+$album->release_date;
+// '1981-11-07'
+```
+
 ### Named factories
 
 Factories can also be given a name, so that you can define multiple factories for the same class that generate objects in different predefined states.
@@ -93,9 +139,19 @@ To define a named factory, pass an array in the form `[factory_name, class_name]
 ```php
 Facktory::add(['album_with_copies_sold', 'Album'], function($f) {
     $f->name = 'Diary of a madman';
-    $f->release_date = new DateTime;
+    $f->release_date = '1981-11-07';
     $f->copies_sold = 3200000;
 });
+
+
+$album = Facktory::build('album_with_copies_sold');
+
+$album->name;
+// 'Diary of a madman'
+$album->release_date;
+// '1981-11-07'
+$album->copies_sold;
+// 3200000
 ```
 
 ### Factory inheritance
@@ -107,14 +163,20 @@ Facktory::add(['basic_user', 'User'], function($f) {
     $f->first_name = 'John';
     $f->last_name = 'Doe';
 
-    // This will define another User factory under the name 'admin'
-    // that inherits the first_name and last_name attributes from
-    // the parent definition, while specifying that the 'is_admin'
-    // flag should be set to true.
     $f->add('admin', function($f) {
         $f->is_admin = true;
     });
 });
+
+
+$user = Facktory::build('admin');
+
+$user->first_name;
+// 'John'
+$user->last_name;
+// 'Doe'
+$user->is_admin;
+// true
 ```
 
 ### Lazy attributes
@@ -125,14 +187,21 @@ If you don't want an attribute to be evaluated until you try to build an object,
 Facktory::add('User', function($f) {
     $f->username = 'john.doe';
 
-    // This will re-evaluate every time you build an object,
-    // always giving you the DateTime at the time of object
-    // build instead of the DateTime at the time the factory
-    // is defined.
     $f->created_at = function() {
         return new DateTime;
     };
 });
+
+
+$user1 = Facktory::build('User');
+$user1->created_at;
+// '2014-04-22 14:10:05'
+
+sleep(7);
+
+$user2 = Facktory::build('User');
+$user2->created_at;
+// '2014-04-22 14:10:12'
 ```
 
 ### Dependent attributes
@@ -143,14 +212,20 @@ You can also use lazy attributes to define attributes that depend on other attri
 Facktory::add('User', function($f) {
     $f->first_name = 'John';
     $f->last_name = 'Doe';
-
-    // The current factory will be passed as the first parameter
-    // to the closure, allowing you to use other attributes in
-    // the factory.
     $f->email = function($f) {
         return "{$f->first_name}.{$f->last_name}@example.com";
     };
 });
+
+
+$user = Facktory::build('User');
+
+$user->first_name;
+// 'John'
+$user->last_name;
+// 'Doe'
+$user->email;
+// 'John.Doe@example.com'
 ```
 
 ### Unique attributes
@@ -161,13 +236,19 @@ Lazy attributes to the rescue again. The closure also takes an autoincrementing 
 Facktory::add('User', function($f) {
     $f->first_name = 'John';
     $f->last_name = 'Doe';
-
-    // First generated object will be example1@example.com,
-    // second will be example2@example.com, etc.
     $f->email = function($f, $i) {
         return "example{$i}@example.com";
     };
 });
+
+
+$user1 = Facktory::build('User');
+$user1->email;
+// 'example1@example.com'
+
+$user2 = Facktory::build('User');
+$user2->email;
+// 'example2@example.com'
 ```
 
 ### Defining relationships
@@ -193,8 +274,26 @@ $facktory->add(['song_with_album', 'Song'], function($f) {
 
 $facktory->add(['album', 'Album'], function($f) {
     $f->name = 'Destroy Erase Improve';
-    $f->release_date = new DateTime;
 });
+
+
+$song = Facktory::build('song_with_album');
+$song->album;
+// object(Album)(
+//    'name' => 'Destroy Erase Improve'
+// )
+$song->album_id;
+// NULL
+
+
+$song = Facktory::create('song_with_album');
+$song->album_id;
+// 1
+
+Album::find(1);
+// object(Album)(
+//    'name' => 'Destroy Erase Improve'
+// )
 ```
 
 #### Has one
@@ -212,8 +311,25 @@ $facktory->add(['user_with_profile', 'User'], function($f) {
 
 $facktory->add(['profile', 'Profile'], function($f) {
     $f->email = 'johndoe@example.com';
-    $f->date_of_birth = new DateTime('1985-01-01');
 });
+
+
+$user = Facktory::build('user_with_profile');
+$user->profile;
+// object(Profile)(
+//    'email' => 'johndoe@example.com'
+// )
+
+
+$user = Facktory::create('user_with_profile');
+$user->id;
+// 1
+
+Profile::first();
+// object(Album)(
+//    'user_id' => 1,
+//    'email' => 'johndoe@example.com'
+// )
 ```
 
 #### Has many
@@ -243,39 +359,6 @@ When using the `build` strategy, the related object(s) will be available directl
 
 When using the `create` strategy, the related object(s) will be persisted to the database with the foreign key attribute set to match the ID of the base object, and nothing will actually be set on the actual attribute itself, allowing you to retrieve the related object through the methods you've actually defined in the base object's class.
 
-## Using factories
-
-Once you have your factories defined, you can very easily generate objects for your tests.
-
-Objects can be generated using one of two different build strategies.
-
-- `build` creates objects in memory only, without persisting them.
-- `create` creates objects and persists them to whatever database you have set up in your testing environment.
-
-> Note: The `create` strategy is meant for Laravel 4's Eloquent ORM, but as long as your objects implement a `save()` method, it should work outside of Eloquent.
-
-### Basic usage
-
-To generate an object, simply call `build` or `create` and pass in the name of the factory you want to generate the object from.
-
-```php
-// Returns an Album object with the default attribute values
-$album = Facktory::build('Album');
-
-// Create a basic instance from a named factory and save it
-$album = Facktory::create('album_with_release_date');
-```
-
-You can optionally pass an array of attribute overrides as a second argument:
-
-```php
-// Create an instance and override some properties
-$album = Facktory::build('Album', [
-    'name' => 'Bark at the moon',
-    ]),
-]);
-```
-
 ### Building multiple instances at once
 
 You can use `buildList` and `createList` to generate multiple objects at once:
@@ -286,6 +369,11 @@ $albums = Facktory::buildList('Album', 5);
 
 // Create multiple instances with some overridden properties
 $songs = Facktory::buildList('Song', 5, [ 'length' => 100 ])
+$songs[0]->length;
+// 100
+// ...
+$songs[4]->length;
+// 100
 
 // Add a nested relationship where each item is different
 $album = Facktory::build('Album', [
