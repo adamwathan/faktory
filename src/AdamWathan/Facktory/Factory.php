@@ -4,6 +4,7 @@ class Factory
 {
     protected $model;
     protected $attributes;
+    protected $relationships = [];
     protected $coordinator;
     protected $sequence = 1;
 
@@ -96,7 +97,23 @@ class Factory
     {
         $instance = $this->build($override_attributes);
         $instance->save();
+        $this->createRelationships($instance);
         return $instance;
+    }
+
+    protected function createRelationships($instance)
+    {
+        foreach ($this->relationships as $relationship) {
+            $method = 'create'.ucfirst($relationship['type']);
+            $this->{$method}($relationship, $instance);
+        }
+    }
+
+    protected function createHasMany($relationship, $instance)
+    {
+        $attributes = $relationship['attributes'];
+        $attributes[$relationship['foreign_key']] = $instance->getKey();
+        $this->coordinator->createList($relationship['name'], $relationship['count'], $attributes);
     }
 
     public function createList($count, $override_attributes)
@@ -120,5 +137,22 @@ class Factory
             $definitionCallback($f);
         };
         $this->coordinator->add([$name, $this->model], $callback);
+    }
+
+    public function hasMany($name, $foreign_key, $count, $attributes = [])
+    {
+        $relationship = [
+            'type' => 'hasMany',
+            'name' => $name,
+            'foreign_key' => $foreign_key,
+            'count' => $count,
+            'attributes' => $attributes,
+        ];
+        $this->addRelationship($relationship);
+    }
+
+    protected function addRelationship($relationship)
+    {
+        $this->relationships[] = $relationship;
     }
 }
