@@ -166,6 +166,11 @@ class Factory
         $this->addDependentRelationship($relationship);
     }
 
+    public function hasOne($name, $foreign_key, $attributes = [])
+    {
+        $this->hasMany($name, $foreign_key, 1, $attributes);
+    }
+
     protected function addDependentRelationship($relationship)
     {
         $this->dependentRelationships[] = $relationship;
