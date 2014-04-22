@@ -11,10 +11,16 @@
     "require": {
         "php": ">=5.4.0"
     },
+    "require-dev": {
+        "illuminate/database": "4.*"
+    },
     "autoload": {
         "psr-0": {
             "AdamWathan\\Facktory": "src/"
-        }
+        },
+        "classmap": [
+            "tests/FunctionalTestCase.php"
+        ]
     },
     "minimum-stability": "stable"
 }
