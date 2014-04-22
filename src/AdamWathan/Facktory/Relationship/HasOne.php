@@ -17,4 +17,10 @@ class HasOne extends Relationship
 	{
 		return $this->factory->__invoke()->build($this->attributes);
 	}
+
+	public function create($instance)
+	{
+		$this->attributes[$this->foreign_key] = $instance->getKey();
+        return $this->factory->__invoke()->create($this->attributes);
+	}
 }

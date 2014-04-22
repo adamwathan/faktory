@@ -19,4 +19,10 @@ class HasMany extends Relationship
 	{
         return $this->factory->__invoke()->buildList($this->count, $this->attributes);
 	}
+
+	public function create($instance)
+	{
+		$this->attributes[$this->foreign_key] = $instance->getKey();
+        return $this->factory->__invoke()->createList($this->count, $this->attributes);
+	}
 }

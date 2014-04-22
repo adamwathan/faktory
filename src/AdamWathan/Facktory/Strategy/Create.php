@@ -3,54 +3,69 @@
 use AdamWathan\Facktory\Relationship\BelongsTo;
 use AdamWathan\Facktory\Relationship\HasOne;
 use AdamWathan\Facktory\Relationship\HasMany;
+use AdamWathan\Facktory\Relationship\Relationship;
 
 class Create extends Strategy
 {
     public function newInstance()
     {
-        $precedents = $this->createPrecedents();
+        $this->createPrecedents();
         $instance = $this->newModel();
-        foreach ($this->attributes as $attribute => $value) {
+        foreach ($this->independentAttributes() as $attribute => $value) {
             $instance->{$attribute} = $this->getAttributeValue($value);
         }
         $instance->save();
+        $this->createDependents($instance);
         return $instance;
     }
 
     protected function createPrecedents()
     {
-        $precedents = [];
         foreach ($this->attributes as $attribute => $value) {
-            if (! $value instanceof BelongsTo) {
-                continue;
+            if ($value instanceof BelongsTo) {
+                $this->createPrecedent($value);
+                $this->unsetAttribute($attribute);
             }
-            $precedent = $this->createPrecedent($value);
-            $this->setAttribute($value->foreign_key, $precedent->getKey());
-            $this->unsetAttribute($attribute);
         }
-        return $precedents;
-    }
-
-    protected function setAttribute($attribute, $value)
-    {
-        $this->attributes[$attribute] = $value;
-    }
-
-    protected function unsetAttribute($attribute)
-    {
-        unset($this->attributes[$attribute]);
     }
 
     protected function createPrecedent($relationship)
     {
-        return $relationship->create();
+        $precedent = $relationship->create();
+        $this->setAttribute($relationship->foreign_key, $precedent->getKey());
     }
 
-    protected function getAttributeValue($value)
+    protected function independentAttributes()
     {
-        if (is_callable($value)) {
-            return $value($this, $this->sequence);
+        $result = [];
+        foreach ($this->attributes as $attribute => $value) {
+            if (! $value instanceof Relationship) {
+                $result[$attribute] = $value;
+            }
         }
-        return $value;
+        return $result;
+    }
+
+    protected function createDependents($instance)
+    {
+        foreach ($this->dependentRelationships() as $relationship) {
+            $relationship->create($instance);
+        }
+    }
+
+    protected function dependentRelationships()
+    {
+        $result = [];
+        foreach ($this->attributes as $attribute => $value) {
+            if ($this->isDependentRelationship($value)) {
+                $result[] = $value;
+            }
+        }
+        return $result;
+    }
+
+    protected function isDependentRelationship($value)
+    {
+        return $value instanceof HasMany || $value instanceof HasOne;
     }
 }

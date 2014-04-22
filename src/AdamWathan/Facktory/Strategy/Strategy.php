@@ -27,11 +27,28 @@ abstract class Strategy
         return new $this->model;
     }
 
+    protected function setAttribute($attribute, $value)
+    {
+        $this->attributes[$attribute] = $value;
+    }
+
+    protected function unsetAttribute($attribute)
+    {
+        unset($this->attributes[$attribute]);
+    }
+
     public function __get($key)
     {
         return $this->getAttributeValue($this->attributes[$key]);
     }
 
+    protected function getAttributeValue($value)
+    {
+        if (is_callable($value)) {
+            return $value($this, $this->sequence);
+        }
+        return $value;
+    }
+
     abstract public function newInstance();
-    abstract protected function getAttributeValue($value);
 }

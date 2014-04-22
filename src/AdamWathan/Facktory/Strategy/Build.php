@@ -25,21 +25,8 @@ class Build extends Strategy
         }
     }
 
-    protected function setAttribute($attribute, $value)
-    {
-        $this->attributes[$attribute] = $value;
-    }
-
     protected function buildRelationship($relationship)
     {
         return $relationship->build();
-    }
-
-    protected function getAttributeValue($value)
-    {
-        if (is_callable($value)) {
-            return $value($this, $this->sequence);
-        }
-        return $value;
     }
 }
