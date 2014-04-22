@@ -353,26 +353,22 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Suicide solution1', $song->length);
     }
 
-    /**
-     * This would throw an error if any database access was attempted.
-     * Weird test with no assertion, but it will catch issues if a
-     * refactoring causes the build method to hit the database on a
-     * relationship call.
-     */
-    public function test_relationship_methods_are_ignored_on_build()
+    public function test_belongs_to_adds_public_property_on_build()
     {
         $facktory = new Facktory;
-        $facktory->add(['album_with_5_songs', 'Album'], function($f) {
+        $facktory->add(['album', 'Album'], function($f) {
             $f->name = 'Destroy Erase Improve';
             $f->release_date = new DateTime;
-            $f->hasMany('song', 'album_id', 5);
         });
-        $facktory->add(['song', 'Song'], function($f) {
+        $facktory->add(['song_with_album', 'Song'], function($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
+            $f->album = $f->belongsTo('album', 'album_id');
         });
 
-        $album = $facktory->build('album_with_5_songs');
+        $song = $facktory->build('song_with_album');
+        $album = $song->album;
+        $this->assertSame('Destroy Erase Improve', $album->name);
     }
 }
 

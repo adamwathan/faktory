@@ -2,6 +2,7 @@
 
 use AdamWathan\Facktory\Strategy\Build as BuildStrategy;
 use AdamWathan\Facktory\Strategy\Create as CreateStrategy;
+use AdamWathan\Facktory\Relationship\BelongsTo;
 
 class Factory
 {
@@ -182,12 +183,8 @@ class Factory
 
     public function belongsTo($name, $foreign_key, $attributes = [])
     {
-        $relationship = [
-        'name' => $name,
-        'foreign_key' => $foreign_key,
-        'attributes' => $attributes,
-        ];
-        $this->addPrecedentRelationship($relationship);
+        $factory = $this->coordinator->getFactory($name);
+        return new BelongsTo($factory, $foreign_key, $attributes);
     }
 
     protected function addPrecedentRelationship($relationship)

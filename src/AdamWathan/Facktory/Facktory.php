@@ -46,7 +46,7 @@ class Facktory
         return $this->getFactory($name)->createList($count, $attributes);
     }
 
-    protected function getFactory($model)
+    public function getFactory($model)
     {
         return $this->factories[$model];
     }
