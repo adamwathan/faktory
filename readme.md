@@ -147,52 +147,140 @@ Facktory::add('User', function($f) {
     // The current factory will be passed as the first parameter
     // to the closure, allowing you to use other attributes in
     // the factory.
-    $f->full_name = function($f) {
-        return "{$f->first_name} {$f->last_name}";
+    $f->email = function($f) {
+        return "{$f->first_name}.{$f->last_name}@example.com";
     };
 });
 ```
 
+### Unique attributes
 
+Lazy attributes to the rescue again. The closure also takes an autoincrementing integer as it's second parameter, which is really handy for ensuring that a field value is unique.
 
 ```php
-// You can lazy evaluate anything by sticking it in
-// a function, including adding a related object from
-// a factory that hasn't even been defined yet.
-Facktory::add(['hit_song', 'Song'], function($f) {
-    $f->name = 'Suicide solution';
-    $f->length = 125;
+Facktory::add('User', function($f) {
+    $f->first_name = 'John';
+    $f->last_name = 'Doe';
 
-    // This would throw an error
-    $f->album = Facktory::build('album_with_artist');
-
-    // But this will work
-    $f->album = function() {
-        return Facktory::build('album_with_artist');
+    // First generated object will be example1@example.com,
+    // second will be example2@example.com, etc.
+    $f->email = function($f, $i) {
+        return "example{$i}@example.com";
     };
 });
+```
 
-Facktory::add(['album_with_artist', 'Album'], function($f) {
-    $f->name = 'Blizzard of Ozz';
-    $f->artist = 'Ozzy Osbourne';
+### Defining relationships
+
+Facktory lets you easily define relationships between objects.
+
+Currently, there is support for `belongsTo`, `hasOne`, and `hasMany` relationships.
+
+#### Belongs to
+
+Define a `belongsTo` relationship by assigning a `belongsTo` call to an attribute.
+
+`belongsTo()` takes the name of the factory that should be used to generate the related object as the first argument, the name of the foreign key column as the second argument, and an optional array of override attributes as the third argument.
+
+```php
+$facktory->add(['song_with_album', 'Song'], function($f) {
+    $f->name = 'Concatenation';
+    $f->length = 257;
+    $f->album = $f->belongsTo('album', 'album_id', [
+        'name' => 'Chaosphere',
+    ]);
+});
+
+$facktory->add(['album', 'Album'], function($f) {
+    $f->name = 'Destroy Erase Improve';
+    $f->release_date = new DateTime;
 });
 ```
+
+#### Has one
+
+Define a `hasOne` relationship by assigning a `hasOne` call to an attribute.
+
+`hasOne()` takes the name of the factory that should be used to generate the related object as the first argument, the name of the foreign key column (on the related object) as the second argument, and an optional array of override attributes as the third argument.
+
+```php
+$facktory->add(['user_with_profile', 'User'], function($f) {
+    $f->username = 'johndoe';
+    $f->password = 'top-secret';
+    $f->profile = $f->hasOne('profile', 'user_id');
+});
+
+$facktory->add(['profile', 'Profile'], function($f) {
+    $f->email = 'johndoe@example.com';
+    $f->date_of_birth = new DateTime('1985-01-01');
+});
+```
+
+#### Has many
+
+Define a `hasMany` relationship by assigning a `hasMany` call to an attribute.
+
+`hasMany()` takes the name of the factory that should be used to generate the related objects as the first argument, the name of the foreign key column (on the related object) as the second argument, the number of objects to generate as the third argument, and an optional array of override attributes as the final argument.
+
+```php
+$facktory->add(['album_with_songs', 'Album'], function($f) {
+    $f->name = 'Master of Puppets';
+    $f->release_date = new DateTime('1986-02-24');
+    $f->songs = $f->hasMany('song', 'album_id', 8);
+});
+
+$facktory->add(['song', 'Song'], function($f) {
+    $f->title = 'The Thing That Should Not Be';
+    $f->length = 397;
+});
+```
+
+#### Relationships and build strategies
+
+Relationships are handled differently by each build strategy.
+
+When using the `build` strategy, the related object(s) will be available directly as a property on the base object.
+
+When using the `create` strategy, the related object(s) will be persisted to the database with the foreign key attribute set to match the ID of the base object, and nothing will actually be set on the actual attribute itself, allowing you to retrieve the related object through the methods you've actually defined in the base object's class.
 
 ## Using factories
 
+Once you have your factories defined, you can very easily generate objects for your tests.
+
+Objects can be generated using one of two different build strategies.
+
+- `build` creates objects in memory only, without persisting them.
+- `create` creates objects and persists them to whatever database you have set up in your testing environment.
+
+> Note: The `create` strategy is meant for Laravel 4's Eloquent ORM, but as long as your objects implement a `save()` method, it should work outside of Eloquent.
+
+### Basic usage
+
+To generate an object, simply call `build` or `create` and pass in the name of the factory you want to generate the object from.
+
 ```php
-// Create a basic instance
+// Returns an Album object with the default attribute values
 $album = Facktory::build('Album');
 
-// Create a basic instance from a named factory
-$album = Facktory::build('album_with_release_date');
+// Create a basic instance from a named factory and save it
+$album = Facktory::create('album_with_release_date');
+```
 
+You can optionally pass an array of attribute overrides as a second argument:
+
+```php
 // Create an instance and override some properties
 $album = Facktory::build('Album', [
     'name' => 'Bark at the moon',
     ]),
 ]);
+```
 
+### Building multiple instances at once
+
+You can use `buildList` and `createList` to generate multiple objects at once:
+
+```php
 // Create multiple instances
 $albums = Facktory::buildList('Album', 5);
 
