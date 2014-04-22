@@ -17,4 +17,9 @@ class BelongsTo extends Relationship
 	{
         return $this->factory->__invoke()->build($this->attributes);
 	}
+
+	public function create()
+	{
+        return $this->factory->__invoke()->create($this->attributes);
+	}
 }

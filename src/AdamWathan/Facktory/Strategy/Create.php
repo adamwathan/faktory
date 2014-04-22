@@ -1,5 +1,9 @@
 <?php namespace AdamWathan\Facktory\Strategy;
 
+use AdamWathan\Facktory\Relationship\BelongsTo;
+use AdamWathan\Facktory\Relationship\HasOne;
+use AdamWathan\Facktory\Relationship\HasMany;
+
 class Create extends Strategy
 {
     public function newInstance()
@@ -9,6 +13,7 @@ class Create extends Strategy
         foreach ($this->attributes as $attribute => $value) {
             $instance->{$attribute} = $this->getAttributeValue($value);
         }
+        $instance->save();
         return $instance;
     }
 
@@ -19,15 +24,26 @@ class Create extends Strategy
             if (! $value instanceof BelongsTo) {
                 continue;
             }
-            $precedents[] = $this->createPrecedent($value);
+            $precedent = $this->createPrecedent($value);
+            $this->setAttribute($value->foreign_key, $precedent->getKey());
             $this->unsetAttribute($attribute);
         }
         return $precedents;
     }
 
+    protected function setAttribute($attribute, $value)
+    {
+        $this->attributes[$attribute] = $value;
+    }
+
     protected function unsetAttribute($attribute)
     {
         unset($this->attributes[$attribute]);
+    }
+
+    protected function createPrecedent($relationship)
+    {
+        return $relationship->create();
     }
 
     protected function getAttributeValue($value)

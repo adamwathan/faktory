@@ -67,8 +67,8 @@ class Factory
 
     public function create($override_attributes)
     {
-        // $strategy = CreateStrategy::make($this->model, $this->sequence);
-        // return $this->newInstance($strategy, $override_attributes);
+        $strategy = CreateStrategy::make($this->model, $this->sequence);
+        return $this->newInstance($strategy, $override_attributes);
 
         $precedents = $this->createPrecedentRelationships();
         foreach ($precedents as $precedent) {
