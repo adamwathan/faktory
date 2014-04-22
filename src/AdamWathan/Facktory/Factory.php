@@ -1,5 +1,7 @@
 <?php namespace AdamWathan\Facktory;
 
+use AdamWathan\Facktory\Strategy\Build as BuildStrategy;
+
 class Factory
 {
     protected $model;
@@ -55,21 +57,21 @@ class Factory
 
     public function build($override_attributes)
     {
-        $instance = $this->newModel();
-        $attributes = array_merge($this->attributes, $override_attributes);
-        foreach ($attributes as $attribute => $value) {
-            $instance->{$attribute} = $this->getAttributeValue($value);
-        }
+        $strategy = BuildStrategy::make($this->model, $this->sequence);
+        return $this->newInstance($strategy, $override_attributes);
+    }
+
+    protected function newInstance($strategy, $override_attributes)
+    {
+        $strategy->attributes($this->mergeAttributes($override_attributes));
+        $instance = $strategy->newInstance();
         $this->sequence++;
         return $instance;
     }
 
-    protected function getAttributeValue($value)
+    protected function mergeAttributes($override_attributes)
     {
-        if (is_callable($value)) {
-            return $value($this, $this->sequence);
-        }
-        return $value;
+        return array_merge($this->attributes, $override_attributes);
     }
 
     public function buildList($count, $override_attributes)
