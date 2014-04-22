@@ -119,8 +119,7 @@ class Factory
     protected function createDependentRelationships($instance)
     {
         foreach ($this->dependentRelationships as $relationship) {
-            $method = 'create'.ucfirst($relationship['type']);
-            $this->{$method}($relationship, $instance);
+            $this->createHasMany($relationship, $instance);
         }
     }
 
@@ -162,7 +161,6 @@ class Factory
     public function hasMany($name, $foreign_key, $count, $attributes = [])
     {
         $relationship = [
-        'type' => 'hasMany',
         'name' => $name,
         'foreign_key' => $foreign_key,
         'count' => $count,
@@ -184,7 +182,6 @@ class Factory
     public function belongsTo($name, $foreign_key, $attributes = [])
     {
         $relationship = [
-        'type' => 'belongsTo',
         'name' => $name,
         'foreign_key' => $foreign_key,
         'attributes' => $attributes,
