@@ -51,7 +51,7 @@ class Facktory
         return $this->factories[$name];
     }
 
-    public function getLazyFactory($name)
+    public function getLazyFactoryCallback($name)
     {
         return function() use ($name) {
             return $this->getFactory($name);

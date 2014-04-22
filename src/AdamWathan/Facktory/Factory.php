@@ -4,6 +4,7 @@ use AdamWathan\Facktory\Strategy\Build as BuildStrategy;
 use AdamWathan\Facktory\Strategy\Create as CreateStrategy;
 use AdamWathan\Facktory\Relationship\BelongsTo;
 use AdamWathan\Facktory\Relationship\HasMany;
+use AdamWathan\Facktory\Relationship\HasOne;
 
 class Factory
 {
@@ -163,18 +164,19 @@ class Factory
 
     public function belongsTo($name, $foreign_key, $attributes = [])
     {
-        $factory = $this->coordinator->getLazyFactory($name);
+        $factory = $this->coordinator->getLazyFactoryCallback($name);
         return new BelongsTo($factory, $foreign_key, $attributes);
     }
 
     public function hasMany($name, $foreign_key, $count, $attributes = [])
     {
-        $factory = $this->coordinator->getLazyFactory($name);
+        $factory = $this->coordinator->getLazyFactoryCallback($name);
         return new HasMany($factory, $foreign_key, $count, $attributes);
     }
 
     public function hasOne($name, $foreign_key, $attributes = [])
     {
-        return $this->hasMany($name, $foreign_key, 1, $attributes);
+        $factory = $this->coordinator->getLazyFactoryCallback($name);
+        return new HasOne($factory, $foreign_key, $attributes);
     }
 }

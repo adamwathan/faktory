@@ -388,6 +388,24 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
         $songs = $album->songs;
         $this->assertSame(5, count($songs));
     }
+
+    public function test_has_one_adds_public_property_on_build()
+    {
+        $facktory = new Facktory;
+        $facktory->add(['album_with_song', 'Album'], function($f) {
+            $f->name = 'Destroy Erase Improve';
+            $f->release_date = new DateTime;
+            $f->song = $f->hasOne('song', 'album_id');
+        });
+        $facktory->add(['song', 'Song'], function($f) {
+            $f->name = 'Concatenation';
+            $f->length = 257;
+        });
+
+        $album = $facktory->build('album_with_song');
+        $song = $album->song;
+        $this->assertSame('Concatenation', $song->name);
+    }
 }
 
 class Album {}
