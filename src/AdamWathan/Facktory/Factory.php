@@ -4,7 +4,8 @@ class Factory
 {
     protected $model;
     protected $attributes;
-    protected $relationships = [];
+    protected $dependentRelationships = [];
+    protected $precedentRelationships = [];
     protected $coordinator;
     protected $sequence = 1;
 
@@ -95,15 +96,29 @@ class Factory
 
     public function create($override_attributes)
     {
+        $precedents = $this->createPrecedentRelationships();
+        foreach ($precedents as $precedent) {
+            $override_attributes[$precedent['foreign_key']] = $precedent['model']->getKey();
+        }
         $instance = $this->build($override_attributes);
         $instance->save();
-        $this->createRelationships($instance);
+        $this->createDependentRelationships($instance);
         return $instance;
     }
 
-    protected function createRelationships($instance)
+    protected function createPrecedentRelationships()
     {
-        foreach ($this->relationships as $relationship) {
+        $precedents = [];
+        foreach ($this->precedentRelationships as $relationship) {
+            $model = $this->coordinator->create($relationship['name'], $relationship['attributes']);
+            $precedents[] = ['model' => $model, 'foreign_key' => $relationship['foreign_key']];
+        }
+        return $precedents;
+    }
+
+    protected function createDependentRelationships($instance)
+    {
+        foreach ($this->dependentRelationships as $relationship) {
             $method = 'create'.ucfirst($relationship['type']);
             $this->{$method}($relationship, $instance);
         }
@@ -147,17 +162,33 @@ class Factory
     public function hasMany($name, $foreign_key, $count, $attributes = [])
     {
         $relationship = [
-            'type' => 'hasMany',
-            'name' => $name,
-            'foreign_key' => $foreign_key,
-            'count' => $count,
-            'attributes' => $attributes,
+        'type' => 'hasMany',
+        'name' => $name,
+        'foreign_key' => $foreign_key,
+        'count' => $count,
+        'attributes' => $attributes,
         ];
-        $this->addRelationship($relationship);
+        $this->addDependentRelationship($relationship);
     }
 
-    protected function addRelationship($relationship)
+    protected function addDependentRelationship($relationship)
     {
-        $this->relationships[] = $relationship;
+        $this->dependentRelationships[] = $relationship;
+    }
+
+    public function belongsTo($name, $foreign_key, $attributes = [])
+    {
+        $relationship = [
+        'type' => 'belongsTo',
+        'name' => $name,
+        'foreign_key' => $foreign_key,
+        'attributes' => $attributes,
+        ];
+        $this->addPrecedentRelationship($relationship);
+    }
+
+    protected function addPrecedentRelationship($relationship)
+    {
+        $this->precedentRelationships[] = $relationship;
     }
 }
