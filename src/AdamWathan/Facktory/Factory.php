@@ -123,19 +123,19 @@ class Factory
 
     public function belongsTo($name, $foreign_key, $attributes = [])
     {
-        $factory = $this->coordinator->getLazyFactoryCallback($name);
-        return new BelongsTo($factory, $foreign_key, $attributes);
+        $factoryLoader = $this->coordinator->getFactoryLoader($name);
+        return new BelongsTo($factoryLoader, $foreign_key, $attributes);
     }
 
     public function hasMany($name, $foreign_key, $count, $attributes = [])
     {
-        $factory = $this->coordinator->getLazyFactoryCallback($name);
-        return new HasMany($factory, $foreign_key, $count, $attributes);
+        $factoryLoader = $this->coordinator->getFactoryLoader($name);
+        return new HasMany($factoryLoader, $foreign_key, $count, $attributes);
     }
 
     public function hasOne($name, $foreign_key, $attributes = [])
     {
-        $factory = $this->coordinator->getLazyFactoryCallback($name);
-        return new HasOne($factory, $foreign_key, $attributes);
+        $factoryLoader = $this->coordinator->getFactoryLoader($name);
+        return new HasOne($factoryLoader, $foreign_key, $attributes);
     }
 }

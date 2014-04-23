@@ -4,6 +4,7 @@ use AdamWathan\Facktory\Relationship\BelongsTo;
 use AdamWathan\Facktory\Relationship\HasOne;
 use AdamWathan\Facktory\Relationship\HasMany;
 use AdamWathan\Facktory\Relationship\Relationship;
+use AdamWathan\Facktory\Relationship\DependentRelationship;
 
 class Create extends Strategy
 {
@@ -32,7 +33,7 @@ class Create extends Strategy
     protected function createPrecedent($relationship)
     {
         $precedent = $relationship->create();
-        $this->setAttribute($relationship->foreign_key, $precedent->getKey());
+        $this->setAttribute($relationship->foreignKey(), $precedent->getKey());
     }
 
     protected function independentAttributes()
@@ -66,6 +67,6 @@ class Create extends Strategy
 
     protected function isDependentRelationship($value)
     {
-        return $value instanceof HasMany || $value instanceof HasOne;
+        return $value instanceof DependentRelationship;
     }
 }

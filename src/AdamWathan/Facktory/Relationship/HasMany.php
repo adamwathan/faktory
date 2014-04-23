@@ -1,28 +1,23 @@
 <?php namespace AdamWathan\Facktory\Relationship;
 
-class HasMany extends Relationship
+class HasMany extends DependentRelationship
 {
-	public $factory;
-	public $foreign_key;
-	public $count;
-	public $attributes;
+	protected $count;
 
-	public function __construct($factory, $foreign_key, $count, $attributes)
+	public function __construct($factoryLoader, $foreign_key, $count, $attributes)
 	{
-		$this->factory = $factory;
-		$this->foreign_key = $foreign_key;
+		parent::__construct($factoryLoader, $foreign_key, $attributes);
 		$this->count = $count;
-		$this->attributes = $attributes;
 	}
 
 	public function build()
 	{
-        return $this->factory->__invoke()->buildList($this->count, $this->attributes);
+        return $this->factoryLoader->__invoke()->buildList($this->count, $this->attributes);
 	}
 
 	public function create($instance)
 	{
 		$this->attributes[$this->foreign_key] = $instance->getKey();
-        return $this->factory->__invoke()->createList($this->count, $this->attributes);
+        return $this->factoryLoader->__invoke()->createList($this->count, $this->attributes);
 	}
 }
