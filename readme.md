@@ -219,13 +219,20 @@ Facktory::add('User', function($f) {
 
 
 $user = Facktory::build('User');
-
 $user->first_name;
 // 'John'
 $user->last_name;
 // 'Doe'
 $user->email;
 // 'John.Doe@example.com'
+
+$user = Facktory::build('User', ['first_name' => 'Bob']);
+$user->first_name;
+// 'Bob'
+$user->last_name;
+// 'Doe'
+$user->email;
+// 'Bob.Doe@example.com'
 ```
 
 ### Unique attributes
