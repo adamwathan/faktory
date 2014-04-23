@@ -206,6 +206,27 @@ class FacktoryCreateTest extends FunctionalTestCase
 
         $this->assertEquals($song->album_id, $album->id);
     }
+
+    public function test_can_override_has_many_attributes_on_create()
+    {
+        $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
+            $f->name = 'Chaosphere';
+            $f->release_date = new DateTime;
+            $f->songs = $f->hasMany('song', 'album_id', 5, ['length' => 100]);
+        });
+        $this->facktory->add(['song', 'Song'], function($f) {
+            $f->name = 'Concatenation';
+            $f->length = 257;
+        });
+
+        $album = $this->facktory->create('album_with_5_songs');
+        $songs = $album->songs;
+
+        $this->assertSame(5, $songs->count());
+        foreach ($songs as $song) {
+            $this->assertEquals(100, $song->length);
+        }
+    }
 }
 
 
