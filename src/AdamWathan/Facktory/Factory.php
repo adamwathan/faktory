@@ -79,7 +79,13 @@ class Factory
 
     protected function mergeAttributes($override_attributes)
     {
-        return array_merge($this->attributes, $override_attributes);
+        if (is_array($override_attributes)) {
+            return array_merge($this->attributes, $override_attributes);
+        }
+        if (is_callable($override_attributes)) {
+            $override_attributes($this);
+            return $this->attributes;
+        }
     }
 
     public function buildList($count, $override_attributes)

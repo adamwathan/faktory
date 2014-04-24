@@ -250,10 +250,12 @@ class FacktoryCreateTest extends FunctionalTestCase
             $f->songs = $f->hasMany('song', 'album_id', 2, ['length' => 150]);
         });
 
+        $this->assertTrue(new DateTime('1998-11-10') == $album->release_date);
+        $this->assertSame('Chaosphere', $album->name);
         $songs = $album->songs;
-        $this->assertSame(5, $songs->count());
+        $this->assertSame(2, $songs->count());
         foreach ($songs as $song) {
-            $this->assertEquals(100, $song->length);
+            $this->assertEquals(150, $song->length);
         }
     }
 
