@@ -371,6 +371,26 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Destroy Erase Improve', $album->name);
     }
 
+    public function test_belongs_to_can_have_overrides_on_build()
+    {
+        $facktory = new Facktory;
+        $facktory->add(['album', 'BuildAlbum'], function($f) {
+            $f->name = 'Destroy Erase Improve';
+            $f->release_date = new DateTime;
+        });
+        $facktory->add(['song_with_album', 'BuildSong'], function($f) {
+            $f->name = 'Concatenation';
+            $f->length = 257;
+            $f->album = $f->belongsTo('album', 'album_id');
+        });
+
+        $song = $facktory->build('song_with_album', function($song) {
+            $song->album->attributes(['name' => 'Chaosphere']);
+        });
+        $album = $song->album;
+        $this->assertSame('Chaosphere', $album->name);
+    }
+
     public function test_has_many_adds_public_property_on_build()
     {
         $facktory = new Facktory;
@@ -389,6 +409,26 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(5, count($songs));
     }
 
+    public function test_has_many_can_have_attribute_overrides_on_build()
+    {
+        $facktory = new Facktory;
+        $facktory->add(['album_with_5_songs', 'BuildAlbum'], function($f) {
+            $f->name = 'Destroy Erase Improve';
+            $f->release_date = new DateTime;
+            $f->songs = $f->hasMany('song', 'album_id', 5);
+        });
+        $facktory->add(['song', 'BuildSong'], function($f) {
+            $f->name = 'Concatenation';
+            $f->length = 257;
+        });
+
+        $album = $facktory->build('album_with_5_songs', function($album) {
+            $album->songs->amount(2);
+        });
+        $songs = $album->songs;
+        $this->assertSame(2, count($songs));
+    }
+
     public function test_has_one_adds_public_property_on_build()
     {
         $facktory = new Facktory;
@@ -405,6 +445,46 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
         $album = $facktory->build('album_with_song');
         $song = $album->song;
         $this->assertSame('Concatenation', $song->name);
+    }
+
+    public function test_has_one_can_have_attribute_overrides_on_build()
+    {
+        $facktory = new Facktory;
+        $facktory->add(['album_with_song', 'BuildAlbum'], function($f) {
+            $f->name = 'Destroy Erase Improve';
+            $f->release_date = new DateTime;
+            $f->song = $f->hasOne('song', 'album_id');
+        });
+        $facktory->add(['song', 'BuildSong'], function($f) {
+            $f->name = 'Concatenation';
+            $f->length = 257;
+        });
+
+        $album = $facktory->build('album_with_song', function($album) {
+            $album->song->attributes(['name' => 'Future Breed Machine']);
+        });
+        $song = $album->song;
+        $this->assertSame('Future Breed Machine', $song->name);
+    }
+
+    public function test_relationship_attributes_can_be_altered_as_properties()
+    {
+        $facktory = new Facktory;
+        $facktory->add(['album_with_song', 'BuildAlbum'], function($f) {
+            $f->name = 'Destroy Erase Improve';
+            $f->release_date = new DateTime;
+            $f->song = $f->hasOne('song', 'album_id');
+        });
+        $facktory->add(['song', 'BuildSong'], function($f) {
+            $f->name = 'Concatenation';
+            $f->length = 257;
+        });
+
+        $album = $facktory->build('album_with_song', function($album) {
+            $album->song->name = 'Future Breed Machine';
+        });
+        $song = $album->song;
+        $this->assertSame('Future Breed Machine', $song->name);
     }
 }
 

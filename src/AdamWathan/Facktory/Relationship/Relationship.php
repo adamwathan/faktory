@@ -24,5 +24,10 @@ abstract class Relationship
 		return $this;
 	}
 
+	public function __set($key, $value)
+	{
+		$this->attributes[$key] = $value;
+	}
+
 	abstract public function build();
 }
