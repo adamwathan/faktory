@@ -433,6 +433,27 @@ class FacktoryCreateTest extends FunctionalTestCase
         $album = $song->album;
         $this->assertEquals('None', $album->name);
     }
+
+    public function test_can_override_has_one_relationship_attributes_on_create()
+    {
+        $this->facktory->add(['album_with_song', 'Album'], function($f) {
+            $f->name = 'Chaosphere';
+            $f->release_date = new DateTime;
+            $f->song = $f->hasOne('song', 'album_id');
+        });
+        $this->facktory->add(['song', 'Song'], function($f) {
+            $f->name = 'Concatenation';
+            $f->length = 257;
+        });
+
+        $album = $this->facktory->create('album_with_song', function($f) {
+            $f->song->attributes(['length' => 100]);
+        });
+        $song = $album->song;
+
+        $this->assertEquals($song->album_id, $album->id);
+        $this->assertEquals(100, $song->length);
+    }
 }
 
 
