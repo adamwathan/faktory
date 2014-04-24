@@ -237,7 +237,7 @@ class FacktoryCreateTest extends FunctionalTestCase
     {
         $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
-            $f->release_date = new DateTime;
+            $f->release_date = new DateTime('2001-01-01');
             $f->songs = $f->hasMany('song', 'album_id', 5, ['length' => 100]);
         });
         $this->facktory->add(['song', 'Song'], function($f) {
@@ -256,6 +256,34 @@ class FacktoryCreateTest extends FunctionalTestCase
         $this->assertSame(2, $songs->count());
         foreach ($songs as $song) {
             $this->assertEquals(150, $song->length);
+        }
+    }
+
+    public function test_overriding_with_closure_doesnt_permanently_alter_factory()
+    {
+        $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
+            $f->name = 'Chaosphere';
+            $f->release_date = new DateTime('2001-01-01');
+            $f->songs = $f->hasMany('song', 'album_id', 5, ['length' => 100]);
+        });
+        $this->facktory->add(['song', 'Song'], function($f) {
+            $f->name = 'Concatenation';
+            $f->length = 257;
+        });
+
+        $album = $this->facktory->create('album_with_5_songs', function($f) {
+            $f->release_date = new DateTime('1998-11-10');
+            $f->songs = $f->hasMany('song', 'album_id', 2, ['length' => 150]);
+        });
+
+        $album = $this->facktory->create('album_with_5_songs');
+
+        $this->assertTrue(new DateTime('2001-01-01') == $album->release_date);
+        $this->assertSame('Chaosphere', $album->name);
+        $songs = $album->songs;
+        $this->assertSame(5, $songs->count());
+        foreach ($songs as $song) {
+            $this->assertEquals(100, $song->length);
         }
     }
 

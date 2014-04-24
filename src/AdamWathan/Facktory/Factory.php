@@ -83,8 +83,9 @@ class Factory
             return array_merge($this->attributes, $override_attributes);
         }
         if (is_callable($override_attributes)) {
-            $override_attributes($this);
-            return $this->attributes;
+            $that = clone $this;
+            $override_attributes($that);
+            return $that->attributes;
         }
     }
 
