@@ -18,5 +18,10 @@ abstract class Relationship
 		return $this->foreign_key;
 	}
 
+	public function attributes($attributes)
+	{
+		$this->attributes = array_merge($this->attributes, $attributes);
+	}
+
 	abstract public function build();
 }
