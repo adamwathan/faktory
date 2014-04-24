@@ -138,6 +138,26 @@ class FacktoryCreateTest extends FunctionalTestCase
         }
     }
 
+    public function test_saved_has_many_can_have_different_attributes_for_each_instance_specified_in_one_array()
+    {
+        $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
+            $f->name = 'Chaosphere';
+            $f->release_date = new DateTime;
+            $f->songs = $f->hasMany('song', 'album_id', 2, ['length' => [100, 200]]);
+        });
+        $this->facktory->add(['song', 'Song'], function($f) {
+            $f->name = 'Concatenation';
+            $f->length = 257;
+        });
+
+        $album = $this->facktory->create('album_with_5_songs');
+        $songs = $album->songs;
+
+        $this->assertSame(2, $songs->count());
+        $this->assertEquals(100, $songs[0]->length);
+        $this->assertEquals(200, $songs[1]->length);
+    }
+
     public function test_saved_belongs_to_gets_correct_foreign_id()
     {
         $this->facktory->add(['song_with_album', 'Song'], function($f) {
@@ -287,7 +307,7 @@ class FacktoryCreateTest extends FunctionalTestCase
         }
     }
 
-    // public function test_can_override_has_many_attributes_on_create()
+    // public function test_can_alter_has_many_relationship_values_without_overriding_entire_relationship()
     // {
     //     $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
     //         $f->name = 'Chaosphere';
@@ -305,9 +325,9 @@ class FacktoryCreateTest extends FunctionalTestCase
     //     });
 
     //     $songs = $album->songs;
-    //     $this->assertSame(5, $songs->count());
+    //     $this->assertSame(2, $songs->count());
     //     foreach ($songs as $song) {
-    //         $this->assertEquals(100, $song->length);
+    //         $this->assertEquals(150, $song->length);
     //     }
     // }
 }
