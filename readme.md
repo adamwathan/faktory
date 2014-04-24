@@ -95,7 +95,7 @@ Objects can be generated using one of two different build strategies.
 - `build` creates objects in memory only, without persisting them.
 - `create` creates objects and persists them to whatever database you have set up in your testing environment.
 
-> Note: The `create` strategy is meant for Laravel 4's Eloquent ORM, but as long as your objects implement a `save()` method, it should work outside of Eloquent.
+> Note: The `create` strategy is meant for Laravel 4's Eloquent ORM, but as long as your objects implement a `save()` method and a `getKey()` method to retrieve the object's ID, it should work outside of Eloquent.
 
 To generate an object, simply call `build` or `create` and pass in the name of the factory you want to generate the object from.
 
@@ -108,26 +108,47 @@ $album->release_date;
 // '1981-11-07'
 
 
-// Create a basic instance from a named factory and persist it to
+// Create a basic instance and persist it to
 // the database
-$album = Facktory::create('album_with_release_date');
+$album = Facktory::create('Album');
 $album->id
 // 1
 ```
 
-You can optionally pass an array of attribute overrides as a second argument:
+#### Overriding attributes
+
+The real benefit of using these factories appears when you are writing a test that requires your objects to satisfy some precondition, but you don't really care about the rest of the attributes.
+
+You can specify the values you need for the attributes that matter for the test, and let the factory handle filling out the attributes you don't care about with default data so that the object is in a valid state.
+
+If you just need to change some simple attributes to static values, you can just pass an array of attribute overrides as a second argument:
 
 ```php
 // Create an instance and override some properties
-$album = Facktory::build('Album', [
-    'name' => 'Bark at the moon',
-    ]),
+$album = Facktory::build('Album', ['name' => 'Bark at the moon']),
 ]);
 
 $album->name;
 // 'Bark at the moon'
 $album->release_date;
 // '1981-11-07'
+```
+
+If you need to do something trickier, you can pass in a closure that provides all of the same functionality you get when actually defining the factory. This is most useful when working with relationships:
+
+```php
+// Create an instance and override some properties
+$album = Facktory::build('Album', function($album) {
+    $album->name => 'Bark at the moon';
+    $album->songs->amount(4)->attributes(['length' => 267]);
+});
+
+$album->name;
+// 'Bark at the moon'
+$album->songs->count();
+// 4
+$album->songs[0]->length;
+// 267
 ```
 
 ### Named factories
@@ -146,6 +167,8 @@ Facktory::add(['album_with_copies_sold', 'Album'], function($f) {
 
 $album = Facktory::build('album_with_copies_sold');
 
+get_class($album);
+// 'Album'
 $album->name;
 // 'Diary of a madman'
 $album->release_date;
@@ -162,6 +185,7 @@ You can create factories that inherit the attributes of an existing factory by n
 Facktory::add(['basic_user', 'User'], function($f) {
     $f->first_name = 'John';
     $f->last_name = 'Doe';
+    $f->is_admin = false;
 
     $f->add('admin', function($f) {
         $f->is_admin = true;
@@ -284,6 +308,7 @@ $facktory->add(['album', 'Album'], function($f) {
 });
 
 
+// Build the objects in memory without persisting to the database
 $song = Facktory::build('song_with_album');
 $song->album;
 // object(Album)(
@@ -293,6 +318,8 @@ $song->album_id;
 // NULL
 
 
+// Save the objects to the database and set up the correct
+// foreign key associations
 $song = Facktory::create('song_with_album');
 $song->album_id;
 // 1
@@ -321,6 +348,7 @@ $facktory->add(['profile', 'Profile'], function($f) {
 });
 
 
+// Build the objects in memory without persisting to the database
 $user = Facktory::build('user_with_profile');
 $user->profile;
 // object(Profile)(
@@ -328,6 +356,8 @@ $user->profile;
 // )
 
 
+// Save the objects to the database and set up the correct
+// foreign key associations
 $user = Facktory::create('user_with_profile');
 $user->id;
 // 1
@@ -365,6 +395,47 @@ Relationships are handled differently by each build strategy.
 When using the `build` strategy, the related object(s) will be available directly as a property on the base object.
 
 When using the `create` strategy, the related object(s) will be persisted to the database with the foreign key attribute set to match the ID of the base object, and nothing will actually be set on the actual attribute itself, allowing you to retrieve the related object through the methods you've actually defined in the base object's class.
+
+#### Overriding relationship attributes
+
+If you need to override attributes on a relationship when building or creating an object, you can do so by manipulating the actual relationship attribute itself.
+
+```php
+// Define the factories
+$facktory->add(['song_with_album', 'Song'], function($f) {
+    $f->name = 'Concatenation';
+    $f->length = 257;
+    $f->album = $f->belongsTo('album', 'album_id');
+});
+$facktory->add(['album', 'Album'], function($f) {
+    $f->name = 'Destroy Erase Improve';
+    $f->release_date = new DateTime('1995-07-25');
+});
+
+
+// Build a song but override the album name
+$song = Facktory::build('song_with_album', function($song) {
+    $song->album->name = 'Chaosphere';
+});
+$song->album;
+// object(Album)(
+//    'name' => 'Chaosphere'
+// )
+
+// Build a song but override a couple attributes at once
+$song = Facktory::build('song_with_album', function($song) {
+    $song->album->attributes([
+        'name' => 'Chaosphere',
+        'release_date' => new DateTime('1998-11-10'),
+    ]);
+});
+$song->album;
+// object(Album)(
+//    'name' => 'Chaosphere'
+// )
+$song->album->release_date;
+// '1998-11-10'
+```
 
 ### Building multiple instances at once
 
