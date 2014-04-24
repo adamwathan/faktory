@@ -2,22 +2,27 @@
 
 class HasMany extends DependentRelationship
 {
-	protected $count;
+	protected $amount;
 
-	public function __construct($factoryLoader, $foreign_key, $count, $attributes)
+	public function __construct($factoryLoader, $foreign_key, $amount, $attributes)
 	{
 		parent::__construct($factoryLoader, $foreign_key, $attributes);
-		$this->count = $count;
+		$this->amount = $amount;
 	}
 
 	public function build()
 	{
-        return $this->factoryLoader->__invoke()->buildList($this->count, $this->attributes);
+        return $this->factoryLoader->__invoke()->buildList($this->amount, $this->attributes);
 	}
 
 	public function create($instance)
 	{
 		$this->attributes[$this->foreign_key] = $instance->getKey();
-        return $this->factoryLoader->__invoke()->createList($this->count, $this->attributes);
+        return $this->factoryLoader->__invoke()->createList($this->amount, $this->attributes);
+	}
+
+	public function amount($amount)
+	{
+		$this->amount = $amount;
 	}
 }
