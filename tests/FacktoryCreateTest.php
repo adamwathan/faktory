@@ -354,6 +354,64 @@ class FacktoryCreateTest extends FunctionalTestCase
             $this->assertEquals(150, $song->length);
         }
     }
+
+    public function test_can_chain_changes_on_has_many_relationship()
+    {
+        $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
+            $f->name = 'Chaosphere';
+            $f->release_date = new DateTime;
+            $f->songs = $f->hasMany('song', 'album_id', 5, ['length' => 100]);
+        });
+        $this->facktory->add(['song', 'Song'], function($f) {
+            $f->name = 'Concatenation';
+            $f->length = 257;
+        });
+
+        $album = $this->facktory->create('album_with_5_songs', function($f) {
+            $f->release_date = new DateTime('1998-11-10');
+            $f->songs->amount(2)->attributes(['length' => 150]);
+        });
+
+        $songs = $album->songs;
+        $this->assertSame(2, $songs->count());
+        foreach ($songs as $song) {
+            $this->assertEquals(150, $song->length);
+        }
+
+        $album = $this->facktory->create('album_with_5_songs', function($f) {
+            $f->release_date = new DateTime('1998-11-10');
+            $f->songs->attributes(['length' => 150])->amount(2);
+        });
+
+        $songs = $album->songs;
+        $this->assertSame(2, $songs->count());
+        foreach ($songs as $song) {
+            $this->assertEquals(150, $song->length);
+        }
+    }
+
+    public function test_can_alter_has_many_relationship_attribute_with_independent_values_per_related_object()
+    {
+        $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
+            $f->name = 'Chaosphere';
+            $f->release_date = new DateTime;
+            $f->songs = $f->hasMany('song', 'album_id', 5, ['length' => 100]);
+        });
+        $this->facktory->add(['song', 'Song'], function($f) {
+            $f->name = 'Concatenation';
+            $f->length = 257;
+        });
+
+        $album = $this->facktory->create('album_with_5_songs', function($f) {
+            $f->release_date = new DateTime('1998-11-10');
+            $f->songs->amount(2)->attributes(['length' => [150, 250]]);
+        });
+
+        $songs = $album->songs;
+        $this->assertSame(2, $songs->count());
+        $this->assertEquals(150, $songs[0]->length);
+        $this->assertEquals(250, $songs[1]->length);
+    }
 }
 
 

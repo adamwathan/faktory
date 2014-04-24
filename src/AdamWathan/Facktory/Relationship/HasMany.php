@@ -24,5 +24,6 @@ class HasMany extends DependentRelationship
 	public function amount($amount)
 	{
 		$this->amount = $amount;
+		return $this;
 	}
 }

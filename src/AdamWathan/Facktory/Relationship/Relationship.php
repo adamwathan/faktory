@@ -21,6 +21,7 @@ abstract class Relationship
 	public function attributes($attributes)
 	{
 		$this->attributes = array_merge($this->attributes, $attributes);
+		return $this;
 	}
 
 	abstract public function build();
