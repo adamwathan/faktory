@@ -207,7 +207,7 @@ class FacktoryCreateTest extends FunctionalTestCase
         $this->assertEquals($song->album_id, $album->id);
     }
 
-    public function test_can_override_has_many_attributes_on_create()
+    public function test_can_override_attributes_on_create_with_array()
     {
         $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
@@ -219,14 +219,67 @@ class FacktoryCreateTest extends FunctionalTestCase
             $f->length = 257;
         });
 
-        $album = $this->facktory->create('album_with_5_songs');
-        $songs = $album->songs;
+        $album = $this->facktory->create('album_with_5_songs', [
+            'name' => 'Destroy Erase Improve',
+            'release_date' => new DateTime('1995-07-25'),
+            ]);
 
+        $this->assertSame('Destroy Erase Improve', $album->name);
+        $this->assertTrue(new DateTime('1995-07-25') == $album->release_date);
+        $songs = $album->songs;
         $this->assertSame(5, $songs->count());
         foreach ($songs as $song) {
             $this->assertEquals(100, $song->length);
         }
     }
+
+    public function test_can_override_attributes_on_create_with_closure()
+    {
+        $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
+            $f->name = 'Chaosphere';
+            $f->release_date = new DateTime;
+            $f->songs = $f->hasMany('song', 'album_id', 5, ['length' => 100]);
+        });
+        $this->facktory->add(['song', 'Song'], function($f) {
+            $f->name = 'Concatenation';
+            $f->length = 257;
+        });
+
+        $album = $this->facktory->create('album_with_5_songs', function($f) {
+            $f->release_date = new DateTime('1998-11-10');
+            $f->songs = $f->hasMany('song', 'album_id', 2, ['length' => 150]);
+        });
+
+        $songs = $album->songs;
+        $this->assertSame(5, $songs->count());
+        foreach ($songs as $song) {
+            $this->assertEquals(100, $song->length);
+        }
+    }
+
+    // public function test_can_override_has_many_attributes_on_create()
+    // {
+    //     $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
+    //         $f->name = 'Chaosphere';
+    //         $f->release_date = new DateTime;
+    //         $f->songs = $f->hasMany('song', 'album_id', 5, ['length' => 100]);
+    //     });
+    //     $this->facktory->add(['song', 'Song'], function($f) {
+    //         $f->name = 'Concatenation';
+    //         $f->length = 257;
+    //     });
+
+    //     $album = Facktory::create('album_with_5_songs', function($f) {
+    //         $f->release_date = new DateTime('1998-11-10');
+    //         $f->songs->amount(2)->attributes(['length' => 150]);
+    //     });
+
+    //     $songs = $album->songs;
+    //     $this->assertSame(5, $songs->count());
+    //     foreach ($songs as $song) {
+    //         $this->assertEquals(100, $song->length);
+    //     }
+    // }
 }
 
 
