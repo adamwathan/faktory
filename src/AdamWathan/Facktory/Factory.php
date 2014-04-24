@@ -80,11 +80,16 @@ class Factory
     protected function mergeAttributes($override_attributes)
     {
         if (is_callable($override_attributes)) {
-            $that = clone $this;
-            $override_attributes($that);
-            $override_attributes = $that->attributes;
+            $override_attributes = $this->getOverridesFromClosure($override_attributes);
         }
         return array_merge($this->attributes, $override_attributes);
+    }
+
+    protected function getOverridesFromClosure($closure)
+    {
+        $that = clone $this;
+        $closure($that);
+        return $that->attributes;
     }
 
     public function buildList($count, $override_attributes)
