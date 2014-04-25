@@ -486,8 +486,29 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
         $song = $album->song;
         $this->assertSame('Future Breed Machine', $song->name);
     }
+
+    public function test_overriding_with_closure_doesnt_permanently_alter_factory()
+    {
+        $facktory = new Facktory;
+        $facktory->add(['user', 'BuildUser'], function($user) {
+            $user->first_name = 'John';
+            $user->last_name = 'Doe';
+            $user->full_name = function($user) {
+                $user->first_name = 'Bob';
+                return "{$user->first_name} {$user->last_name}";
+            };
+        });
+
+        $user = $facktory->build('user');
+
+        $this->assertSame('John', $user->first_name);
+        $this->assertSame('Doe', $user->last_name);
+        $this->assertSame('Bob Doe', $user->full_name);
+    }
 }
 
 class BuildAlbum {}
 
 class BuildSong {}
+
+class BuildUser {}
