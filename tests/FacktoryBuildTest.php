@@ -494,6 +494,7 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
             $user->first_name = 'John';
             $user->last_name = 'Doe';
             $user->full_name = function($user) {
+                // Concern is that this might override the real $user->first_name...
                 $user->first_name = 'Bob';
                 return "{$user->first_name} {$user->last_name}";
             };
