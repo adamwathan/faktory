@@ -4,9 +4,9 @@ class HasMany extends DependentRelationship
 {
 	protected $quantity;
 
-	public function __construct($factoryLoader, $quantity, $foreign_key = null, $attributes = [])
+	public function __construct($related_model, $factoryLoader, $quantity, $foreign_key = null, $attributes = [])
 	{
-		parent::__construct($factoryLoader, $foreign_key, $attributes);
+		parent::__construct($related_model, $factoryLoader, $foreign_key, $attributes);
 		$this->quantity = $quantity;
 	}
 

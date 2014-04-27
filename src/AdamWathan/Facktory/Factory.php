@@ -134,20 +134,18 @@ class Factory
     public function belongsTo($name, $foreign_key, $attributes = [])
     {
         $factoryLoader = $this->coordinator->getFactoryLoader($name);
-        return new BelongsTo($factoryLoader, $foreign_key, $attributes);
+        return new BelongsTo($this->model, $factoryLoader, $foreign_key, $attributes);
     }
 
     public function hasMany($name, $count, $foreign_key = null, $attributes = [])
     {
         $factoryLoader = $this->coordinator->getFactoryLoader($name);
-        $relationship = new HasMany($factoryLoader, $count, $foreign_key, $attributes);
-        $relationship->setRelatedModel($this->model);
-        return $relationship;
+        return new HasMany($this->model, $factoryLoader, $count, $foreign_key, $attributes);
     }
 
     public function hasOne($name, $foreign_key, $attributes = [])
     {
         $factoryLoader = $this->coordinator->getFactoryLoader($name);
-        return new HasOne($factoryLoader, $foreign_key, $attributes);
+        return new HasOne($this->model, $factoryLoader, $foreign_key, $attributes);
     }
 }
