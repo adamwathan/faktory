@@ -15,7 +15,13 @@ abstract class Relationship
         $this->attributes = $attributes;
     }
 
-    public function foreignKey()
+    public function foreignKey($key)
+    {
+        $this->foreign_key = $key;
+        return $this;
+    }
+
+    public function getForeignKey()
     {
         if (! is_null($this->foreign_key)) {
             return $this->foreign_key;

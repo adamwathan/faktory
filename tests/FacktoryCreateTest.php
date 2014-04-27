@@ -564,6 +564,27 @@ class FacktoryCreateTest extends FunctionalTestCase
         $album = $song->album;
         $this->assertEquals('None', $album->name);
     }
+
+    public function test_can_specify_foreign_key_fluently()
+    {
+        $this->facktory->add(['song_with_album', 'Song'], function($f) {
+            $f->name = 'Concatenation';
+            $f->length = 257;
+            $f->album = $f->belongsTo('album')->attributes([
+                    'name' => 'Contradictions Collapse',
+                ])->foreignKey('album_id');
+        });
+        $this->facktory->add(['album', 'Album'], function($f) {
+            $f->name = 'Chaosphere';
+            $f->release_date = new DateTime;
+        });
+
+        $song = $this->facktory->create('song_with_album', function($f) {
+            $f->album->attributes(['name' => 'None']);
+        });
+        $album = $song->album;
+        $this->assertEquals('None', $album->name);
+    }
 }
 
 

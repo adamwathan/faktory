@@ -9,7 +9,7 @@ class HasOne extends DependentRelationship
 
 	public function create($instance)
 	{
-		$this->attributes[$this->foreignKey()] = $instance->getKey();
+		$this->attributes[$this->getForeignKey()] = $instance->getKey();
         return $this->factoryLoader->__invoke()->create($this->attributes);
 	}
 }

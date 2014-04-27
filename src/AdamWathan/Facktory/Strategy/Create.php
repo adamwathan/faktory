@@ -33,7 +33,7 @@ class Create extends Strategy
     protected function createPrecedent($relationship)
     {
         $precedent = $relationship->create();
-        $this->setAttribute($relationship->foreignKey(), $precedent->getKey());
+        $this->setAttribute($relationship->getForeignKey(), $precedent->getKey());
     }
 
     protected function independentAttributes()
