@@ -2,5 +2,5 @@
 
 abstract class DependentRelationship extends Relationship
 {
-	abstract public function create($instance);
+    abstract public function create($instance);
 }

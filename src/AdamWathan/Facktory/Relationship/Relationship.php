@@ -36,7 +36,12 @@ abstract class Relationship
 
     protected function relatedModelBase()
     {
-        return $this->extractClassBase($this->related_model);
+        return $this->extractClassBase($this->getRelatedModel());
+    }
+
+    protected function getRelatedModel()
+    {
+        return $this->related_model;
     }
 
     protected function extractClassBase($class)
