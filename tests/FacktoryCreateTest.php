@@ -511,6 +511,22 @@ class FacktoryCreateTest extends FunctionalTestCase
 
         $this->assertSame(3, $songs->count());
     }
+
+    public function test_saved_belongs_to_can_guess_correct_foreign_key()
+    {
+        $this->facktory->add(['post', 'Post'], function($f) {
+            $f->title = 'First Post';
+        });
+        $this->facktory->add(['comment', 'Comment'], function($f) {
+            $f->body = 'Great post!';
+            $f->post = $f->belongsTo('post');
+        });
+
+        $comment = $this->facktory->create('comment');
+        $post = $comment->post;
+
+        $this->assertSame('First Post', $post->title);
+    }
 }
 
 

@@ -24,6 +24,11 @@ class Factory
         return new static($model, $attributes);
     }
 
+    public function getModel()
+    {
+        return $this->model;
+    }
+
     public function setCoordinator($coordinator)
     {
         $this->coordinator = $coordinator;
@@ -131,7 +136,7 @@ class Factory
         $this->coordinator->add([$name, $this->model], $callback);
     }
 
-    public function belongsTo($name, $foreign_key, $attributes = [])
+    public function belongsTo($name, $foreign_key = null, $attributes = [])
     {
         $factoryLoader = $this->coordinator->getFactoryLoader($name);
         return new BelongsTo($this->model, $factoryLoader, $foreign_key, $attributes);

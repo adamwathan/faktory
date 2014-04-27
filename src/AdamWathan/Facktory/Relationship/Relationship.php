@@ -30,7 +30,12 @@ abstract class Relationship
 
     protected function relatedModelBase()
     {
-        $class_pieces = explode('\\', $this->related_model);
+        return $this->extractClassBase($this->related_model);
+    }
+
+    protected function extractClassBase($class)
+    {
+        $class_pieces = explode('\\', $class);
         return array_pop($class_pieces);
     }
 

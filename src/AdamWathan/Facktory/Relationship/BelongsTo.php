@@ -11,4 +11,10 @@ class BelongsTo extends Relationship
 	{
         return $this->factoryLoader->__invoke()->create($this->attributes);
 	}
+
+    protected function relatedModelBase()
+    {
+    	$model = $this->factoryLoader->__invoke()->getModel();
+    	return $this->extractClassBase($model);
+    }
 }
