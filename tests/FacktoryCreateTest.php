@@ -565,7 +565,7 @@ class FacktoryCreateTest extends FunctionalTestCase
         $this->assertEquals('None', $album->name);
     }
 
-    public function test_can_specify_foreign_key_fluently()
+    public function test_can_specify_foreign_key_fluently_on_belongs_to()
     {
         $this->facktory->add(['song_with_album', 'Song'], function($f) {
             $f->name = 'Concatenation';
@@ -584,6 +584,42 @@ class FacktoryCreateTest extends FunctionalTestCase
         });
         $album = $song->album;
         $this->assertEquals('None', $album->name);
+    }
+
+    public function test_specify_foreign_key_fluently_on_has_many()
+    {
+        $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
+            $f->name = 'Chaosphere';
+            $f->release_date = new DateTime;
+            $f->songs = $f->hasMany('song', 5)->foreignKey('album_id');
+        });
+        $this->facktory->add(['song', 'Song'], function($f) {
+            $f->name = 'Concatenation';
+            $f->length = 257;
+        });
+
+        $album = $this->facktory->create('album_with_5_songs');
+        $songs = $album->songs;
+
+        $this->assertSame(5, $songs->count());
+    }
+
+    public function test_specify_foreign_key_fluently_on_has_one()
+    {
+        $this->facktory->add(['album_with_song', 'Album'], function($f) {
+            $f->name = 'Chaosphere';
+            $f->release_date = new DateTime;
+            $f->song = $f->hasOne('song')->foreignKey('album_id');
+        });
+        $this->facktory->add(['song', 'Song'], function($f) {
+            $f->name = 'Concatenation';
+            $f->length = 257;
+        });
+
+        $album = $this->facktory->create('album_with_song');
+        $song = $album->song;
+
+        $this->assertEquals($song->album_id, $album->id);
     }
 }
 
