@@ -7,8 +7,7 @@ class Facktory
     public function add($name, $definitionCallback)
     {
         list($name, $model) = $this->extractNameAndModel($name);
-        $factory = Factory::make($model);
-        $factory->setCoordinator($this);
+        $factory = Factory::make($model, $this);
         $this->addFactory($name, $factory);
         $definitionCallback($factory);
     }

@@ -10,28 +10,23 @@ class Factory
 {
     protected $model;
     protected $attributes;
-    protected $coordinator;
+    protected $factory_repository;
     protected $sequence = 1;
 
-    public function __construct($model, $attributes = [])
+    public function __construct($model, $factory_repository)
     {
         $this->model = $model;
-        $this->attributes = $attributes;
+        $this->factory_repository = $factory_repository;
     }
 
-    public static function make($model, $attributes = [])
+    public static function make($model, $factory_repository)
     {
-        return new static($model, $attributes);
+        return new static($model, $factory_repository);
     }
 
     public function getModel()
     {
         return $this->model;
-    }
-
-    public function setCoordinator($coordinator)
-    {
-        $this->coordinator = $coordinator;
     }
 
     public function __set($key, $value)
@@ -133,24 +128,24 @@ class Factory
             $f->setAttributes($this->attributes);
             $definitionCallback($f);
         };
-        $this->coordinator->add([$name, $this->model], $callback);
+        $this->factory_repository->add([$name, $this->model], $callback);
     }
 
     public function belongsTo($name, $foreign_key = null, $attributes = [])
     {
-        $factory = $this->coordinator->getFactory($name);
+        $factory = $this->factory_repository->getFactory($name);
         return new BelongsTo($this->model, $factory, $foreign_key, $attributes);
     }
 
     public function hasMany($name, $count, $foreign_key = null, $attributes = [])
     {
-        $factory = $this->coordinator->getFactory($name);
+        $factory = $this->factory_repository->getFactory($name);
         return new HasMany($this->model, $factory, $count, $foreign_key, $attributes);
     }
 
     public function hasOne($name, $foreign_key = null, $attributes = [])
     {
-        $factory = $this->coordinator->getFactory($name);
+        $factory = $this->factory_repository->getFactory($name);
         return new HasOne($this->model, $factory, $foreign_key, $attributes);
     }
 }
