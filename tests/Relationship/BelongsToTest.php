@@ -39,4 +39,13 @@ class BelongsToTest extends \PHPUnit_Framework_TestCase
         $expected = 'parent_post';
         $this->assertSame($expected, $relationship->getForeignKey());
     }
+
+    public function test_specified_foreign_key_in_constructor_takes_precedence()
+    {
+        $factory = M::mock('AdamWathan\\Facktory\\Factory');
+        $relationship = new BelongsTo('Comment', $factory, 'parent_post');
+
+        $expected = 'parent_post';
+        $this->assertSame($expected, $relationship->getForeignKey());
+    }
 }

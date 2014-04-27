@@ -37,6 +37,15 @@ class RelationshipTest extends \PHPUnit_Framework_TestCase
         $expected = 'post';
         $this->assertSame($expected, $relationship->getForeignKey());
     }
+
+    public function test_specified_foreign_key_in_constructor_takes_precedence()
+    {
+        $factory = M::mock('AdamWathan\\Facktory\\Factory');
+        $relationship = new Relationship('Foo\\Bar\\Post', $factory, 'post');
+
+        $expected = 'post';
+        $this->assertSame($expected, $relationship->getForeignKey());
+    }
 }
 
 class Relationship extends AbstractRelationship
