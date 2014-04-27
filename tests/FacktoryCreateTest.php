@@ -478,33 +478,39 @@ class FacktoryCreateTest extends FunctionalTestCase
         $this->assertEquals(100, $song->length);
     }
 
-    // public function test_saved_has_many_can_guess_correct_foreign_keys()
-    // {
-    //     $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
-    //         $f->name = 'Chaosphere';
-    //         $f->release_date = new DateTime;
-    //         $f->songs = $f->hasMany('song', 'album_id', 5);
-    //     });
-    //     $this->facktory->add(['album_with_7_songs', 'Album'], function($f) {
-    //         $f->name = 'Destroy Erase Improve';
-    //         $f->release_date = new DateTime;
-    //         $f->songs = $f->hasMany('song', 'album_id', 7);
-    //     });
-    //     $this->facktory->add(['song', 'Song'], function($f) {
-    //         $f->name = 'Concatenation';
-    //         $f->length = 257;
-    //     });
+    public function test_saved_has_many_can_guess_correct_foreign_keys()
+    {
+        $this->facktory->add(['post_with_comments', 'Post'], function($f) {
+            $f->title = 'First Post';
+            $f->comments = $f->hasMany('comment', 2);
+        });
+        $this->facktory->add(['comment', 'Comment'], function($f) {
+            $f->body = 'Great post!';
+        });
 
-    //     $album = $this->facktory->create('album_with_5_songs');
-    //     $songs = $album->songs;
+        $post = $this->facktory->create('post_with_comments');
+        $comments = $post->comments;
 
-    //     $this->assertSame(5, $songs->count());
+        $this->assertSame(2, $comments->count());
+    }
 
-    //     $album = $this->facktory->create('album_with_7_songs');
-    //     $songs = $album->songs;
+    public function test_saved_has_many_can_guess_correct_foreign_keys_2()
+    {
+        $this->facktory->add(['album_with_songs', 'Album'], function($f) {
+            $f->name = 'Sabotage';
+            $f->release_date = new DateTime('1975-07-28');
+            $f->songs = $f->hasMany('song', 3);
+        });
+        $this->facktory->add(['song', 'Song'], function($f) {
+            $f->name = 'Symptom of the Universe';
+            $f->length = 100;
+        });
 
-    //     $this->assertSame(7, $songs->count());
-    // }
+        $album = $this->facktory->create('album_with_songs');
+        $songs = $album->songs;
+
+        $this->assertSame(3, $songs->count());
+    }
 }
 
 

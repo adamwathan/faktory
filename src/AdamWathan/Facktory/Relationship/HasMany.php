@@ -4,7 +4,7 @@ class HasMany extends DependentRelationship
 {
 	protected $quantity;
 
-	public function __construct($factoryLoader, $quantity, $foreign_key, $attributes)
+	public function __construct($factoryLoader, $quantity, $foreign_key = null, $attributes = [])
 	{
 		parent::__construct($factoryLoader, $foreign_key, $attributes);
 		$this->quantity = $quantity;
@@ -17,7 +17,7 @@ class HasMany extends DependentRelationship
 
 	public function create($instance)
 	{
-		$this->attributes[$this->foreign_key] = $instance->getKey();
+		$this->attributes[$this->foreignKey()] = $instance->getKey();
         return $this->factoryLoader->__invoke()->createList($this->quantity, $this->attributes);
 	}
 
