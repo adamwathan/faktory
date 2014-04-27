@@ -543,6 +543,27 @@ class FacktoryCreateTest extends FunctionalTestCase
 
         $this->assertSame('Great post!', $comment->body);
     }
+
+    public function test_can_override_relationship_attributes_on_create_fluently()
+    {
+        $this->facktory->add(['song_with_album', 'Song'], function($f) {
+            $f->name = 'Concatenation';
+            $f->length = 257;
+            $f->album = $f->belongsTo('album', 'album_id')->attributes([
+                    'name' => 'Contradictions Collapse',
+                ]);
+        });
+        $this->facktory->add(['album', 'Album'], function($f) {
+            $f->name = 'Chaosphere';
+            $f->release_date = new DateTime;
+        });
+
+        $song = $this->facktory->create('song_with_album', function($f) {
+            $f->album->attributes(['name' => 'None']);
+        });
+        $album = $song->album;
+        $this->assertEquals('None', $album->name);
+    }
 }
 
 
