@@ -31,7 +31,12 @@ abstract class Relationship
 
     protected function guessForeignKey()
     {
-        return snake_case($this->relatedModelBase()).'_id';
+        return $this->snakeCase($this->relatedModelBase()).'_id';
+    }
+
+    protected function snakeCase($value)
+    {
+        return ctype_lower($value) ? $value : strtolower(preg_replace('/(.)([A-Z])/', '$1_$2', $value));
     }
 
     protected function relatedModelBase()
