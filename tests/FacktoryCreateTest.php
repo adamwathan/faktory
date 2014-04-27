@@ -18,6 +18,8 @@ class FacktoryCreateTest extends FunctionalTestCase
         $this->migrateSongsTable();
         $this->migratePostsTable();
         $this->migrateCommentsTable();
+        $this->migrateCategoriesTable();
+        $this->migrateCategoryPostsTable();
     }
 
     protected function migrateAlbumsTable()
@@ -64,17 +66,38 @@ class FacktoryCreateTest extends FunctionalTestCase
         });
     }
 
+    protected function migrateCategoriesTable()
+    {
+        DB::schema()->create('categories', function($table)
+        {
+            $table->increments('id');
+            $table->string('name');
+            $table->timestamps();
+        });
+    }
+
+    protected function migrateCategoryPostsTable()
+    {
+        DB::schema()->create('category_posts', function($table)
+        {
+            $table->increments('id');
+            $table->integer('category_id')->unsigned();
+            $table->integer('post_id')->unsigned();
+            $table->timestamps();
+        });
+    }
+
     public function test_saved_has_many_get_correct_foreign_id()
     {
         $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
-            $f->songs = $f->hasMany('song', 'album_id', 5);
+            $f->songs = $f->hasMany('song', 5, 'album_id');
         });
         $this->facktory->add(['album_with_7_songs', 'Album'], function($f) {
             $f->name = 'Destroy Erase Improve';
             $f->release_date = new DateTime;
-            $f->songs = $f->hasMany('song', 'album_id', 7);
+            $f->songs = $f->hasMany('song', 7, 'album_id');
         });
         $this->facktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
@@ -99,11 +122,11 @@ class FacktoryCreateTest extends FunctionalTestCase
         });
         $this->facktory->add(['post_with_5_comments', 'Post'], function($f) {
             $f->title = 'Sweet post';
-            $f->comments = $f->hasMany('comment', 'post_id', 5);
+            $f->comments = $f->hasMany('comment', 5, 'post_id');
         });
         $this->facktory->add(['post_with_7_comments', 'Post'], function($f) {
             $f->title = 'Sweet post';
-            $f->comments = $f->hasMany('comment', 'post_id', 7);
+            $f->comments = $f->hasMany('comment', 7, 'post_id');
         });
 
         $post = $this->facktory->create('post_with_5_comments');
@@ -122,7 +145,7 @@ class FacktoryCreateTest extends FunctionalTestCase
         $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
-            $f->songs = $f->hasMany('song', 'album_id', 5, ['length' => 100]);
+            $f->songs = $f->hasMany('song', 5, 'album_id', ['length' => 100]);
         });
         $this->facktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
@@ -143,7 +166,7 @@ class FacktoryCreateTest extends FunctionalTestCase
         $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
-            $f->songs = $f->hasMany('song', 'album_id', 2, ['length' => [100, 200]]);
+            $f->songs = $f->hasMany('song', 2, 'album_id', ['length' => [100, 200]]);
         });
         $this->facktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
@@ -232,7 +255,7 @@ class FacktoryCreateTest extends FunctionalTestCase
         $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
-            $f->songs = $f->hasMany('song', 'album_id', 5, ['length' => 100]);
+            $f->songs = $f->hasMany('song', 5, 'album_id', ['length' => 100]);
         });
         $this->facktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
@@ -258,7 +281,7 @@ class FacktoryCreateTest extends FunctionalTestCase
         $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime('2001-01-01');
-            $f->songs = $f->hasMany('song', 'album_id', 5, ['length' => 100]);
+            $f->songs = $f->hasMany('song', 5, 'album_id', ['length' => 100]);
         });
         $this->facktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
@@ -267,7 +290,7 @@ class FacktoryCreateTest extends FunctionalTestCase
 
         $album = $this->facktory->create('album_with_5_songs', function($f) {
             $f->release_date = new DateTime('1998-11-10');
-            $f->songs = $f->hasMany('song', 'album_id', 2, ['length' => 150]);
+            $f->songs = $f->hasMany('song', 2, 'album_id', ['length' => 150]);
         });
 
         $this->assertTrue(new DateTime('1998-11-10') == $album->release_date);
@@ -284,7 +307,7 @@ class FacktoryCreateTest extends FunctionalTestCase
         $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime('2001-01-01');
-            $f->songs = $f->hasMany('song', 'album_id', 5, ['length' => 100]);
+            $f->songs = $f->hasMany('song', 5, 'album_id', ['length' => 100]);
         });
         $this->facktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
@@ -293,7 +316,7 @@ class FacktoryCreateTest extends FunctionalTestCase
 
         $album = $this->facktory->create('album_with_5_songs', function($f) {
             $f->release_date = new DateTime('1998-11-10');
-            $f->songs = $f->hasMany('song', 'album_id', 2, ['length' => 150]);
+            $f->songs = $f->hasMany('song', 2, 'album_id', ['length' => 150]);
         });
 
         $album = $this->facktory->create('album_with_5_songs');
@@ -312,7 +335,7 @@ class FacktoryCreateTest extends FunctionalTestCase
         $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
-            $f->songs = $f->hasMany('song', 'album_id', 5, ['length' => 100]);
+            $f->songs = $f->hasMany('song', 5, 'album_id', ['length' => 100]);
         });
         $this->facktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
@@ -336,7 +359,7 @@ class FacktoryCreateTest extends FunctionalTestCase
         $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
-            $f->songs = $f->hasMany('song', 'album_id', 5, ['length' => 100]);
+            $f->songs = $f->hasMany('song', 5, 'album_id', ['length' => 100]);
         });
         $this->facktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
@@ -360,7 +383,7 @@ class FacktoryCreateTest extends FunctionalTestCase
         $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
-            $f->songs = $f->hasMany('song', 'album_id', 5, ['length' => 100]);
+            $f->songs = $f->hasMany('song', 5, 'album_id', ['length' => 100]);
         });
         $this->facktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
@@ -395,7 +418,7 @@ class FacktoryCreateTest extends FunctionalTestCase
         $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
-            $f->songs = $f->hasMany('song', 'album_id', 5, ['length' => 100]);
+            $f->songs = $f->hasMany('song', 5, 'album_id', ['length' => 100]);
         });
         $this->facktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
@@ -454,6 +477,34 @@ class FacktoryCreateTest extends FunctionalTestCase
         $this->assertEquals($song->album_id, $album->id);
         $this->assertEquals(100, $song->length);
     }
+
+    // public function test_saved_has_many_can_guess_correct_foreign_keys()
+    // {
+    //     $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
+    //         $f->name = 'Chaosphere';
+    //         $f->release_date = new DateTime;
+    //         $f->songs = $f->hasMany('song', 'album_id', 5);
+    //     });
+    //     $this->facktory->add(['album_with_7_songs', 'Album'], function($f) {
+    //         $f->name = 'Destroy Erase Improve';
+    //         $f->release_date = new DateTime;
+    //         $f->songs = $f->hasMany('song', 'album_id', 7);
+    //     });
+    //     $this->facktory->add(['song', 'Song'], function($f) {
+    //         $f->name = 'Concatenation';
+    //         $f->length = 257;
+    //     });
+
+    //     $album = $this->facktory->create('album_with_5_songs');
+    //     $songs = $album->songs;
+
+    //     $this->assertSame(5, $songs->count());
+
+    //     $album = $this->facktory->create('album_with_7_songs');
+    //     $songs = $album->songs;
+
+    //     $this->assertSame(7, $songs->count());
+    // }
 }
 
 
@@ -491,6 +542,11 @@ class Post extends Illuminate\Database\Eloquent\Model
     {
         return $this->hasMany('Comment');
     }
+
+    public function categories()
+    {
+        return $this->belongsToMany('Category');
+    }
 }
 
 class Comment extends Illuminate\Database\Eloquent\Model
@@ -498,5 +554,13 @@ class Comment extends Illuminate\Database\Eloquent\Model
     public function post()
     {
         return $this->belongsTo('Post');
+    }
+}
+
+class Category extends Illuminate\Database\Eloquent\Model
+{
+    public function posts()
+    {
+        return $this->belongsToMany('Post');
     }
 }

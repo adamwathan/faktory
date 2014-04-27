@@ -137,10 +137,10 @@ class Factory
         return new BelongsTo($factoryLoader, $foreign_key, $attributes);
     }
 
-    public function hasMany($name, $foreign_key, $count, $attributes = [])
+    public function hasMany($name, $count, $foreign_key, $attributes = [])
     {
         $factoryLoader = $this->coordinator->getFactoryLoader($name);
-        return new HasMany($factoryLoader, $foreign_key, $count, $attributes);
+        return new HasMany($factoryLoader, $count, $foreign_key, $attributes);
     }
 
     public function hasOne($name, $foreign_key, $attributes = [])

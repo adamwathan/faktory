@@ -397,7 +397,7 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
         $facktory->add(['album_with_5_songs', 'BuildAlbum'], function($f) {
             $f->name = 'Destroy Erase Improve';
             $f->release_date = new DateTime;
-            $f->songs = $f->hasMany('song', 'album_id', 5);
+            $f->songs = $f->hasMany('song', 5, 'album_id');
         });
         $facktory->add(['song', 'BuildSong'], function($f) {
             $f->name = 'Concatenation';
@@ -415,7 +415,7 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
         $facktory->add(['album_with_5_songs', 'BuildAlbum'], function($f) {
             $f->name = 'Destroy Erase Improve';
             $f->release_date = new DateTime;
-            $f->songs = $f->hasMany('song', 'album_id', 5);
+            $f->songs = $f->hasMany('song', 5, 'album_id');
         });
         $facktory->add(['song', 'BuildSong'], function($f) {
             $f->name = 'Concatenation';
