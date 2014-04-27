@@ -2,15 +2,15 @@
 
 abstract class Relationship
 {
-    protected $factoryLoader;
+    protected $factory;
     protected $foreign_key;
     protected $attributes;
     protected $related_model;
 
-    public function __construct($related_model, $factoryLoader, $foreign_key = null, $attributes = [])
+    public function __construct($related_model, $factory, $foreign_key = null, $attributes = [])
     {
         $this->related_model = $related_model;
-        $this->factoryLoader = $factoryLoader;
+        $this->factory = $factory;
         $this->foreign_key = $foreign_key;
         $this->attributes = $attributes;
     }

@@ -12,13 +12,13 @@ class HasMany extends DependentRelationship
 
     public function build()
     {
-        return $this->factoryLoader->__invoke()->buildList($this->quantity, $this->attributes);
+        return $this->factory->buildList($this->quantity, $this->attributes);
     }
 
     public function create($instance)
     {
         $this->attributes[$this->getForeignKey()] = $instance->getKey();
-        return $this->factoryLoader->__invoke()->createList($this->quantity, $this->attributes);
+        return $this->factory->createList($this->quantity, $this->attributes);
     }
 
     public function quantity($quantity)

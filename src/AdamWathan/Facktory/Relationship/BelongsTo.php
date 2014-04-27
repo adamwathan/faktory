@@ -4,16 +4,16 @@ class BelongsTo extends Relationship
 {
     public function build()
     {
-        return $this->factoryLoader->__invoke()->build($this->attributes);
+        return $this->factory->build($this->attributes);
     }
 
     public function create()
     {
-        return $this->factoryLoader->__invoke()->create($this->attributes);
+        return $this->factory->create($this->attributes);
     }
 
     protected function getRelatedModel()
     {
-        return $this->factoryLoader->__invoke()->getModel();
+        return $this->factory->getModel();
     }
 }

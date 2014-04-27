@@ -48,13 +48,13 @@ class Facktory
 
     public function getFactory($name)
     {
-        return $this->factories[$name];
+        return $this->getProxyFactory($name);
     }
 
-    public function getFactoryLoader($name)
+    protected function getProxyFactory($name)
     {
-        return function() use ($name) {
-            return $this->getFactory($name);
-        };
+        return new FactoryProxy(function() use ($name) {
+            return $this->factories[$name];
+        });
     }
 }
