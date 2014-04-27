@@ -527,6 +527,22 @@ class FacktoryCreateTest extends FunctionalTestCase
 
         $this->assertSame('First Post', $post->title);
     }
+
+    public function test_saved_has_one_can_guess_correct_foreign_key()
+    {
+        $this->facktory->add(['post', 'Post'], function($f) {
+            $f->title = 'First Post';
+            $f->comment = $f->hasOne('comment');
+        });
+        $this->facktory->add(['comment', 'Comment'], function($f) {
+            $f->body = 'Great post!';
+        });
+
+        $post = $this->facktory->create('post');
+        $comment = $post->comment;
+
+        $this->assertSame('Great post!', $comment->body);
+    }
 }
 
 
@@ -563,6 +579,11 @@ class Post extends Illuminate\Database\Eloquent\Model
     public function comments()
     {
         return $this->hasMany('Comment');
+    }
+
+    public function comment()
+    {
+        return $this->hasOne('Comment');
     }
 
     public function categories()

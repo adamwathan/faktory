@@ -148,7 +148,7 @@ class Factory
         return new HasMany($this->model, $factoryLoader, $count, $foreign_key, $attributes);
     }
 
-    public function hasOne($name, $foreign_key, $attributes = [])
+    public function hasOne($name, $foreign_key = null, $attributes = [])
     {
         $factoryLoader = $this->coordinator->getFactoryLoader($name);
         return new HasOne($this->model, $factoryLoader, $foreign_key, $attributes);
