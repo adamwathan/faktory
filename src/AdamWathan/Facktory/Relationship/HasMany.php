@@ -15,9 +15,8 @@ class HasMany extends DependentRelationship
         return $this->factory->buildList($this->quantity, $this->attributes);
     }
 
-    public function create($instance)
+    protected function createRelated()
     {
-        $this->attributes[$this->getForeignKey()] = $instance->getKey();
         return $this->factory->createList($this->quantity, $this->attributes);
     }
 

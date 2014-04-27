@@ -2,5 +2,11 @@
 
 abstract class DependentRelationship extends Relationship
 {
-    abstract public function create($instance);
+    public function create($instance)
+    {
+        $this->attributes[$this->getForeignKey()] = $instance->getKey();
+        return $this->createRelated();
+    }
+
+    abstract protected function createRelated();
 }
