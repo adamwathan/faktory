@@ -330,7 +330,7 @@ class FacktoryCreateTest extends FunctionalTestCase
         }
     }
 
-    public function test_can_alter_has_many_relationship_amount_without_overriding_entire_relationship()
+    public function test_can_alter_has_many_relationship_quantity_without_overriding_entire_relationship()
     {
         $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
@@ -344,7 +344,7 @@ class FacktoryCreateTest extends FunctionalTestCase
 
         $album = $this->facktory->create('album_with_5_songs', function($f) {
             $f->release_date = new DateTime('1998-11-10');
-            $f->songs->amount(2);
+            $f->songs->quantity(2);
         });
 
         $songs = $album->songs;
@@ -392,7 +392,7 @@ class FacktoryCreateTest extends FunctionalTestCase
 
         $album = $this->facktory->create('album_with_5_songs', function($f) {
             $f->release_date = new DateTime('1998-11-10');
-            $f->songs->amount(2)->attributes(['length' => 150]);
+            $f->songs->quantity(2)->attributes(['length' => 150]);
         });
 
         $songs = $album->songs;
@@ -403,7 +403,7 @@ class FacktoryCreateTest extends FunctionalTestCase
 
         $album = $this->facktory->create('album_with_5_songs', function($f) {
             $f->release_date = new DateTime('1998-11-10');
-            $f->songs->attributes(['length' => 150])->amount(2);
+            $f->songs->attributes(['length' => 150])->quantity(2);
         });
 
         $songs = $album->songs;
@@ -427,7 +427,7 @@ class FacktoryCreateTest extends FunctionalTestCase
 
         $album = $this->facktory->create('album_with_5_songs', function($f) {
             $f->release_date = new DateTime('1998-11-10');
-            $f->songs->amount(2)->attributes(['length' => [150, 250]]);
+            $f->songs->quantity(2)->attributes(['length' => [150, 250]]);
         });
 
         $songs = $album->songs;

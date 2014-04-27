@@ -140,7 +140,7 @@ If you need to do something trickier, you can pass in a closure that provides al
 // Create an instance and override some properties
 $album = Facktory::build('Album', function($album) {
     $album->name => 'Bark at the moon';
-    $album->songs->amount(4)->attributes(['length' => 267]);
+    $album->songs->quantity(4)->attributes(['length' => 267]);
 });
 
 $album->name;

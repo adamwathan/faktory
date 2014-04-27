@@ -423,7 +423,7 @@ class FacktoryTest extends \PHPUnit_Framework_TestCase
         });
 
         $album = $facktory->build('album_with_5_songs', function($album) {
-            $album->songs->amount(2);
+            $album->songs->quantity(2);
         });
         $songs = $album->songs;
         $this->assertSame(2, count($songs));
