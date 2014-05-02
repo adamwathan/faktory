@@ -1,6 +1,9 @@
-<?php namespace Vehikl\Facktory;
+<?php namespace Vehikl\Faktory;
 
-class Facktory
+use Vehikl\Faktory\Factory\Factory;
+use Vehikl\Faktory\Factory\FactoryProxy;
+
+class Faktory
 {
     protected $factories = [];
 

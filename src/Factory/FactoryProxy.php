@@ -1,4 +1,4 @@
-<?php namespace Vehikl\Facktory;
+<?php namespace Vehikl\Faktory\Factory;
 
 class FactoryProxy
 {

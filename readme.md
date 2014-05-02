@@ -1,6 +1,6 @@
-# Facktory
+# Faktory
 
-Facktory is a tool for easily building test objects ala [FactoryGirl](https://github.com/thoughtbot/factory_girl/), but for PHP. It's still in it's early stages, but give it a go if you're interested, and open issues for the features it's missing that you think are really important.
+Faktory is a tool for easily building test objects ala [FactoryGirl](https://github.com/thoughtbot/factory_girl/), but for PHP. It's still in it's early stages, but give it a go if you're interested, and open issues for the features it's missing that you think are really important.
 
 ## Installing with Composer
 
@@ -9,7 +9,7 @@ You can install this package via Composer by including the following in your `co
 ```json
 {
     "require": {
-        "vehikl/facktory": "dev-master"
+        "vehikl/faktory": "dev-master"
     }
 }
 ```
@@ -20,28 +20,28 @@ You can install this package via Composer by including the following in your `co
 
 If you are using Laravel 4, you can get started very quickly by registering the included service provider.
 
-Modify the `providers` array in `app/config/app.php` to include the `FacktoryServiceProvider`:
+Modify the `providers` array in `app/config/app.php` to include the `FaktoryServiceProvider`:
 
 ```php
 'providers' => array(
         //...
-        'Vehikl\Facktory\FacktoryServiceProvider'
+        'Vehikl\Faktory\FaktoryServiceProvider'
     ),
 ```
 
-Add the `Facktory` facade to the `aliases` array in `app/config/app.php`:
+Add the `Faktory` facade to the `aliases` array in `app/config/app.php`:
 
 ```php
 'aliases' => array(
         //...
-        'Facktory' => 'Vehikl\Facktory\Facades\Facktory'
+        'Faktory' => 'Vehikl\Faktory\Facades\Faktory'
     ),
 ```
 
-You can now start using Facktory by calling methods directly on the `Facktory` facade:
+You can now start using Faktory by calling methods directly on the `Faktory` facade:
 
 ```php
-Facktory::add('User', function($f) {
+Faktory::add('User', function($f) {
     $f->first_name = 'John';
     $f->last_name = 'Doe';
 });
@@ -49,15 +49,15 @@ Facktory::add('User', function($f) {
 
 ### Outside of Laravel 4
 
-To use outside of Laravel 4, just instantiate a new `Facktory`. Make sure you register this as a singleton in your favorite dependency injection container, since you probably want to be using the same instance everywhere.
+To use outside of Laravel 4, just instantiate a new `Faktory`. Make sure you register this as a singleton in your favorite dependency injection container, since you probably want to be using the same instance everywhere.
 
 ```php
-$facktory = new Vehikl\Facktory\Facktory;
+$faktory = new Vehikl\Faktory\Faktory;
 ```
 
-> Note: When using outside of Laravel 4 and not having access to the `Facktory` facade, you will need to make sure you `use` your `$facktory` instance in any nested closures that need to generate other objects. Sucks but that's PHP.
+> Note: When using outside of Laravel 4 and not having access to the `Faktory` facade, you will need to make sure you `use` your `$faktory` instance in any nested closures that need to generate other objects. Sucks but that's PHP.
 
-## Using Facktory
+## Using Faktory
 
 ### Defining factories
 
@@ -75,12 +75,12 @@ require app_path().'/tests/factories.php';
 The most basic factory definition requires a class name and a closure that defines the default attributes for the factory. This will define a factory named after that class that generates instances of that same class.
 
 ```php
-Facktory::add('Album', function($f) {
+Faktory::add('Album', function($f) {
     $f->name = 'Diary of a madman';
     $f->release_date = new DateTime('1981-11-07');
 });
 
-Facktory::add('Song', function($f) {
+Faktory::add('Song', function($f) {
     $f->name = 'Over the mountain';
     $f->length = 271;
 });
@@ -101,7 +101,7 @@ To generate an object, simply call `build` or `create` and pass in the name of t
 
 ```php
 // Returns an Album object with the default attribute values
-$album = Facktory::build('Album');
+$album = Faktory::build('Album');
 $album->name;
 // 'Diary of a madman'
 $album->release_date;
@@ -110,7 +110,7 @@ $album->release_date;
 
 // Create a basic instance and persist it to
 // the database
-$album = Facktory::create('Album');
+$album = Faktory::create('Album');
 $album->id
 // 1
 ```
@@ -125,7 +125,7 @@ If you just need to change some simple attributes to static values, you can just
 
 ```php
 // Create an instance and override some properties
-$album = Facktory::build('Album', ['name' => 'Bark at the moon']),
+$album = Faktory::build('Album', ['name' => 'Bark at the moon']),
 ]);
 
 $album->name;
@@ -138,7 +138,7 @@ If you need to do something trickier, you can pass in a closure that provides al
 
 ```php
 // Create an instance and override some properties
-$album = Facktory::build('Album', function($album) {
+$album = Faktory::build('Album', function($album) {
     $album->name => 'Bark at the moon';
     $album->songs->quantity(4)->attributes(['length' => 267]);
 });
@@ -158,14 +158,14 @@ Factories can also be given a name, so that you can define multiple factories fo
 To define a named factory, pass an array in the form `[factory_name, class_name]` as the first parameter instead of just a class name.
 
 ```php
-Facktory::add(['album_with_copies_sold', 'Album'], function($f) {
+Faktory::add(['album_with_copies_sold', 'Album'], function($f) {
     $f->name = 'Diary of a madman';
     $f->release_date = '1981-11-07';
     $f->copies_sold = 3200000;
 });
 
 
-$album = Facktory::build('album_with_copies_sold');
+$album = Faktory::build('album_with_copies_sold');
 
 get_class($album);
 // 'Album'
@@ -182,7 +182,7 @@ $album->copies_sold;
 You can create factories that inherit the attributes of an existing factory by nesting the definition. This allows you to define a basic factory, as well as more specific factories underneath it to generate objects in a specific state without having to redeclare the attributes that don't need to change.
 
 ```php
-Facktory::add(['basic_user', 'User'], function($f) {
+Faktory::add(['basic_user', 'User'], function($f) {
     $f->first_name = 'John';
     $f->last_name = 'Doe';
     $f->is_admin = false;
@@ -193,7 +193,7 @@ Facktory::add(['basic_user', 'User'], function($f) {
 });
 
 
-$user = Facktory::build('admin');
+$user = Faktory::build('admin');
 
 $user->first_name;
 // 'John'
@@ -208,7 +208,7 @@ $user->is_admin;
 If you don't want an attribute to be evaluated until you try to build an object, you can define that attribute as a closure.
 
 ```php
-Facktory::add('User', function($f) {
+Faktory::add('User', function($f) {
     $f->username = 'john.doe';
 
     $f->created_at = function() {
@@ -217,13 +217,13 @@ Facktory::add('User', function($f) {
 });
 
 
-$user1 = Facktory::build('User');
+$user1 = Faktory::build('User');
 $user1->created_at;
 // '2014-04-22 14:10:05'
 
 sleep(7);
 
-$user2 = Facktory::build('User');
+$user2 = Faktory::build('User');
 $user2->created_at;
 // '2014-04-22 14:10:12'
 ```
@@ -233,7 +233,7 @@ $user2->created_at;
 You can also use lazy attributes to define attributes that depend on other attributes in the factory.
 
 ```php
-Facktory::add('User', function($f) {
+Faktory::add('User', function($f) {
     $f->first_name = 'John';
     $f->last_name = 'Doe';
     $f->email = function($f) {
@@ -242,7 +242,7 @@ Facktory::add('User', function($f) {
 });
 
 
-$user = Facktory::build('User');
+$user = Faktory::build('User');
 $user->first_name;
 // 'John'
 $user->last_name;
@@ -250,7 +250,7 @@ $user->last_name;
 $user->email;
 // 'John.Doe@example.com'
 
-$user = Facktory::build('User', ['first_name' => 'Bob']);
+$user = Faktory::build('User', ['first_name' => 'Bob']);
 $user->first_name;
 // 'Bob'
 $user->last_name;
@@ -264,7 +264,7 @@ $user->email;
 Lazy attributes to the rescue again. The closure also takes an autoincrementing integer as it's second parameter, which is really handy for ensuring that a field value is unique.
 
 ```php
-Facktory::add('User', function($f) {
+Faktory::add('User', function($f) {
     $f->first_name = 'John';
     $f->last_name = 'Doe';
     $f->email = function($f, $i) {
@@ -273,18 +273,18 @@ Facktory::add('User', function($f) {
 });
 
 
-$user1 = Facktory::build('User');
+$user1 = Faktory::build('User');
 $user1->email;
 // 'example1@example.com'
 
-$user2 = Facktory::build('User');
+$user2 = Faktory::build('User');
 $user2->email;
 // 'example2@example.com'
 ```
 
 ### Defining relationships
 
-Facktory lets you easily define relationships between objects.
+Faktory lets you easily define relationships between objects.
 
 Currently, there is support for `belongsTo`, `hasOne`, and `hasMany` relationships.
 
@@ -295,7 +295,7 @@ Define a `belongsTo` relationship by assigning a `belongsTo` call to an attribut
 `belongsTo()` takes the name of the factory that should be used to generate the related object as the first argument, the name of the foreign key column as the second argument, and an optional array of override attributes as the third argument.
 
 ```php
-$facktory->add(['song_with_album', 'Song'], function($f) {
+$faktory->add(['song_with_album', 'Song'], function($f) {
     $f->name = 'Concatenation';
     $f->length = 257;
     $f->album = $f->belongsTo('album', 'album_id', [
@@ -303,13 +303,13 @@ $facktory->add(['song_with_album', 'Song'], function($f) {
     ]);
 });
 
-$facktory->add(['album', 'Album'], function($f) {
+$faktory->add(['album', 'Album'], function($f) {
     $f->name = 'Destroy Erase Improve';
 });
 
 
 // Build the objects in memory without persisting to the database
-$song = Facktory::build('song_with_album');
+$song = Faktory::build('song_with_album');
 $song->album;
 // object(Album)(
 //    'name' => 'Destroy Erase Improve'
@@ -320,7 +320,7 @@ $song->album_id;
 
 // Save the objects to the database and set up the correct
 // foreign key associations
-$song = Facktory::create('song_with_album');
+$song = Faktory::create('song_with_album');
 $song->album_id;
 // 1
 
@@ -337,19 +337,19 @@ Define a `hasOne` relationship by assigning a `hasOne` call to an attribute.
 `hasOne()` takes the name of the factory that should be used to generate the related object as the first argument, the name of the foreign key column (on the related object) as the second argument, and an optional array of override attributes as the third argument.
 
 ```php
-$facktory->add(['user_with_profile', 'User'], function($f) {
+$faktory->add(['user_with_profile', 'User'], function($f) {
     $f->username = 'johndoe';
     $f->password = 'top-secret';
     $f->profile = $f->hasOne('profile', 'user_id');
 });
 
-$facktory->add(['profile', 'Profile'], function($f) {
+$faktory->add(['profile', 'Profile'], function($f) {
     $f->email = 'johndoe@example.com';
 });
 
 
 // Build the objects in memory without persisting to the database
-$user = Facktory::build('user_with_profile');
+$user = Faktory::build('user_with_profile');
 $user->profile;
 // object(Profile)(
 //    'email' => 'johndoe@example.com'
@@ -358,7 +358,7 @@ $user->profile;
 
 // Save the objects to the database and set up the correct
 // foreign key associations
-$user = Facktory::create('user_with_profile');
+$user = Faktory::create('user_with_profile');
 $user->id;
 // 1
 
@@ -376,13 +376,13 @@ Define a `hasMany` relationship by assigning a `hasMany` call to an attribute.
 `hasMany()` takes the name of the factory that should be used to generate the related objects as the first argument, the name of the foreign key column (on the related object) as the second argument, the number of objects to generate as the third argument, and an optional array of override attributes as the final argument.
 
 ```php
-$facktory->add(['album_with_songs', 'Album'], function($f) {
+$faktory->add(['album_with_songs', 'Album'], function($f) {
     $f->name = 'Master of Puppets';
     $f->release_date = new DateTime('1986-02-24');
     $f->songs = $f->hasMany('song', 'album_id', 8);
 });
 
-$facktory->add(['song', 'Song'], function($f) {
+$faktory->add(['song', 'Song'], function($f) {
     $f->title = 'The Thing That Should Not Be';
     $f->length = 397;
 });
@@ -402,19 +402,19 @@ If you need to override attributes on a relationship when building or creating a
 
 ```php
 // Define the factories
-$facktory->add(['song_with_album', 'Song'], function($f) {
+$faktory->add(['song_with_album', 'Song'], function($f) {
     $f->name = 'Concatenation';
     $f->length = 257;
     $f->album = $f->belongsTo('album', 'album_id');
 });
-$facktory->add(['album', 'Album'], function($f) {
+$faktory->add(['album', 'Album'], function($f) {
     $f->name = 'Destroy Erase Improve';
     $f->release_date = new DateTime('1995-07-25');
 });
 
 
 // Build a song but override the album name
-$song = Facktory::build('song_with_album', function($song) {
+$song = Faktory::build('song_with_album', function($song) {
     $song->album->name = 'Chaosphere';
 });
 $song->album;
@@ -423,7 +423,7 @@ $song->album;
 // )
 
 // Build a song but override a couple attributes at once
-$song = Facktory::build('song_with_album', function($song) {
+$song = Faktory::build('song_with_album', function($song) {
     $song->album->attributes([
         'name' => 'Chaosphere',
         'release_date' => new DateTime('1998-11-10'),
@@ -443,10 +443,10 @@ You can use `buildList` and `createList` to generate multiple objects at once:
 
 ```php
 // Create multiple instances
-$albums = Facktory::buildList('Album', 5);
+$albums = Faktory::buildList('Album', 5);
 
 // Create multiple instances with some overridden properties
-$songs = Facktory::buildList('Song', 5, [ 'length' => 100 ])
+$songs = Faktory::buildList('Song', 5, [ 'length' => 100 ])
 $songs[0]->length;
 // 100
 // ...
@@ -454,39 +454,39 @@ $songs[4]->length;
 // 100
 
 // Add a nested relationship where each item is different
-$album = Facktory::build('Album', [
+$album = Faktory::build('Album', [
     'name' => 'Bark at the moon',
     'songs' => [
-        Facktory::build('Song', [ 'length' => 143 ]),
-        Facktory::build('Song', [ 'length' => 251 ]),
-        Facktory::build('Song', [ 'length' => 167 ]),
-        Facktory::build('Song', [ 'length' => 229 ]),
+        Faktory::build('Song', [ 'length' => 143 ]),
+        Faktory::build('Song', [ 'length' => 251 ]),
+        Faktory::build('Song', [ 'length' => 167 ]),
+        Faktory::build('Song', [ 'length' => 229 ]),
     ],
 ]);
 
 // Add a nested relationship where each item shares the same
 // properties
-$album = Facktory::build('Album', [
+$album = Faktory::build('Album', [
     'name' => 'Bark at the moon',
-    'songs' => Facktory::buildList('Song', 5, [ 'length' => 100 ]
+    'songs' => Faktory::buildList('Song', 5, [ 'length' => 100 ]
     ),
 ]);
 
 // Add a nested relationship where each item is different,
 // but using buildList
-$album = Facktory::build('Album', [
+$album = Faktory::build('Album', [
     'name' => 'Bark at the moon',
-    'songs' => Facktory::buildList('Song', 4, [
+    'songs' => Faktory::buildList('Song', 4, [
         'length' => [143, 251, 167, 229]
     ]),
 ]);
 
 // Add a nested relationship using buildList, but wrap
 // it in a collection
-$album = Facktory::build('Album', [
+$album = Faktory::build('Album', [
     'name' => 'Bark at the moon',
     'songs' => function() {
-        return new Collection(Facktory::buildList('Song', 4, [
+        return new Collection(Faktory::buildList('Song', 4, [
             'length' => [143, 251, 167, 229]
         ]));
     }

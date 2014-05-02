@@ -1,10 +1,10 @@
-<?php namespace Vehikl\Facktory\Strategy;
+<?php namespace Vehikl\Faktory\Strategy;
 
-use Vehikl\Facktory\Relationship\BelongsTo;
-use Vehikl\Facktory\Relationship\HasOne;
-use Vehikl\Facktory\Relationship\HasMany;
-use Vehikl\Facktory\Relationship\Relationship;
-use Vehikl\Facktory\Relationship\DependentRelationship;
+use Vehikl\Faktory\Relationship\BelongsTo;
+use Vehikl\Faktory\Relationship\HasOne;
+use Vehikl\Faktory\Relationship\HasMany;
+use Vehikl\Faktory\Relationship\Relationship;
+use Vehikl\Faktory\Relationship\DependentRelationship;
 
 class Create extends Strategy
 {
