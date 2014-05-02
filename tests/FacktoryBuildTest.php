@@ -1,6 +1,6 @@
 <?php
 
-use AdamWathan\Facktory\Facktory;
+use Vehikl\Facktory\Facktory;
 
 class FacktoryTest extends \PHPUnit_Framework_TestCase
 {

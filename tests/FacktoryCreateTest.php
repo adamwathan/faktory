@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Capsule\Manager as DB;
-use AdamWathan\Facktory\Facktory;
+use Vehikl\Facktory\Facktory;
 
 class FacktoryCreateTest extends FunctionalTestCase
 {

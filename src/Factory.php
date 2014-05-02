@@ -1,10 +1,10 @@
-<?php namespace AdamWathan\Facktory;
+<?php namespace Vehikl\Facktory;
 
-use AdamWathan\Facktory\Strategy\Build as BuildStrategy;
-use AdamWathan\Facktory\Strategy\Create as CreateStrategy;
-use AdamWathan\Facktory\Relationship\BelongsTo;
-use AdamWathan\Facktory\Relationship\HasMany;
-use AdamWathan\Facktory\Relationship\HasOne;
+use Vehikl\Facktory\Strategy\Build as BuildStrategy;
+use Vehikl\Facktory\Strategy\Create as CreateStrategy;
+use Vehikl\Facktory\Relationship\BelongsTo;
+use Vehikl\Facktory\Relationship\HasMany;
+use Vehikl\Facktory\Relationship\HasOne;
 
 class Factory
 {

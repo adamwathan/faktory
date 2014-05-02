@@ -1,4 +1,4 @@
-<?php namespace AdamWathan\Facktory\Relationship;
+<?php namespace Vehikl\Facktory\Relationship;
 
 class BelongsTo extends Relationship
 {

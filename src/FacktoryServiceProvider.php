@@ -1,4 +1,4 @@
-<?php namespace AdamWathan\Facktory;
+<?php namespace Vehikl\Facktory;
 
 use Illuminate\Support\ServiceProvider;
 
