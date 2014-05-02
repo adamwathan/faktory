@@ -18,7 +18,7 @@ class FacktoryServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-        $this->app['adamwathan.facktory'] = $this->app->share(function($app)
+        $this->app['vehikl.facktory'] = $this->app->share(function($app)
         {
             return new Facktory;
         });
