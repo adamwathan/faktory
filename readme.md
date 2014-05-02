@@ -9,7 +9,7 @@ You can install this package via Composer by including the following in your `co
 ```json
 {
     "require": {
-        "adamwathan/facktory": "dev-master"
+        "vehikl/facktory": "dev-master"
     }
 }
 ```
@@ -25,7 +25,7 @@ Modify the `providers` array in `app/config/app.php` to include the `FacktorySer
 ```php
 'providers' => array(
         //...
-        'AdamWathan\Facktory\FacktoryServiceProvider'
+        'Vehikl\Facktory\FacktoryServiceProvider'
     ),
 ```
 
@@ -34,7 +34,7 @@ Add the `Facktory` facade to the `aliases` array in `app/config/app.php`:
 ```php
 'aliases' => array(
         //...
-        'Facktory' => 'AdamWathan\Facktory\Facades\Facktory'
+        'Facktory' => 'Vehikl\Facktory\Facades\Facktory'
     ),
 ```
 
@@ -52,7 +52,7 @@ Facktory::add('User', function($f) {
 To use outside of Laravel 4, just instantiate a new `Facktory`. Make sure you register this as a singleton in your favorite dependency injection container, since you probably want to be using the same instance everywhere.
 
 ```php
-$facktory = new AdamWathan\Facktory\Facktory;
+$facktory = new Vehikl\Facktory\Facktory;
 ```
 
 > Note: When using outside of Laravel 4 and not having access to the `Facktory` facade, you will need to make sure you `use` your `$facktory` instance in any nested closures that need to generate other objects. Sucks but that's PHP.
