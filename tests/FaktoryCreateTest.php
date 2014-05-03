@@ -621,6 +621,14 @@ class FaktoryCreateTest extends FunctionalTestCase
 
         $this->assertEquals($song->album_id, $album->id);
     }
+
+    /**
+     * @expectedException Vehikl\Faktory\FactoryNotRegisteredException
+     */
+    public function test_trying_to_create_from_unregistered_factory_throws_exception()
+    {
+        $album = $this->faktory->create('album_with_song');
+    }
 }
 
 

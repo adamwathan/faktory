@@ -56,7 +56,15 @@ class Faktory
     protected function getProxyFactory($name)
     {
         return new FactoryProxy(function() use ($name) {
-            return $this->factories[$name];
+            return $this->fetchFactory($name);
         });
+    }
+
+    protected function fetchFactory($name)
+    {
+        if (! isset($this->factories[$name])) {
+            throw new FactoryNotRegisteredException;
+        }
+        return $this->factories[$name];
     }
 }
