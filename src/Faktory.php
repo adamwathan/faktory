@@ -15,6 +15,11 @@ class Faktory
         $definitionCallback($factory);
     }
 
+    public function define($name, $definitionCallback)
+    {
+        $this->add($name, $definitionCallback);
+    }
+
     protected function extractNameAndModel($name)
     {
         if (! is_array($name)) {

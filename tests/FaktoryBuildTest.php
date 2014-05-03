@@ -506,6 +506,18 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Doe', $user->last_name);
         $this->assertSame('Bob Doe', $user->full_name);
     }
+
+    public function test_define_can_be_used_as_an_alias_for_add()
+    {
+        $faktory = new Faktory;
+        $faktory->define('BuildAlbum', function($f) {
+            $f->name = 'Bark at the moon';
+        });
+        $album = $faktory->build('BuildAlbum');
+
+        $this->assertInstanceOf('BuildAlbum', $album);
+        $this->assertSame('Bark at the moon', $album->name);
+    }
 }
 
 class BuildAlbum {}
