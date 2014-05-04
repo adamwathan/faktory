@@ -21,6 +21,6 @@ class FactoryProxy
     public function __call($method, $parameters)
     {
         $instance = $this->getInstance();
-        return call_user_func_array(array($instance, $method), $parameters);
+        return call_user_func_array([$instance, $method], $parameters);
     }
 }
