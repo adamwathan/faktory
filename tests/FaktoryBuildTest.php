@@ -518,6 +518,22 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('BuildAlbum', $album);
         $this->assertSame('Bark at the moon', $album->name);
     }
+
+    public function test_can_nest_factory_using_define()
+    {
+        $faktory = new Faktory;
+        $faktory->define('BuildAlbum', function($f) {
+            $f->name = 'Bark at the moon';
+            $f->define('album_with_artist', function($f) {
+                $f->artist = 'Ozzy Osbourne';
+            });
+        });
+        $album = $faktory->build('album_with_artist');
+
+        $this->assertInstanceOf('BuildAlbum', $album);
+        $this->assertSame('Bark at the moon', $album->name);
+        $this->assertSame('Ozzy Osbourne', $album->artist);
+    }
 }
 
 class BuildAlbum {}

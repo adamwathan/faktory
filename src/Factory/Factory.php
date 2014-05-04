@@ -131,6 +131,11 @@ class Factory
         $this->factory_repository->add([$name, $this->model], $callback);
     }
 
+    public function define($name, $definitionCallback)
+    {
+        $this->add($name, $definitionCallback);
+    }
+
     public function belongsTo($name, $foreign_key = null, $attributes = [])
     {
         $factory = $this->factory_repository->getFactory($name);
