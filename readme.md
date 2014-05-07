@@ -1,3 +1,5 @@
+> Note: This version of Facktory is no longer maintained, the currently maintained release is located here: [https://github.com/vehikl/faktory](https://github.com/vehikl/faktory)
+
 # Facktory
 
 Facktory is a tool for easily building test objects ala [FactoryGirl](https://github.com/thoughtbot/factory_girl/), but for PHP. It's still in it's early stages, but give it a go if you're interested, and open issues for the features it's missing that you think are really important.
