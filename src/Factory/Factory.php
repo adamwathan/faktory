@@ -92,12 +92,17 @@ class Factory
         return $that->attributes;
     }
 
-    public function buildList($count, $override_attributes)
+    public function buildMany($count, $override_attributes)
     {
         $override_attributes = $this->expandAttributesForList($override_attributes, $count);
         return array_map(function($i) use ($override_attributes) {
             return $this->build($override_attributes[$i]);
         }, range(0, $count - 1));
+    }
+
+    public function buildList($count, $override_attributes)
+    {
+        return $this->buildMany($count, $override_attributes);
     }
 
     protected function expandAttributesForList($attributes, $count)
@@ -114,12 +119,17 @@ class Factory
         }, $attributes);
     }
 
-    public function createList($count, $override_attributes)
+    public function createMany($count, $override_attributes)
     {
         $override_attributes = $this->expandAttributesForList($override_attributes, $count);
         return array_map(function($i) use ($override_attributes) {
             return $this->create($override_attributes[$i]);
         }, range(0, $count - 1));
+    }
+
+    public function createList($count, $override_attributes)
+    {
+        $this->createMany($count, $override_attributes);
     }
 
     public function add($name, $definitionCallback)
