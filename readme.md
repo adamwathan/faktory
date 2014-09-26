@@ -187,7 +187,7 @@ Faktory::define(['basic_user', 'User'], function($f) {
     $f->last_name = 'Doe';
     $f->is_admin = false;
 
-    $f->add('admin', function($f) {
+    $f->define('admin', function($f) {
         $f->is_admin = true;
     });
 });
@@ -295,7 +295,7 @@ Define a `belongsTo` relationship by assigning a `belongsTo` call to an attribut
 `belongsTo()` takes the name of the factory that should be used to generate the related object as the first argument, the name of the foreign key column as the second argument, and an optional array of override attributes as the third argument.
 
 ```php
-$faktory->add(['song_with_album', 'Song'], function($f) {
+$faktory->define(['song_with_album', 'Song'], function($f) {
     $f->name = 'Concatenation';
     $f->length = 257;
     $f->album = $f->belongsTo('album', 'album_id', [
@@ -303,7 +303,7 @@ $faktory->add(['song_with_album', 'Song'], function($f) {
     ]);
 });
 
-$faktory->add(['album', 'Album'], function($f) {
+$faktory->define(['album', 'Album'], function($f) {
     $f->name = 'Destroy Erase Improve';
 });
 
@@ -337,13 +337,13 @@ Define a `hasOne` relationship by assigning a `hasOne` call to an attribute.
 `hasOne()` takes the name of the factory that should be used to generate the related object as the first argument, the name of the foreign key column (on the related object) as the second argument, and an optional array of override attributes as the third argument.
 
 ```php
-$faktory->add(['user_with_profile', 'User'], function($f) {
+$faktory->define(['user_with_profile', 'User'], function($f) {
     $f->username = 'johndoe';
     $f->password = 'top-secret';
     $f->profile = $f->hasOne('profile', 'user_id');
 });
 
-$faktory->add(['profile', 'Profile'], function($f) {
+$faktory->define(['profile', 'Profile'], function($f) {
     $f->email = 'johndoe@example.com';
 });
 
@@ -376,13 +376,13 @@ Define a `hasMany` relationship by assigning a `hasMany` call to an attribute.
 `hasMany()` takes the name of the factory that should be used to generate the related objects as the first argument, the name of the foreign key column (on the related object) as the second argument, the number of objects to generate as the third argument, and an optional array of override attributes as the final argument.
 
 ```php
-$faktory->add(['album_with_songs', 'Album'], function($f) {
+$faktory->define(['album_with_songs', 'Album'], function($f) {
     $f->name = 'Master of Puppets';
     $f->release_date = new DateTime('1986-02-24');
     $f->songs = $f->hasMany('song', 'album_id', 8);
 });
 
-$faktory->add(['song', 'Song'], function($f) {
+$faktory->define(['song', 'Song'], function($f) {
     $f->title = 'The Thing That Should Not Be';
     $f->length = 397;
 });
@@ -402,12 +402,12 @@ If you need to override attributes on a relationship when building or creating a
 
 ```php
 // Define the factories
-$faktory->add(['song_with_album', 'Song'], function($f) {
+$faktory->define(['song_with_album', 'Song'], function($f) {
     $f->name = 'Concatenation';
     $f->length = 257;
     $f->album = $f->belongsTo('album', 'album_id');
 });
-$faktory->add(['album', 'Album'], function($f) {
+$faktory->define(['album', 'Album'], function($f) {
     $f->name = 'Destroy Erase Improve';
     $f->release_date = new DateTime('1995-07-25');
 });
