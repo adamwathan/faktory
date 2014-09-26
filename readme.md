@@ -41,7 +41,7 @@ Add the `Faktory` facade to the `aliases` array in `app/config/app.php`:
 You can now start using Faktory by calling methods directly on the `Faktory` facade:
 
 ```php
-Faktory::add('User', function($f) {
+Faktory::define('User', function($f) {
     $f->first_name = 'John';
     $f->last_name = 'Doe';
 });
@@ -75,12 +75,12 @@ require app_path().'/tests/factories.php';
 The most basic factory definition requires a class name and a closure that defines the default attributes for the factory. This will define a factory named after that class that generates instances of that same class.
 
 ```php
-Faktory::add('Album', function($f) {
+Faktory::define('Album', function($f) {
     $f->name = 'Diary of a madman';
     $f->release_date = new DateTime('1981-11-07');
 });
 
-Faktory::add('Song', function($f) {
+Faktory::define('Song', function($f) {
     $f->name = 'Over the mountain';
     $f->length = 271;
 });
@@ -158,7 +158,7 @@ Factories can also be given a name, so that you can define multiple factories fo
 To define a named factory, pass an array in the form `[factory_name, class_name]` as the first parameter instead of just a class name.
 
 ```php
-Faktory::add(['album_with_copies_sold', 'Album'], function($f) {
+Faktory::define(['album_with_copies_sold', 'Album'], function($f) {
     $f->name = 'Diary of a madman';
     $f->release_date = '1981-11-07';
     $f->copies_sold = 3200000;
@@ -182,7 +182,7 @@ $album->copies_sold;
 You can create factories that inherit the attributes of an existing factory by nesting the definition. This allows you to define a basic factory, as well as more specific factories underneath it to generate objects in a specific state without having to redeclare the attributes that don't need to change.
 
 ```php
-Faktory::add(['basic_user', 'User'], function($f) {
+Faktory::define(['basic_user', 'User'], function($f) {
     $f->first_name = 'John';
     $f->last_name = 'Doe';
     $f->is_admin = false;
@@ -208,7 +208,7 @@ $user->is_admin;
 If you don't want an attribute to be evaluated until you try to build an object, you can define that attribute as a closure.
 
 ```php
-Faktory::add('User', function($f) {
+Faktory::define('User', function($f) {
     $f->username = 'john.doe';
 
     $f->created_at = function() {
@@ -233,7 +233,7 @@ $user2->created_at;
 You can also use lazy attributes to define attributes that depend on other attributes in the factory.
 
 ```php
-Faktory::add('User', function($f) {
+Faktory::define('User', function($f) {
     $f->first_name = 'John';
     $f->last_name = 'Doe';
     $f->email = function($f) {
@@ -264,7 +264,7 @@ $user->email;
 Lazy attributes to the rescue again. The closure also takes an autoincrementing integer as it's second parameter, which is really handy for ensuring that a field value is unique.
 
 ```php
-Faktory::add('User', function($f) {
+Faktory::define('User', function($f) {
     $f->first_name = 'John';
     $f->last_name = 'Doe';
     $f->email = function($f, $i) {
