@@ -1,8 +1,8 @@
-<?php namespace AdamWathan\Facktory\Facades;
+<?php namespace Vehikl\Faktory\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Facktory extends Facade {
+class Faktory extends Facade {
 
     /**
      * Get the registered name of the component.
@@ -10,6 +10,6 @@ class Facktory extends Facade {
      * @return string
      */
     protected static function getFacadeAccessor(){
-        return 'adamwathan.facktory';
+        return 'vehikl.faktory';
     }
 }

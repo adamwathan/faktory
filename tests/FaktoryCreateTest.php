@@ -1,15 +1,15 @@
 <?php
 
 use Illuminate\Database\Capsule\Manager as DB;
-use AdamWathan\Facktory\Facktory;
+use Vehikl\Faktory\Faktory;
 
-class FacktoryCreateTest extends FunctionalTestCase
+class FaktoryCreateTest extends FunctionalTestCase
 {
     public function setUp()
     {
         parent::setUp();
         $this->migrate();
-        $this->facktory = new Facktory;
+        $this->faktory = new Faktory;
     }
 
     protected function migrate()
@@ -89,27 +89,27 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_saved_has_many_get_correct_foreign_id()
     {
-        $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
+        $this->faktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
             $f->songs = $f->hasMany('song', 5, 'album_id');
         });
-        $this->facktory->add(['album_with_7_songs', 'Album'], function($f) {
+        $this->faktory->add(['album_with_7_songs', 'Album'], function($f) {
             $f->name = 'Destroy Erase Improve';
             $f->release_date = new DateTime;
             $f->songs = $f->hasMany('song', 7, 'album_id');
         });
-        $this->facktory->add(['song', 'Song'], function($f) {
+        $this->faktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
         });
 
-        $album = $this->facktory->create('album_with_5_songs');
+        $album = $this->faktory->create('album_with_5_songs');
         $songs = $album->songs;
 
         $this->assertSame(5, $songs->count());
 
-        $album = $this->facktory->create('album_with_7_songs');
+        $album = $this->faktory->create('album_with_7_songs');
         $songs = $album->songs;
 
         $this->assertSame(7, $songs->count());
@@ -117,24 +117,24 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_saved_has_many_get_correct_foreign_id_different_classes()
     {
-        $this->facktory->add(['comment', 'Comment'], function($f) {
+        $this->faktory->add(['comment', 'Comment'], function($f) {
             $f->body = 'This post is great';
         });
-        $this->facktory->add(['post_with_5_comments', 'Post'], function($f) {
+        $this->faktory->add(['post_with_5_comments', 'Post'], function($f) {
             $f->title = 'Sweet post';
             $f->comments = $f->hasMany('comment', 5, 'post_id');
         });
-        $this->facktory->add(['post_with_7_comments', 'Post'], function($f) {
+        $this->faktory->add(['post_with_7_comments', 'Post'], function($f) {
             $f->title = 'Sweet post';
             $f->comments = $f->hasMany('comment', 7, 'post_id');
         });
 
-        $post = $this->facktory->create('post_with_5_comments');
+        $post = $this->faktory->create('post_with_5_comments');
         $comments = $post->comments;
 
         $this->assertSame(5, $comments->count());
 
-        $post = $this->facktory->create('post_with_7_comments');
+        $post = $this->faktory->create('post_with_7_comments');
         $comments = $post->comments;
 
         $this->assertSame(7, $comments->count());
@@ -142,17 +142,17 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_saved_has_many_can_have_attributes()
     {
-        $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
+        $this->faktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
             $f->songs = $f->hasMany('song', 5, 'album_id', ['length' => 100]);
         });
-        $this->facktory->add(['song', 'Song'], function($f) {
+        $this->faktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
         });
 
-        $album = $this->facktory->create('album_with_5_songs');
+        $album = $this->faktory->create('album_with_5_songs');
         $songs = $album->songs;
 
         $this->assertSame(5, $songs->count());
@@ -163,17 +163,17 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_saved_has_many_can_have_different_attributes_for_each_instance_specified_in_one_array()
     {
-        $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
+        $this->faktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
             $f->songs = $f->hasMany('song', 2, 'album_id', ['length' => [100, 200]]);
         });
-        $this->facktory->add(['song', 'Song'], function($f) {
+        $this->faktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
         });
 
-        $album = $this->facktory->create('album_with_5_songs');
+        $album = $this->faktory->create('album_with_5_songs');
         $songs = $album->songs;
 
         $this->assertSame(2, $songs->count());
@@ -183,30 +183,30 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_saved_belongs_to_gets_correct_foreign_id()
     {
-        $this->facktory->add(['song_with_album', 'Song'], function($f) {
+        $this->faktory->add(['song_with_album', 'Song'], function($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
             $f->album = $f->belongsTo('album', 'album_id');
         });
-        $this->facktory->add(['album', 'Album'], function($f) {
+        $this->faktory->add(['album', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
         });
 
-        $song = $this->facktory->create('song_with_album');
+        $song = $this->faktory->create('song_with_album');
         $album = $song->album;
 
         $this->assertEquals($song->album_id, $album->id);
 
-        $this->facktory->add(['comment_with_post', 'Comment'], function($f) {
+        $this->faktory->add(['comment_with_post', 'Comment'], function($f) {
             $f->body = 'Great post';
             $f->post = $f->belongsTo('post', 'post_id');
         });
-        $this->facktory->add(['post', 'Post'], function($f) {
+        $this->faktory->add(['post', 'Post'], function($f) {
             $f->title = 'The post to rule all posts';
         });
 
-        $comment = $this->facktory->create('comment_with_post');
+        $comment = $this->faktory->create('comment_with_post');
         $post = $comment->post;
 
         $this->assertEquals($comment->post_id, $post->id);
@@ -214,19 +214,19 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_saved_belongs_to_can_have_attribute_overrides()
     {
-        $this->facktory->add(['song_with_album', 'Song'], function($f) {
+        $this->faktory->add(['song_with_album', 'Song'], function($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
             $f->album = $f->belongsTo('album', 'album_id', [
                 'name' => 'Contradictions Collapse'
                 ]);
         });
-        $this->facktory->add(['album', 'Album'], function($f) {
+        $this->faktory->add(['album', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
         });
 
-        $song = $this->facktory->create('song_with_album');
+        $song = $this->faktory->create('song_with_album');
         $album = $song->album;
 
         $this->assertEquals('Contradictions Collapse', $album->name);
@@ -234,17 +234,17 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_saved_has_one_gets_correct_foreign_id()
     {
-        $this->facktory->add(['album_with_song', 'Album'], function($f) {
+        $this->faktory->add(['album_with_song', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
             $f->song = $f->hasOne('song', 'album_id');
         });
-        $this->facktory->add(['song', 'Song'], function($f) {
+        $this->faktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
         });
 
-        $album = $this->facktory->create('album_with_song');
+        $album = $this->faktory->create('album_with_song');
         $song = $album->song;
 
         $this->assertEquals($song->album_id, $album->id);
@@ -252,17 +252,17 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_can_override_attributes_on_create_with_array()
     {
-        $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
+        $this->faktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
             $f->songs = $f->hasMany('song', 5, 'album_id', ['length' => 100]);
         });
-        $this->facktory->add(['song', 'Song'], function($f) {
+        $this->faktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
         });
 
-        $album = $this->facktory->create('album_with_5_songs', [
+        $album = $this->faktory->create('album_with_5_songs', [
             'name' => 'Destroy Erase Improve',
             'release_date' => new DateTime('1995-07-25'),
             ]);
@@ -278,17 +278,17 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_can_override_attributes_on_create_with_closure()
     {
-        $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
+        $this->faktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime('2001-01-01');
             $f->songs = $f->hasMany('song', 5, 'album_id', ['length' => 100]);
         });
-        $this->facktory->add(['song', 'Song'], function($f) {
+        $this->faktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
         });
 
-        $album = $this->facktory->create('album_with_5_songs', function($f) {
+        $album = $this->faktory->create('album_with_5_songs', function($f) {
             $f->release_date = new DateTime('1998-11-10');
             $f->songs = $f->hasMany('song', 2, 'album_id', ['length' => 150]);
         });
@@ -304,22 +304,22 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_overriding_with_closure_doesnt_permanently_alter_factory()
     {
-        $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
+        $this->faktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime('2001-01-01');
             $f->songs = $f->hasMany('song', 5, 'album_id', ['length' => 100]);
         });
-        $this->facktory->add(['song', 'Song'], function($f) {
+        $this->faktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
         });
 
-        $album = $this->facktory->create('album_with_5_songs', function($f) {
+        $album = $this->faktory->create('album_with_5_songs', function($f) {
             $f->release_date = new DateTime('1998-11-10');
             $f->songs = $f->hasMany('song', 2, 'album_id', ['length' => 150]);
         });
 
-        $album = $this->facktory->create('album_with_5_songs');
+        $album = $this->faktory->create('album_with_5_songs');
 
         $this->assertTrue(new DateTime('2001-01-01') == $album->release_date);
         $this->assertSame('Chaosphere', $album->name);
@@ -332,17 +332,17 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_can_alter_has_many_relationship_quantity_without_overriding_entire_relationship()
     {
-        $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
+        $this->faktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
             $f->songs = $f->hasMany('song', 5, 'album_id', ['length' => 100]);
         });
-        $this->facktory->add(['song', 'Song'], function($f) {
+        $this->faktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
         });
 
-        $album = $this->facktory->create('album_with_5_songs', function($f) {
+        $album = $this->faktory->create('album_with_5_songs', function($f) {
             $f->release_date = new DateTime('1998-11-10');
             $f->songs->quantity(2);
         });
@@ -356,17 +356,17 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_can_alter_has_many_relationship_attribute_without_overriding_entire_relationship()
     {
-        $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
+        $this->faktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
             $f->songs = $f->hasMany('song', 5, 'album_id', ['length' => 100]);
         });
-        $this->facktory->add(['song', 'Song'], function($f) {
+        $this->faktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
         });
 
-        $album = $this->facktory->create('album_with_5_songs', function($f) {
+        $album = $this->faktory->create('album_with_5_songs', function($f) {
             $f->release_date = new DateTime('1998-11-10');
             $f->songs->attributes(['length' => 150]);
         });
@@ -380,17 +380,17 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_can_chain_changes_on_has_many_relationship()
     {
-        $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
+        $this->faktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
             $f->songs = $f->hasMany('song', 5, 'album_id', ['length' => 100]);
         });
-        $this->facktory->add(['song', 'Song'], function($f) {
+        $this->faktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
         });
 
-        $album = $this->facktory->create('album_with_5_songs', function($f) {
+        $album = $this->faktory->create('album_with_5_songs', function($f) {
             $f->release_date = new DateTime('1998-11-10');
             $f->songs->quantity(2)->attributes(['length' => 150]);
         });
@@ -401,7 +401,7 @@ class FacktoryCreateTest extends FunctionalTestCase
             $this->assertEquals(150, $song->length);
         }
 
-        $album = $this->facktory->create('album_with_5_songs', function($f) {
+        $album = $this->faktory->create('album_with_5_songs', function($f) {
             $f->release_date = new DateTime('1998-11-10');
             $f->songs->attributes(['length' => 150])->quantity(2);
         });
@@ -415,17 +415,17 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_can_alter_has_many_relationship_attribute_with_independent_values_per_related_object()
     {
-        $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
+        $this->faktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
             $f->songs = $f->hasMany('song', 5, 'album_id', ['length' => 100]);
         });
-        $this->facktory->add(['song', 'Song'], function($f) {
+        $this->faktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
         });
 
-        $album = $this->facktory->create('album_with_5_songs', function($f) {
+        $album = $this->faktory->create('album_with_5_songs', function($f) {
             $f->release_date = new DateTime('1998-11-10');
             $f->songs->quantity(2)->attributes(['length' => [150, 250]]);
         });
@@ -438,19 +438,19 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_can_override_belongs_to_attributes_on_create()
     {
-        $this->facktory->add(['song_with_album', 'Song'], function($f) {
+        $this->faktory->add(['song_with_album', 'Song'], function($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
             $f->album = $f->belongsTo('album', 'album_id', [
                 'name' => 'Contradictions Collapse'
                 ]);
         });
-        $this->facktory->add(['album', 'Album'], function($f) {
+        $this->faktory->add(['album', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
         });
 
-        $song = $this->facktory->create('song_with_album', function($f) {
+        $song = $this->faktory->create('song_with_album', function($f) {
             $f->album->attributes(['name' => 'None']);
         });
         $album = $song->album;
@@ -459,17 +459,17 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_can_override_has_one_relationship_attributes_on_create()
     {
-        $this->facktory->add(['album_with_song', 'Album'], function($f) {
+        $this->faktory->add(['album_with_song', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
             $f->song = $f->hasOne('song', 'album_id');
         });
-        $this->facktory->add(['song', 'Song'], function($f) {
+        $this->faktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
         });
 
-        $album = $this->facktory->create('album_with_song', function($f) {
+        $album = $this->faktory->create('album_with_song', function($f) {
             $f->song->attributes(['length' => 100]);
         });
         $song = $album->song;
@@ -480,15 +480,15 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_saved_has_many_can_guess_correct_foreign_keys()
     {
-        $this->facktory->add(['post_with_comments', 'Post'], function($f) {
+        $this->faktory->add(['post_with_comments', 'Post'], function($f) {
             $f->title = 'First Post';
             $f->comments = $f->hasMany('comment', 2);
         });
-        $this->facktory->add(['comment', 'Comment'], function($f) {
+        $this->faktory->add(['comment', 'Comment'], function($f) {
             $f->body = 'Great post!';
         });
 
-        $post = $this->facktory->create('post_with_comments');
+        $post = $this->faktory->create('post_with_comments');
         $comments = $post->comments;
 
         $this->assertSame(2, $comments->count());
@@ -496,17 +496,17 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_saved_has_many_can_guess_correct_foreign_keys_2()
     {
-        $this->facktory->add(['album_with_songs', 'Album'], function($f) {
+        $this->faktory->add(['album_with_songs', 'Album'], function($f) {
             $f->name = 'Sabotage';
             $f->release_date = new DateTime('1975-07-28');
             $f->songs = $f->hasMany('song', 3);
         });
-        $this->facktory->add(['song', 'Song'], function($f) {
+        $this->faktory->add(['song', 'Song'], function($f) {
             $f->name = 'Symptom of the Universe';
             $f->length = 100;
         });
 
-        $album = $this->facktory->create('album_with_songs');
+        $album = $this->faktory->create('album_with_songs');
         $songs = $album->songs;
 
         $this->assertSame(3, $songs->count());
@@ -514,15 +514,15 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_saved_belongs_to_can_guess_correct_foreign_key()
     {
-        $this->facktory->add(['post', 'Post'], function($f) {
+        $this->faktory->add(['post', 'Post'], function($f) {
             $f->title = 'First Post';
         });
-        $this->facktory->add(['comment', 'Comment'], function($f) {
+        $this->faktory->add(['comment', 'Comment'], function($f) {
             $f->body = 'Great post!';
             $f->post = $f->belongsTo('post');
         });
 
-        $comment = $this->facktory->create('comment');
+        $comment = $this->faktory->create('comment');
         $post = $comment->post;
 
         $this->assertSame('First Post', $post->title);
@@ -530,15 +530,15 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_saved_has_one_can_guess_correct_foreign_key()
     {
-        $this->facktory->add(['post', 'Post'], function($f) {
+        $this->faktory->add(['post', 'Post'], function($f) {
             $f->title = 'First Post';
             $f->comment = $f->hasOne('comment');
         });
-        $this->facktory->add(['comment', 'Comment'], function($f) {
+        $this->faktory->add(['comment', 'Comment'], function($f) {
             $f->body = 'Great post!';
         });
 
-        $post = $this->facktory->create('post');
+        $post = $this->faktory->create('post');
         $comment = $post->comment;
 
         $this->assertSame('Great post!', $comment->body);
@@ -546,19 +546,19 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_can_override_relationship_attributes_on_create_fluently()
     {
-        $this->facktory->add(['song_with_album', 'Song'], function($f) {
+        $this->faktory->add(['song_with_album', 'Song'], function($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
             $f->album = $f->belongsTo('album', 'album_id')->attributes([
                     'name' => 'Contradictions Collapse',
                 ]);
         });
-        $this->facktory->add(['album', 'Album'], function($f) {
+        $this->faktory->add(['album', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
         });
 
-        $song = $this->facktory->create('song_with_album', function($f) {
+        $song = $this->faktory->create('song_with_album', function($f) {
             $f->album->attributes(['name' => 'None']);
         });
         $album = $song->album;
@@ -567,19 +567,19 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_can_specify_foreign_key_fluently_on_belongs_to()
     {
-        $this->facktory->add(['song_with_album', 'Song'], function($f) {
+        $this->faktory->add(['song_with_album', 'Song'], function($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
             $f->album = $f->belongsTo('album')->attributes([
                     'name' => 'Contradictions Collapse',
                 ])->foreignKey('album_id');
         });
-        $this->facktory->add(['album', 'Album'], function($f) {
+        $this->faktory->add(['album', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
         });
 
-        $song = $this->facktory->create('song_with_album', function($f) {
+        $song = $this->faktory->create('song_with_album', function($f) {
             $f->album->attributes(['name' => 'None']);
         });
         $album = $song->album;
@@ -588,17 +588,17 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_specify_foreign_key_fluently_on_has_many()
     {
-        $this->facktory->add(['album_with_5_songs', 'Album'], function($f) {
+        $this->faktory->add(['album_with_5_songs', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
             $f->songs = $f->hasMany('song', 5)->foreignKey('album_id');
         });
-        $this->facktory->add(['song', 'Song'], function($f) {
+        $this->faktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
         });
 
-        $album = $this->facktory->create('album_with_5_songs');
+        $album = $this->faktory->create('album_with_5_songs');
         $songs = $album->songs;
 
         $this->assertSame(5, $songs->count());
@@ -606,20 +606,28 @@ class FacktoryCreateTest extends FunctionalTestCase
 
     public function test_specify_foreign_key_fluently_on_has_one()
     {
-        $this->facktory->add(['album_with_song', 'Album'], function($f) {
+        $this->faktory->add(['album_with_song', 'Album'], function($f) {
             $f->name = 'Chaosphere';
             $f->release_date = new DateTime;
             $f->song = $f->hasOne('song')->foreignKey('album_id');
         });
-        $this->facktory->add(['song', 'Song'], function($f) {
+        $this->faktory->add(['song', 'Song'], function($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
         });
 
-        $album = $this->facktory->create('album_with_song');
+        $album = $this->faktory->create('album_with_song');
         $song = $album->song;
 
         $this->assertEquals($song->album_id, $album->id);
+    }
+
+    /**
+     * @expectedException Vehikl\Faktory\FactoryNotRegisteredException
+     */
+    public function test_trying_to_create_from_unregistered_factory_throws_exception()
+    {
+        $album = $this->faktory->create('album_with_song');
     }
 }
 

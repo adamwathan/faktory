@@ -1,4 +1,4 @@
-<?php namespace AdamWathan\Facktory\Strategy;
+<?php namespace Vehikl\Faktory\Strategy;
 
 abstract class Strategy
 {

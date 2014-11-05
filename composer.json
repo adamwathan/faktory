@@ -1,5 +1,5 @@
 {
-    "name": "adamwathan/facktory",
+    "name": "vehikl/faktory",
     "description": "An attempt at bringing the wonders of Ruby's FactoryGirl to PHP",
     "authors": [
         {
@@ -16,8 +16,8 @@
         "mockery/mockery": "0.9.*"
     },
     "autoload": {
-        "psr-0": {
-            "AdamWathan\\Facktory": "src/"
+        "psr-4": {
+            "Vehikl\\Faktory\\": "src/"
         },
         "classmap": [
             "tests/FunctionalTestCase.php"

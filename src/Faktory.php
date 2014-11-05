@@ -1,6 +1,9 @@
-<?php namespace AdamWathan\Facktory;
+<?php namespace Vehikl\Faktory;
 
-class Facktory
+use Vehikl\Faktory\Factory\Factory;
+use Vehikl\Faktory\Factory\FactoryProxy;
+
+class Faktory
 {
     protected $factories = [];
 
@@ -10,6 +13,11 @@ class Facktory
         $factory = Factory::make($model, $this);
         $this->addFactory($name, $factory);
         $definitionCallback($factory);
+    }
+
+    public function define($name, $definitionCallback)
+    {
+        $this->add($name, $definitionCallback);
     }
 
     protected function extractNameAndModel($name)
@@ -35,14 +43,24 @@ class Facktory
         return $this->getFactory($name)->create($attributes);
     }
 
-    public function buildList($name, $count, $attributes = [])
+    public function buildMany($name, $count, $attributes = [])
     {
         return $this->getFactory($name)->buildList($count, $attributes);
     }
 
-    public function createList($name, $count, $attributes = [])
+    public function buildList($name, $count, $attributes = [])
+    {
+        return $this->buildMany($name, $count, $attributes);
+    }
+
+    public function createMany($name, $count, $attributes = [])
     {
         return $this->getFactory($name)->createList($count, $attributes);
+    }
+
+    public function createList($name, $count, $attributes = [])
+    {
+        return $this->createMany($name, $count, $attributes);
     }
 
     public function getFactory($name)
@@ -53,7 +71,15 @@ class Facktory
     protected function getProxyFactory($name)
     {
         return new FactoryProxy(function() use ($name) {
-            return $this->factories[$name];
+            return $this->fetchFactory($name);
         });
+    }
+
+    protected function fetchFactory($name)
+    {
+        if (! isset($this->factories[$name])) {
+            throw new FactoryNotRegisteredException;
+        }
+        return $this->factories[$name];
     }
 }

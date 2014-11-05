@@ -1,6 +1,6 @@
-<?php namespace AdamWathan\Facktory\Strategy;
+<?php namespace Vehikl\Faktory\Strategy;
 
-use AdamWathan\Facktory\Relationship\Relationship;
+use Vehikl\Faktory\Relationship\Relationship;
 
 class Build extends Strategy
 {

@@ -1,5 +1,3 @@
-> Note: This version of Facktory is no longer maintained, the currently maintained release is located here: [https://github.com/vehikl/faktory](https://github.com/vehikl/faktory)
-
 # Facktory
 
 Facktory is a tool for easily building test objects ala [FactoryGirl](https://github.com/thoughtbot/factory_girl/), but for PHP. It's still in it's early stages, but give it a go if you're interested, and open issues for the features it's missing that you think are really important.
@@ -43,7 +41,7 @@ Add the `Facktory` facade to the `aliases` array in `app/config/app.php`:
 You can now start using Facktory by calling methods directly on the `Facktory` facade:
 
 ```php
-Facktory::add('User', function($f) {
+Facktory::define('User', function($f) {
     $f->first_name = 'John';
     $f->last_name = 'Doe';
 });
@@ -77,12 +75,12 @@ require app_path().'/tests/factories.php';
 The most basic factory definition requires a class name and a closure that defines the default attributes for the factory. This will define a factory named after that class that generates instances of that same class.
 
 ```php
-Facktory::add('Album', function($f) {
+Facktory::define('Album', function($f) {
     $f->name = 'Diary of a madman';
     $f->release_date = new DateTime('1981-11-07');
 });
 
-Facktory::add('Song', function($f) {
+Facktory::define('Song', function($f) {
     $f->name = 'Over the mountain';
     $f->length = 271;
 });
@@ -160,7 +158,7 @@ Factories can also be given a name, so that you can define multiple factories fo
 To define a named factory, pass an array in the form `[factory_name, class_name]` as the first parameter instead of just a class name.
 
 ```php
-Facktory::add(['album_with_copies_sold', 'Album'], function($f) {
+Facktory::define(['album_with_copies_sold', 'Album'], function($f) {
     $f->name = 'Diary of a madman';
     $f->release_date = '1981-11-07';
     $f->copies_sold = 3200000;
@@ -184,12 +182,12 @@ $album->copies_sold;
 You can create factories that inherit the attributes of an existing factory by nesting the definition. This allows you to define a basic factory, as well as more specific factories underneath it to generate objects in a specific state without having to redeclare the attributes that don't need to change.
 
 ```php
-Facktory::add(['basic_user', 'User'], function($f) {
+Facktory::define(['basic_user', 'User'], function($f) {
     $f->first_name = 'John';
     $f->last_name = 'Doe';
     $f->is_admin = false;
 
-    $f->add('admin', function($f) {
+    $f->define('admin', function($f) {
         $f->is_admin = true;
     });
 });
@@ -210,7 +208,7 @@ $user->is_admin;
 If you don't want an attribute to be evaluated until you try to build an object, you can define that attribute as a closure.
 
 ```php
-Facktory::add('User', function($f) {
+Facktory::define('User', function($f) {
     $f->username = 'john.doe';
 
     $f->created_at = function() {
@@ -235,7 +233,7 @@ $user2->created_at;
 You can also use lazy attributes to define attributes that depend on other attributes in the factory.
 
 ```php
-Facktory::add('User', function($f) {
+Facktory::define('User', function($f) {
     $f->first_name = 'John';
     $f->last_name = 'Doe';
     $f->email = function($f) {
@@ -266,7 +264,7 @@ $user->email;
 Lazy attributes to the rescue again. The closure also takes an autoincrementing integer as it's second parameter, which is really handy for ensuring that a field value is unique.
 
 ```php
-Facktory::add('User', function($f) {
+Facktory::define('User', function($f) {
     $f->first_name = 'John';
     $f->last_name = 'Doe';
     $f->email = function($f, $i) {
@@ -297,7 +295,7 @@ Define a `belongsTo` relationship by assigning a `belongsTo` call to an attribut
 `belongsTo()` takes the name of the factory that should be used to generate the related object as the first argument, the name of the foreign key column as the second argument, and an optional array of override attributes as the third argument.
 
 ```php
-$facktory->add(['song_with_album', 'Song'], function($f) {
+$facktory->define(['song_with_album', 'Song'], function($f) {
     $f->name = 'Concatenation';
     $f->length = 257;
     $f->album = $f->belongsTo('album', 'album_id', [
@@ -305,7 +303,7 @@ $facktory->add(['song_with_album', 'Song'], function($f) {
     ]);
 });
 
-$facktory->add(['album', 'Album'], function($f) {
+$facktory->define(['album', 'Album'], function($f) {
     $f->name = 'Destroy Erase Improve';
 });
 
@@ -339,13 +337,13 @@ Define a `hasOne` relationship by assigning a `hasOne` call to an attribute.
 `hasOne()` takes the name of the factory that should be used to generate the related object as the first argument, the name of the foreign key column (on the related object) as the second argument, and an optional array of override attributes as the third argument.
 
 ```php
-$facktory->add(['user_with_profile', 'User'], function($f) {
+$facktory->define(['user_with_profile', 'User'], function($f) {
     $f->username = 'johndoe';
     $f->password = 'top-secret';
     $f->profile = $f->hasOne('profile', 'user_id');
 });
 
-$facktory->add(['profile', 'Profile'], function($f) {
+$facktory->define(['profile', 'Profile'], function($f) {
     $f->email = 'johndoe@example.com';
 });
 
@@ -378,13 +376,13 @@ Define a `hasMany` relationship by assigning a `hasMany` call to an attribute.
 `hasMany()` takes the name of the factory that should be used to generate the related objects as the first argument, the name of the foreign key column (on the related object) as the second argument, the number of objects to generate as the third argument, and an optional array of override attributes as the final argument.
 
 ```php
-$facktory->add(['album_with_songs', 'Album'], function($f) {
+$facktory->define(['album_with_songs', 'Album'], function($f) {
     $f->name = 'Master of Puppets';
     $f->release_date = new DateTime('1986-02-24');
     $f->songs = $f->hasMany('song', 'album_id', 8);
 });
 
-$facktory->add(['song', 'Song'], function($f) {
+$facktory->define(['song', 'Song'], function($f) {
     $f->title = 'The Thing That Should Not Be';
     $f->length = 397;
 });
@@ -404,12 +402,12 @@ If you need to override attributes on a relationship when building or creating a
 
 ```php
 // Define the factories
-$facktory->add(['song_with_album', 'Song'], function($f) {
+$facktory->define(['song_with_album', 'Song'], function($f) {
     $f->name = 'Concatenation';
     $f->length = 257;
     $f->album = $f->belongsTo('album', 'album_id');
 });
-$facktory->add(['album', 'Album'], function($f) {
+$facktory->define(['album', 'Album'], function($f) {
     $f->name = 'Destroy Erase Improve';
     $f->release_date = new DateTime('1995-07-25');
 });

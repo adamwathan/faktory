@@ -1,10 +1,10 @@
-<?php namespace AdamWathan\Facktory;
+<?php namespace Vehikl\Faktory\Factory;
 
-use AdamWathan\Facktory\Strategy\Build as BuildStrategy;
-use AdamWathan\Facktory\Strategy\Create as CreateStrategy;
-use AdamWathan\Facktory\Relationship\BelongsTo;
-use AdamWathan\Facktory\Relationship\HasMany;
-use AdamWathan\Facktory\Relationship\HasOne;
+use Vehikl\Faktory\Strategy\Build as BuildStrategy;
+use Vehikl\Faktory\Strategy\Create as CreateStrategy;
+use Vehikl\Faktory\Relationship\BelongsTo;
+use Vehikl\Faktory\Relationship\HasMany;
+use Vehikl\Faktory\Relationship\HasOne;
 
 class Factory
 {
@@ -92,12 +92,17 @@ class Factory
         return $that->attributes;
     }
 
-    public function buildList($count, $override_attributes)
+    public function buildMany($count, $override_attributes)
     {
         $override_attributes = $this->expandAttributesForList($override_attributes, $count);
         return array_map(function($i) use ($override_attributes) {
             return $this->build($override_attributes[$i]);
         }, range(0, $count - 1));
+    }
+
+    public function buildList($count, $override_attributes)
+    {
+        return $this->buildMany($count, $override_attributes);
     }
 
     protected function expandAttributesForList($attributes, $count)
@@ -114,12 +119,17 @@ class Factory
         }, $attributes);
     }
 
-    public function createList($count, $override_attributes)
+    public function createMany($count, $override_attributes)
     {
         $override_attributes = $this->expandAttributesForList($override_attributes, $count);
         return array_map(function($i) use ($override_attributes) {
             return $this->create($override_attributes[$i]);
         }, range(0, $count - 1));
+    }
+
+    public function createList($count, $override_attributes)
+    {
+        $this->createMany($count, $override_attributes);
     }
 
     public function add($name, $definitionCallback)
@@ -129,6 +139,11 @@ class Factory
             $definitionCallback($f);
         };
         $this->factory_repository->add([$name, $this->model], $callback);
+    }
+
+    public function define($name, $definitionCallback)
+    {
+        $this->add($name, $definitionCallback);
     }
 
     public function belongsTo($name, $foreign_key = null, $attributes = [])

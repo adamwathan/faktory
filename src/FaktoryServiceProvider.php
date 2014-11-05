@@ -1,8 +1,8 @@
-<?php namespace AdamWathan\Facktory;
+<?php namespace Vehikl\Faktory;
 
 use Illuminate\Support\ServiceProvider;
 
-class FacktoryServiceProvider extends ServiceProvider {
+class FaktoryServiceProvider extends ServiceProvider {
 
     /**
      * Indicates if loading of the provider is deferred.
@@ -18,9 +18,9 @@ class FacktoryServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-        $this->app['adamwathan.facktory'] = $this->app->share(function($app)
+        $this->app['vehikl.faktory'] = $this->app->share(function($app)
         {
-            return new Facktory;
+            return new Faktory;
         });
     }
 
@@ -31,7 +31,7 @@ class FacktoryServiceProvider extends ServiceProvider {
      */
     public function provides()
     {
-        return array('facktory');
+        return array('faktory');
     }
 
 }
