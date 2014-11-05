@@ -17,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Vehikl\\Faktory\\": "src/"
+            "AdamWathan\\Faktory\\": "src/"
         },
         "classmap": [
             "tests/FunctionalTestCase.php"

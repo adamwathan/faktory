@@ -1,7 +1,7 @@
-<?php namespace Vehikl\Faktory;
+<?php namespace AdamWathan\Faktory;
 
-use Vehikl\Faktory\Factory\Factory;
-use Vehikl\Faktory\Factory\FactoryProxy;
+use AdamWathan\Faktory\Factory\Factory;
+use AdamWathan\Faktory\Factory\FactoryProxy;
 
 class Faktory
 {

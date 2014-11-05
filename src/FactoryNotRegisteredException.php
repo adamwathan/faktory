@@ -1,3 +1,3 @@
-<?php namespace Vehikl\Faktory;
+<?php namespace AdamWathan\Faktory;
 
 class FactoryNotRegisteredException extends \RuntimeException {}

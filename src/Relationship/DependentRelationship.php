@@ -1,4 +1,4 @@
-<?php namespace Vehikl\Faktory\Relationship;
+<?php namespace AdamWathan\Faktory\Relationship;
 
 abstract class DependentRelationship extends Relationship
 {

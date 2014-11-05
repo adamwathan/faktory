@@ -1,6 +1,6 @@
 <?php
 
-use Vehikl\Faktory\Relationship\BelongsTo;
+use AdamWathan\Faktory\Relationship\BelongsTo;
 use Mockery as M;
 
 class BelongsToTest extends \PHPUnit_Framework_TestCase
@@ -12,7 +12,7 @@ class BelongsToTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_guess_foreign_key_with_basic_class()
     {
-        $factory = M::mock('Vehikl\\Faktory\\Factory');
+        $factory = M::mock('AdamWathan\\Faktory\\Factory');
         $factory->shouldReceive('getModel')->andReturn('Post');
 
         $relationship = new BelongsTo('Comment', $factory);
@@ -22,7 +22,7 @@ class BelongsToTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_guess_foreign_key_with_namespaced_class()
     {
-        $factory = M::mock('Vehikl\\Faktory\\Factory');
+        $factory = M::mock('AdamWathan\\Faktory\\Factory');
         $factory->shouldReceive('getModel')->andReturn('Foo\\Bar\\Post');
 
         $relationship = new BelongsTo('Comment', $factory);
@@ -32,7 +32,7 @@ class BelongsToTest extends \PHPUnit_Framework_TestCase
 
     public function test_specified_foreign_key_takes_precedence()
     {
-        $factory = M::mock('Vehikl\\Faktory\\Factory');
+        $factory = M::mock('AdamWathan\\Faktory\\Factory');
         $relationship = new BelongsTo('Comment', $factory);
 
         $relationship->foreignKey('parent_post');
@@ -42,7 +42,7 @@ class BelongsToTest extends \PHPUnit_Framework_TestCase
 
     public function test_specified_foreign_key_in_constructor_takes_precedence()
     {
-        $factory = M::mock('Vehikl\\Faktory\\Factory');
+        $factory = M::mock('AdamWathan\\Faktory\\Factory');
         $relationship = new BelongsTo('Comment', $factory, 'parent_post');
 
         $expected = 'parent_post';

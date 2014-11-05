@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Capsule\Manager as DB;
-use Vehikl\Faktory\Faktory;
+use AdamWathan\Faktory\Faktory;
 
 class FaktoryCreateTest extends FunctionalTestCase
 {
@@ -623,7 +623,7 @@ class FaktoryCreateTest extends FunctionalTestCase
     }
 
     /**
-     * @expectedException Vehikl\Faktory\FactoryNotRegisteredException
+     * @expectedException AdamWathan\Faktory\FactoryNotRegisteredException
      */
     public function test_trying_to_create_from_unregistered_factory_throws_exception()
     {

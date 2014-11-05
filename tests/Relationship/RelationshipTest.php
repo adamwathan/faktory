@@ -1,6 +1,6 @@
 <?php
 
-use Vehikl\Faktory\Relationship\Relationship as AbstractRelationship;
+use AdamWathan\Faktory\Relationship\Relationship as AbstractRelationship;
 use Mockery as M;
 
 class RelationshipTest extends \PHPUnit_Framework_TestCase
@@ -12,7 +12,7 @@ class RelationshipTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_guess_foreign_key_with_basic_class()
     {
-        $factory = M::mock('Vehikl\\Faktory\\Factory');
+        $factory = M::mock('AdamWathan\\Faktory\\Factory');
         $relationship = new Relationship('Post', $factory);
 
         $expected = 'post_id';
@@ -21,7 +21,7 @@ class RelationshipTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_guess_foreign_key_with_namespaced_class()
     {
-        $factory = M::mock('Vehikl\\Faktory\\Factory');
+        $factory = M::mock('AdamWathan\\Faktory\\Factory');
         $relationship = new Relationship('Foo\\Bar\\Post', $factory);
 
         $expected = 'post_id';
@@ -30,7 +30,7 @@ class RelationshipTest extends \PHPUnit_Framework_TestCase
 
     public function test_specified_foreign_key_takes_precedence()
     {
-        $factory = M::mock('Vehikl\\Faktory\\Factory');
+        $factory = M::mock('AdamWathan\\Faktory\\Factory');
         $relationship = new Relationship('Foo\\Bar\\Post', $factory);
 
         $relationship->foreignKey('post');
@@ -40,7 +40,7 @@ class RelationshipTest extends \PHPUnit_Framework_TestCase
 
     public function test_specified_foreign_key_in_constructor_takes_precedence()
     {
-        $factory = M::mock('Vehikl\\Faktory\\Factory');
+        $factory = M::mock('AdamWathan\\Faktory\\Factory');
         $relationship = new Relationship('Foo\\Bar\\Post', $factory, 'post');
 
         $expected = 'post';

@@ -1,4 +1,4 @@
-<?php namespace Vehikl\Faktory\Relationship;
+<?php namespace AdamWathan\Faktory\Relationship;
 
 class HasOne extends DependentRelationship
 {

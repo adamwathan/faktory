@@ -1,4 +1,4 @@
-<?php namespace Vehikl\Faktory\Facades;
+<?php namespace AdamWathan\Faktory\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
