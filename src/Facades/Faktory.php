@@ -10,6 +10,6 @@ class Faktory extends Facade {
      * @return string
      */
     protected static function getFacadeAccessor(){
-        return 'vehikl.faktory';
+        return 'adamwathan.faktory';
     }
 }

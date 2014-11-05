@@ -1,5 +1,5 @@
 {
-    "name": "vehikl/faktory",
+    "name": "adamwathan/faktory",
     "description": "An attempt at bringing the wonders of Ruby's FactoryGirl to PHP",
     "authors": [
         {
