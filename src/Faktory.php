@@ -78,7 +78,7 @@ class Faktory
     protected function fetchFactory($name)
     {
         if (! isset($this->factories[$name])) {
-            throw new FactoryNotRegisteredException;
+            throw new FactoryNotRegisteredException("'{$name}' is not a registered factory.");
         }
         return $this->factories[$name];
     }
