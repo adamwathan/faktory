@@ -33,5 +33,4 @@ class FaktoryServiceProvider extends ServiceProvider {
     {
         return array('faktory');
     }
-
 }
