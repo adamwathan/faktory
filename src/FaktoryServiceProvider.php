@@ -18,8 +18,7 @@ class FaktoryServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-        $this->app['adamwathan.faktory'] = $this->app->share(function($app)
-        {
+        $this->app['adamwathan.faktory'] = $this->app->share(function () {
             return new Faktory;
         });
     }
@@ -31,6 +30,6 @@ class FaktoryServiceProvider extends ServiceProvider {
      */
     public function provides()
     {
-        return array('faktory');
+        return ['faktory'];
     }
 }
