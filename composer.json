@@ -13,7 +13,8 @@
     },
     "require-dev": {
         "illuminate/database": "4.*",
-        "mockery/mockery": "0.9.*"
+        "mockery/mockery": "0.9.*",
+        "codeclimate/php-test-reporter": "0.1.*"
     },
     "autoload": {
         "psr-4": {
