@@ -12,7 +12,7 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_define_basic_factory()
     {
-        $this->faktory->define('BuildAlbum', function($f) {
+        $this->faktory->define('BuildAlbum', function ($f) {
             $f->name = 'Bark at the moon';
         });
         $album = $this->faktory->build('BuildAlbum');
@@ -23,7 +23,7 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_override_attribute()
     {
-        $this->faktory->define('BuildAlbum', function($f) {
+        $this->faktory->define('BuildAlbum', function ($f) {
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
         });
@@ -38,7 +38,7 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_define_factory_with_name()
     {
-        $this->faktory->define(['album_with_artist', 'BuildAlbum'], function($f) {
+        $this->faktory->define(['album_with_artist', 'BuildAlbum'], function ($f) {
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
         });
@@ -51,7 +51,7 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_define_factory_with_name_and_override_attribute()
     {
-        $this->faktory->define(['album_with_artist', 'BuildAlbum'], function($f) {
+        $this->faktory->define(['album_with_artist', 'BuildAlbum'], function ($f) {
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
         });
@@ -66,9 +66,9 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_nest_factory_and_inherit_attributes()
     {
-        $this->faktory->define('BuildAlbum', function($f) {
+        $this->faktory->define('BuildAlbum', function ($f) {
             $f->name = 'Bark at the moon';
-            $f->define('album_with_artist', function($f) {
+            $f->define('album_with_artist', function ($f) {
                 $f->artist = 'Ozzy Osbourne';
             });
         });
@@ -81,9 +81,9 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_nest_factory_and_override_attribute()
     {
-        $this->faktory->define('BuildAlbum', function($f) {
+        $this->faktory->define('BuildAlbum', function ($f) {
             $f->name = 'Bark at the moon';
-            $f->define('album_with_artist', function($f) {
+            $f->define('album_with_artist', function ($f) {
                 $f->artist = 'Ozzy Osbourne';
             });
         });
@@ -96,9 +96,9 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_nest_factory_and_override_parent_attribute()
     {
-        $this->faktory->define('BuildAlbum', function($f) {
+        $this->faktory->define('BuildAlbum', function ($f) {
             $f->name = 'Bark at the moon';
-            $f->define('album_with_artist', function($f) {
+            $f->define('album_with_artist', function ($f) {
                 $f->artist = 'Ozzy Osbourne';
             });
         });
@@ -111,9 +111,9 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_nest_factory_inside_named_factory()
     {
-        $this->faktory->define(['basic_album', 'BuildAlbum'], function($f) {
+        $this->faktory->define(['basic_album', 'BuildAlbum'], function ($f) {
             $f->name = 'Bark at the moon';
-            $f->define('album_with_artist', function($f) {
+            $f->define('album_with_artist', function ($f) {
                 $f->artist = 'Ozzy Osbourne';
             });
         });
@@ -126,10 +126,10 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_override_parent_attribute_with_default_attribute_in_nested_factory()
     {
-        $this->faktory->define(['basic_album', 'BuildAlbum'], function($f) {
+        $this->faktory->define(['basic_album', 'BuildAlbum'], function ($f) {
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
-            $f->define('album_by_black_sabbath', function($f) {
+            $f->define('album_by_black_sabbath', function ($f) {
                 $f->artist = 'Black Sabbath';
             });
         });
@@ -142,10 +142,10 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_add_calculated_attributes()
     {
-        $this->faktory->define(['album_with_artist', 'BuildAlbum'], function($f) {
+        $this->faktory->define(['album_with_artist', 'BuildAlbum'], function ($f) {
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
-            $f->display_title = function($f) {
+            $f->display_title = function ($f) {
                 return "{$f->artist} - {$f->name}";
             };
         });
@@ -159,10 +159,10 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_add_sequenced_attribute()
     {
-        $this->faktory->define(['album_with_artist', 'BuildAlbum'], function($f) {
+        $this->faktory->define(['album_with_artist', 'BuildAlbum'], function ($f) {
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
-            $f->id = function($f, $i) {
+            $f->id = function ($f, $i) {
                 return $i;
             };
         });
@@ -182,7 +182,7 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_build_list_of_objects()
     {
-        $this->faktory->define(['album_with_artist', 'BuildAlbum'], function($f) {
+        $this->faktory->define(['album_with_artist', 'BuildAlbum'], function ($f) {
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
         });
@@ -198,7 +198,7 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_can_override_attribute_when_building_list()
     {
-        $this->faktory->define(['album_with_artist', 'BuildAlbum'], function($f) {
+        $this->faktory->define(['album_with_artist', 'BuildAlbum'], function ($f) {
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
         });
@@ -216,7 +216,7 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_can_override_attributes_independently_when_building_list()
     {
-        $this->faktory->define(['album_with_artist', 'BuildAlbum'], function($f) {
+        $this->faktory->define(['album_with_artist', 'BuildAlbum'], function ($f) {
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
         });
@@ -254,7 +254,7 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_can_override_attributes_independently_and_as_a_group_when_building_list()
     {
-        $this->faktory->define(['album_with_artist', 'BuildAlbum'], function($f) {
+        $this->faktory->define(['album_with_artist', 'BuildAlbum'], function ($f) {
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
             $f->release_date = '1983-11-15';
@@ -289,15 +289,15 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_lazy_evaluate_related_class_before_defining_related_factory()
     {
-        $this->faktory->define(['hit_song', 'BuildSong'], function($f) {
+        $this->faktory->define(['hit_song', 'BuildSong'], function ($f) {
             $f->name = 'Suicide solution';
             $f->length = 125;
-            $f->album = function() {
+            $f->album = function () {
                 return $this->faktory->build('album_with_artist');
             };
         });
 
-        $this->faktory->define(['album_with_artist', 'BuildAlbum'], function($f) {
+        $this->faktory->define(['album_with_artist', 'BuildAlbum'], function ($f) {
             $f->name = 'Blizzard of Ozz';
             $f->artist = 'Ozzy Osbourne';
         });
@@ -311,13 +311,13 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_can_use_closures_as_overrides()
     {
-        $this->faktory->define(['hit_song', 'BuildSong'], function($f) {
+        $this->faktory->define(['hit_song', 'BuildSong'], function ($f) {
             $f->name = 'Suicide solution';
             $f->length = 125;
         });
 
         $song = $this->faktory->build('hit_song', [
-            'length' => function() {
+            'length' => function () {
                 return 50;
             }
             ]);
@@ -327,13 +327,13 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_closure_overrides_still_receive_params()
     {
-        $this->faktory->define(['hit_song', 'BuildSong'], function($f) {
+        $this->faktory->define(['hit_song', 'BuildSong'], function ($f) {
             $f->name = 'Suicide solution';
             $f->length = 125;
         });
 
         $song = $this->faktory->build('hit_song', [
-            'length' => function($f, $i) {
+            'length' => function ($f, $i) {
                 return $f->name . $i;
             }
             ]);
@@ -343,11 +343,11 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_belongs_to_adds_public_property_on_build()
     {
-        $this->faktory->define(['album', 'BuildAlbum'], function($f) {
+        $this->faktory->define(['album', 'BuildAlbum'], function ($f) {
             $f->name = 'Destroy Erase Improve';
             $f->release_date = new DateTime;
         });
-        $this->faktory->define(['song_with_album', 'BuildSong'], function($f) {
+        $this->faktory->define(['song_with_album', 'BuildSong'], function ($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
             $f->album = $f->belongsTo('album', 'album_id');
@@ -360,17 +360,17 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_belongs_to_can_have_overrides_on_build()
     {
-        $this->faktory->define(['album', 'BuildAlbum'], function($f) {
+        $this->faktory->define(['album', 'BuildAlbum'], function ($f) {
             $f->name = 'Destroy Erase Improve';
             $f->release_date = new DateTime;
         });
-        $this->faktory->define(['song_with_album', 'BuildSong'], function($f) {
+        $this->faktory->define(['song_with_album', 'BuildSong'], function ($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
             $f->album = $f->belongsTo('album', 'album_id');
         });
 
-        $song = $this->faktory->build('song_with_album', function($song) {
+        $song = $this->faktory->build('song_with_album', function ($song) {
             $song->album->attributes(['name' => 'Chaosphere']);
         });
         $album = $song->album;
@@ -379,12 +379,12 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_has_many_adds_public_property_on_build()
     {
-        $this->faktory->define(['album_with_5_songs', 'BuildAlbum'], function($f) {
+        $this->faktory->define(['album_with_5_songs', 'BuildAlbum'], function ($f) {
             $f->name = 'Destroy Erase Improve';
             $f->release_date = new DateTime;
             $f->songs = $f->hasMany('song', 5, 'album_id');
         });
-        $this->faktory->define(['song', 'BuildSong'], function($f) {
+        $this->faktory->define(['song', 'BuildSong'], function ($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
         });
@@ -396,17 +396,17 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_has_many_can_have_attribute_overrides_on_build()
     {
-        $this->faktory->define(['album_with_5_songs', 'BuildAlbum'], function($f) {
+        $this->faktory->define(['album_with_5_songs', 'BuildAlbum'], function ($f) {
             $f->name = 'Destroy Erase Improve';
             $f->release_date = new DateTime;
             $f->songs = $f->hasMany('song', 5, 'album_id');
         });
-        $this->faktory->define(['song', 'BuildSong'], function($f) {
+        $this->faktory->define(['song', 'BuildSong'], function ($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
         });
 
-        $album = $this->faktory->build('album_with_5_songs', function($album) {
+        $album = $this->faktory->build('album_with_5_songs', function ($album) {
             $album->songs->quantity(2);
         });
         $songs = $album->songs;
@@ -415,12 +415,12 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_has_one_adds_public_property_on_build()
     {
-        $this->faktory->define(['album_with_song', 'BuildAlbum'], function($f) {
+        $this->faktory->define(['album_with_song', 'BuildAlbum'], function ($f) {
             $f->name = 'Destroy Erase Improve';
             $f->release_date = new DateTime;
             $f->song = $f->hasOne('song', 'album_id');
         });
-        $this->faktory->define(['song', 'BuildSong'], function($f) {
+        $this->faktory->define(['song', 'BuildSong'], function ($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
         });
@@ -432,17 +432,17 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_has_one_can_have_attribute_overrides_on_build()
     {
-        $this->faktory->define(['album_with_song', 'BuildAlbum'], function($f) {
+        $this->faktory->define(['album_with_song', 'BuildAlbum'], function ($f) {
             $f->name = 'Destroy Erase Improve';
             $f->release_date = new DateTime;
             $f->song = $f->hasOne('song', 'album_id');
         });
-        $this->faktory->define(['song', 'BuildSong'], function($f) {
+        $this->faktory->define(['song', 'BuildSong'], function ($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
         });
 
-        $album = $this->faktory->build('album_with_song', function($album) {
+        $album = $this->faktory->build('album_with_song', function ($album) {
             $album->song->attributes(['name' => 'Future Breed Machine']);
         });
         $song = $album->song;
@@ -451,17 +451,17 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_relationship_attributes_can_be_altered_as_properties()
     {
-        $this->faktory->define(['album_with_song', 'BuildAlbum'], function($f) {
+        $this->faktory->define(['album_with_song', 'BuildAlbum'], function ($f) {
             $f->name = 'Destroy Erase Improve';
             $f->release_date = new DateTime;
             $f->song = $f->hasOne('song', 'album_id');
         });
-        $this->faktory->define(['song', 'BuildSong'], function($f) {
+        $this->faktory->define(['song', 'BuildSong'], function ($f) {
             $f->name = 'Concatenation';
             $f->length = 257;
         });
 
-        $album = $this->faktory->build('album_with_song', function($album) {
+        $album = $this->faktory->build('album_with_song', function ($album) {
             $album->song->name = 'Future Breed Machine';
         });
         $song = $album->song;
@@ -470,10 +470,10 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
 
     public function test_overriding_with_closure_doesnt_permanently_alter_factory()
     {
-        $this->faktory->define(['user', 'BuildUser'], function($user) {
+        $this->faktory->define(['user', 'BuildUser'], function ($user) {
             $user->first_name = 'John';
             $user->last_name = 'Doe';
-            $user->full_name = function($user) {
+            $user->full_name = function ($user) {
                 // Concern is that this might override the real $user->first_name...
                 $user->first_name = 'Bob';
                 return "{$user->first_name} {$user->last_name}";
