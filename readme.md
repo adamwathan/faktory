@@ -436,14 +436,14 @@ $song->album->release_date;
 
 ### Building multiple instances at once
 
-You can use `buildList` and `createList` to generate multiple objects at once:
+You can use `buildMany` and `createMany` to generate multiple objects at once:
 
 ```php
 // Create multiple instances
-$albums = Faktory::buildList('Album', 5);
+$albums = Faktory::buildMany('Album', 5);
 
 // Create multiple instances with some overridden properties
-$songs = Faktory::buildList('Song', 5, [ 'length' => 100 ])
+$songs = Faktory::buildMany('Song', 5, [ 'length' => 100 ])
 $songs[0]->length;
 // 100
 // ...
@@ -465,25 +465,25 @@ $album = Faktory::build('Album', [
 // properties
 $album = Faktory::build('Album', [
     'name' => 'Bark at the moon',
-    'songs' => Faktory::buildList('Song', 5, [ 'length' => 100 ]
+    'songs' => Faktory::buildMany('Song', 5, [ 'length' => 100 ]
     ),
 ]);
 
 // Add a nested relationship where each item is different,
-// but using buildList
+// but using buildMany
 $album = Faktory::build('Album', [
     'name' => 'Bark at the moon',
-    'songs' => Faktory::buildList('Song', 4, [
+    'songs' => Faktory::buildMany('Song', 4, [
         'length' => [143, 251, 167, 229]
     ]),
 ]);
 
-// Add a nested relationship using buildList, but wrap
+// Add a nested relationship using buildMany, but wrap
 // it in a collection
 $album = Faktory::build('Album', [
     'name' => 'Bark at the moon',
     'songs' => function () {
-        return new Collection(Faktory::buildList('Song', 4, [
+        return new Collection(Faktory::buildMany('Song', 4, [
             'length' => [143, 251, 167, 229]
         ]));
     }
