@@ -9,15 +9,15 @@ class Faktory
 
     public function add($name, $definitionCallback)
     {
-        list($name, $model) = $this->extractNameAndModel($name);
-        $factory = Factory::make($model, $this);
-        $this->addFactory($name, $factory);
-        $definitionCallback($factory);
+        $this->define($name, $definitionCallback);
     }
 
     public function define($name, $definitionCallback)
     {
-        $this->add($name, $definitionCallback);
+        list($name, $model) = $this->extractNameAndModel($name);
+        $factory = Factory::make($model, $this);
+        $this->addFactory($name, $factory);
+        $definitionCallback($factory);
     }
 
     protected function extractNameAndModel($name)
