@@ -95,7 +95,7 @@ class Factory
     public function buildMany($count, $override_attributes)
     {
         $override_attributes = $this->expandAttributesForList($override_attributes, $count);
-        return array_map(function($i) use ($override_attributes) {
+        return array_map(function ($i) use ($override_attributes) {
             return $this->build($override_attributes[$i]);
         }, range(0, $count - 1));
     }
@@ -107,14 +107,14 @@ class Factory
 
     protected function expandAttributesForList($attributes, $count)
     {
-        return array_map(function($i) use ($attributes) {
+        return array_map(function ($i) use ($attributes) {
             return $this->extractAttributesForIndex($i, $attributes);
         }, range(0, $count - 1));
     }
 
     protected function extractAttributesForIndex($i, $attributes)
     {
-        return array_map(function($value) use ($i) {
+        return array_map(function ($value) use ($i) {
             return is_array($value) ? $value[$i] : $value;
         }, $attributes);
     }
@@ -122,7 +122,7 @@ class Factory
     public function createMany($count, $override_attributes)
     {
         $override_attributes = $this->expandAttributesForList($override_attributes, $count);
-        return array_map(function($i) use ($override_attributes) {
+        return array_map(function ($i) use ($override_attributes) {
             return $this->create($override_attributes[$i]);
         }, range(0, $count - 1));
     }
@@ -134,7 +134,7 @@ class Factory
 
     public function add($name, $definitionCallback)
     {
-        $callback = function($f) use ($definitionCallback) {
+        $callback = function ($f) use ($definitionCallback) {
             $f->setAttributes($this->attributes);
             $definitionCallback($f);
         };

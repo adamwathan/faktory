@@ -70,7 +70,7 @@ class Faktory
 
     protected function getProxyFactory($name)
     {
-        return new FactoryProxy(function() use ($name) {
+        return new FactoryProxy(function () use ($name) {
             return $this->fetchFactory($name);
         });
     }
