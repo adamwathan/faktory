@@ -138,7 +138,7 @@ class Factory
             $f->setAttributes($this->attributes);
             $definitionCallback($f);
         };
-        $this->factory_repository->define([$name, $this->model], $callback);
+        $this->factory_repository->define($this->model, $name, $callback);
     }
 
     public function belongsTo($name, $foreign_key = null, $attributes = [])

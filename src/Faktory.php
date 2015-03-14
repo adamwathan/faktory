@@ -2,25 +2,22 @@
 
 use AdamWathan\Faktory\Factory\Factory;
 use AdamWathan\Faktory\Factory\FactoryProxy;
+use Closure;
 
 class Faktory
 {
     protected $factories = [];
 
-    public function define($name, $definitionCallback)
+    public function define($model, $name, $definitionCallback = null)
     {
-        list($name, $model) = $this->extractNameAndModel($name);
+        if ($name instanceof Closure) {
+            $definitionCallback = $name;
+            $name = $model;
+        }
+
         $factory = Factory::make($model, $this);
         $this->addFactory($name, $factory);
         $definitionCallback($factory);
-    }
-
-    protected function extractNameAndModel($name)
-    {
-        if (! is_array($name)) {
-            return [$name, $name];
-        }
-        return [$name[0], $name[1]];
     }
 
     protected function addFactory($name, $factory)

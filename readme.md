@@ -44,7 +44,7 @@ Add the `Faktory` facade to the `aliases` array in `app/config/app.php`:
 You can now start using Faktory by calling methods directly on the `Faktory` facade:
 
 ```php
-Faktory::define('User', function($f) {
+Faktory::define('User', function ($f) {
     $f->first_name = 'John';
     $f->last_name = 'Doe';
 });
@@ -78,12 +78,12 @@ require app_path().'/tests/factories.php';
 The most basic factory definition requires a class name and a closure that defines the default attributes for the factory. This will define a factory named after that class that generates instances of that same class.
 
 ```php
-Faktory::define('Album', function($f) {
+Faktory::define('Album', function ($f) {
     $f->name = 'Diary of a madman';
     $f->release_date = new DateTime('1981-11-07');
 });
 
-Faktory::define('Song', function($f) {
+Faktory::define('Song', function ($f) {
     $f->name = 'Over the mountain';
     $f->length = 271;
 });
@@ -141,7 +141,7 @@ If you need to do something trickier, you can pass in a closure that provides al
 
 ```php
 // Create an instance and override some properties
-$album = Faktory::build('Album', function($album) {
+$album = Faktory::build('Album', function ($album) {
     $album->name => 'Bark at the moon';
     $album->songs->quantity(4)->attributes(['length' => 267]);
 });
@@ -158,10 +158,10 @@ $album->songs[0]->length;
 
 Factories can also be given a name, so that you can define multiple factories for the same class that generate objects in different predefined states.
 
-To define a named factory, pass an array in the form `[factory_name, class_name]` as the first parameter instead of just a class name.
+To define a named factory, pass the name as the second parameter, and move the callback to the third parameter.
 
 ```php
-Faktory::define(['album_with_copies_sold', 'Album'], function($f) {
+Faktory::define('Album', 'album_with_copies_sold', function ($f) {
     $f->name = 'Diary of a madman';
     $f->release_date = '1981-11-07';
     $f->copies_sold = 3200000;
@@ -185,12 +185,12 @@ $album->copies_sold;
 You can create factories that inherit the attributes of an existing factory by nesting the definition. This allows you to define a basic factory, as well as more specific factories underneath it to generate objects in a specific state without having to redeclare the attributes that don't need to change.
 
 ```php
-Faktory::define(['basic_user', 'User'], function($f) {
+Faktory::define('User', 'basic_user', function ($f) {
     $f->first_name = 'John';
     $f->last_name = 'Doe';
     $f->is_admin = false;
 
-    $f->define('admin', function($f) {
+    $f->define('admin', function ($f) {
         $f->is_admin = true;
     });
 });
@@ -211,10 +211,10 @@ $user->is_admin;
 If you don't want an attribute to be evaluated until you try to build an object, you can define that attribute as a closure.
 
 ```php
-Faktory::define('User', function($f) {
+Faktory::define('User', function ($f) {
     $f->username = 'john.doe';
 
-    $f->created_at = function() {
+    $f->created_at = function () {
         return new DateTime;
     };
 });
@@ -236,10 +236,10 @@ $user2->created_at;
 You can also use lazy attributes to define attributes that depend on other attributes in the factory.
 
 ```php
-Faktory::define('User', function($f) {
+Faktory::define('User', function ($f) {
     $f->first_name = 'John';
     $f->last_name = 'Doe';
-    $f->email = function($f) {
+    $f->email = function ($f) {
         return "{$f->first_name}.{$f->last_name}@example.com";
     };
 });
@@ -267,10 +267,10 @@ $user->email;
 Lazy attributes to the rescue again. The closure also takes an autoincrementing integer as it's second parameter, which is really handy for ensuring that a field value is unique.
 
 ```php
-Faktory::define('User', function($f) {
+Faktory::define('User', function ($f) {
     $f->first_name = 'John';
     $f->last_name = 'Doe';
-    $f->email = function($f, $i) {
+    $f->email = function ($f, $i) {
         return "example{$i}@example.com";
     };
 });
@@ -298,7 +298,7 @@ Define a `belongsTo` relationship by assigning a `belongsTo` call to an attribut
 `belongsTo()` takes the name of the factory that should be used to generate the related object as the first argument, the name of the foreign key column as the second argument, and an optional array of override attributes as the third argument.
 
 ```php
-$faktory->define(['song_with_album', 'Song'], function($f) {
+$faktory->define('Song', 'song_with_album', function ($f) {
     $f->name = 'Concatenation';
     $f->length = 257;
     $f->album = $f->belongsTo('album', 'album_id', [
@@ -306,7 +306,7 @@ $faktory->define(['song_with_album', 'Song'], function($f) {
     ]);
 });
 
-$faktory->define(['album', 'Album'], function($f) {
+$faktory->define('Album', 'album', function ($f) {
     $f->name = 'Destroy Erase Improve';
 });
 
@@ -340,13 +340,13 @@ Define a `hasOne` relationship by assigning a `hasOne` call to an attribute.
 `hasOne()` takes the name of the factory that should be used to generate the related object as the first argument, the name of the foreign key column (on the related object) as the second argument, and an optional array of override attributes as the third argument.
 
 ```php
-$faktory->define(['user_with_profile', 'User'], function($f) {
+$faktory->define('User', 'user_with_profile', function ($f) {
     $f->username = 'johndoe';
     $f->password = 'top-secret';
     $f->profile = $f->hasOne('profile', 'user_id');
 });
 
-$faktory->define(['profile', 'Profile'], function($f) {
+$faktory->define('Profile', 'profile', function ($f) {
     $f->email = 'johndoe@example.com';
 });
 
@@ -379,13 +379,13 @@ Define a `hasMany` relationship by assigning a `hasMany` call to an attribute.
 `hasMany()` takes the name of the factory that should be used to generate the related objects as the first argument, the name of the foreign key column (on the related object) as the second argument, the number of objects to generate as the third argument, and an optional array of override attributes as the final argument.
 
 ```php
-$faktory->define(['album_with_songs', 'Album'], function($f) {
+$faktory->define('Album', 'album_with_songs', function ($f) {
     $f->name = 'Master of Puppets';
     $f->release_date = new DateTime('1986-02-24');
     $f->songs = $f->hasMany('song', 'album_id', 8);
 });
 
-$faktory->define(['song', 'Song'], function($f) {
+$faktory->define('Song', 'song', function ($f) {
     $f->title = 'The Thing That Should Not Be';
     $f->length = 397;
 });
@@ -405,19 +405,19 @@ If you need to override attributes on a relationship when building or creating a
 
 ```php
 // Define the factories
-$faktory->define(['song_with_album', 'Song'], function($f) {
+$faktory->define('Song', 'song_with_album', function ($f) {
     $f->name = 'Concatenation';
     $f->length = 257;
     $f->album = $f->belongsTo('album', 'album_id');
 });
-$faktory->define(['album', 'Album'], function($f) {
+$faktory->define('Album', 'album', function ($f) {
     $f->name = 'Destroy Erase Improve';
     $f->release_date = new DateTime('1995-07-25');
 });
 
 
 // Build a song but override the album name
-$song = Faktory::build('song_with_album', function($song) {
+$song = Faktory::build('song_with_album', function ($song) {
     $song->album->name = 'Chaosphere';
 });
 $song->album;
@@ -426,7 +426,7 @@ $song->album;
 // )
 
 // Build a song but override a couple attributes at once
-$song = Faktory::build('song_with_album', function($song) {
+$song = Faktory::build('song_with_album', function ($song) {
     $song->album->attributes([
         'name' => 'Chaosphere',
         'release_date' => new DateTime('1998-11-10'),
@@ -488,7 +488,7 @@ $album = Faktory::build('Album', [
 // it in a collection
 $album = Faktory::build('Album', [
     'name' => 'Bark at the moon',
-    'songs' => function() {
+    'songs' => function () {
         return new Collection(Faktory::buildList('Song', 4, [
             'length' => [143, 251, 167, 229]
         ]));
