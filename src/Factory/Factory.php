@@ -134,16 +134,16 @@ class Factory
 
     public function add($name, $definitionCallback)
     {
-        $callback = function ($f) use ($definitionCallback) {
-            $f->setAttributes($this->attributes);
-            $definitionCallback($f);
-        };
-        $this->factory_repository->add([$name, $this->model], $callback);
+        $this->define($name, $definitionCallback);
     }
 
     public function define($name, $definitionCallback)
     {
-        $this->add($name, $definitionCallback);
+        $callback = function ($f) use ($definitionCallback) {
+            $f->setAttributes($this->attributes);
+            $definitionCallback($f);
+        };
+        $this->factory_repository->define([$name, $this->model], $callback);
     }
 
     public function belongsTo($name, $foreign_key = null, $attributes = [])
