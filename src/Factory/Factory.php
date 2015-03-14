@@ -132,11 +132,6 @@ class Factory
         $this->createMany($count, $override_attributes);
     }
 
-    public function add($name, $definitionCallback)
-    {
-        $this->define($name, $definitionCallback);
-    }
-
     public function define($name, $definitionCallback)
     {
         $callback = function ($f) use ($definitionCallback) {
