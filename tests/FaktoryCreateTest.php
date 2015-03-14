@@ -629,6 +629,21 @@ class FaktoryCreateTest extends FunctionalTestCase
     {
         $album = $this->faktory->create('album_with_song');
     }
+
+    public function test_can_create_many_objects()
+    {
+        $this->faktory->define('Post', 'post', function ($f) {
+            $f->title = 'The post to rule all posts';
+        });
+
+        $posts = $this->faktory->createMany('post', 5);
+
+        $this->assertCount(5, $posts);
+        foreach ($posts as $post) {
+            $this->assertInstanceOf('Post', $post);
+            $this->assertSame('The post to rule all posts', $post->title);
+        }
+    }
 }
 
 
