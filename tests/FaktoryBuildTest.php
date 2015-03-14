@@ -486,6 +486,14 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Doe', $user->last_name);
         $this->assertSame('Bob Doe', $user->full_name);
     }
+
+    /**
+     * @expectedException \AdamWathan\Faktory\FactoryNotRegisteredException
+     */
+    public function test_trying_to_build_an_undefined_factory_throws_an_exception()
+    {
+        $user = $this->faktory->build('user');
+    }
 }
 
 class BuildAlbum {}
