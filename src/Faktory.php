@@ -7,11 +7,6 @@ class Faktory
 {
     protected $factories = [];
 
-    public function add($name, $definitionCallback)
-    {
-        $this->define($name, $definitionCallback);
-    }
-
     public function define($name, $definitionCallback)
     {
         list($name, $model) = $this->extractNameAndModel($name);
