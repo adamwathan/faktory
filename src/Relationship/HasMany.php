@@ -12,12 +12,12 @@ class HasMany extends DependentRelationship
 
     public function build()
     {
-        return $this->factory->buildList($this->quantity, $this->attributes);
+        return $this->factory->buildMany($this->quantity, $this->attributes);
     }
 
     protected function createRelated()
     {
-        return $this->factory->createList($this->quantity, $this->attributes);
+        return $this->factory->createMany($this->quantity, $this->attributes);
     }
 
     public function quantity($quantity)

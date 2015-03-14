@@ -37,22 +37,12 @@ class Faktory
 
     public function buildMany($name, $count, $attributes = [])
     {
-        return $this->getFactory($name)->buildList($count, $attributes);
-    }
-
-    public function buildList($name, $count, $attributes = [])
-    {
-        return $this->buildMany($name, $count, $attributes);
+        return $this->getFactory($name)->buildMany($count, $attributes);
     }
 
     public function createMany($name, $count, $attributes = [])
     {
-        return $this->getFactory($name)->createList($count, $attributes);
-    }
-
-    public function createList($name, $count, $attributes = [])
-    {
-        return $this->createMany($name, $count, $attributes);
+        return $this->getFactory($name)->createMany($count, $attributes);
     }
 
     public function getFactory($name)

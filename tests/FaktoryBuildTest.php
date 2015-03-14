@@ -186,7 +186,7 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
         });
-        $albums = $this->faktory->buildList('album_with_artist', 5);
+        $albums = $this->faktory->buildMany('album_with_artist', 5);
 
         $this->assertSame(5, count($albums));
         foreach ($albums as $album) {
@@ -202,7 +202,7 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
         });
-        $albums = $this->faktory->buildList('album_with_artist', 5, [
+        $albums = $this->faktory->buildMany('album_with_artist', 5, [
             'artist' => 'Dio'
             ]);
 
@@ -220,7 +220,7 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
             $f->name = 'Bark at the moon';
             $f->artist = 'Ozzy Osbourne';
         });
-        $albums = $this->faktory->buildList('album_with_artist', 5, [
+        $albums = $this->faktory->buildMany('album_with_artist', 5, [
             'artist' => [
             'Dio',
             'Black Sabbath',
@@ -259,7 +259,7 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
             $f->artist = 'Ozzy Osbourne';
             $f->release_date = '1983-11-15';
         });
-        $albums = $this->faktory->buildList('album_with_artist', 3, [
+        $albums = $this->faktory->buildMany('album_with_artist', 3, [
             'artist' => [
             'Dio',
             'Black Sabbath',
