@@ -1,6 +1,7 @@
 # Faktory
 
 [![Code Climate](https://codeclimate.com/github/adamwathan/faktory/badges/gpa.svg)](https://codeclimate.com/github/adamwathan/faktory)
+[![Travis CI](https://travis-ci.org/adamwathan/faktory.svg)](https://travis-ci.org/adamwathan/faktory)
 
 Faktory is a tool for easily building test objects ala [FactoryGirl](https://github.com/thoughtbot/factory_girl/), but for PHP. It's still in it's early stages, but give it a go if you're interested, and open issues for the features it's missing that you think are really important.
 
