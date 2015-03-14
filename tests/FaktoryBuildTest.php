@@ -2,7 +2,7 @@
 
 use AdamWathan\Faktory\Faktory;
 
-class FaktoryTest extends \PHPUnit_Framework_TestCase
+class FaktoryBuildTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
@@ -57,7 +57,7 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
         });
         $album = $this->faktory->build('album_with_artist', [
             'artist' => 'Randy Rhoads'
-            ]);
+        ]);
 
         $this->assertInstanceOf('BuildAlbum', $album);
         $this->assertSame('Bark at the moon', $album->name);
@@ -222,7 +222,7 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
         });
         $albums = $this->faktory->buildMany('album_with_artist', 5, [
             'artist' => 'Dio'
-            ]);
+        ]);
 
         $this->assertSame(5, count($albums));
         foreach ($albums as $album) {
@@ -240,13 +240,13 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
         });
         $albums = $this->faktory->buildMany('album_with_artist', 5, [
             'artist' => [
-            'Dio',
-            'Black Sabbath',
-            'Diamondhead',
-            'Iron Maiden',
-            'Judas Priest'
+                'Dio',
+                'Black Sabbath',
+                'Diamondhead',
+                'Iron Maiden',
+                'Judas Priest'
             ]
-            ]);
+        ]);
 
         $this->assertSame(5, count($albums));
         $this->assertInstanceOf('BuildAlbum', $albums[0]);
@@ -279,14 +279,14 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
         });
         $albums = $this->faktory->buildMany('album_with_artist', 3, [
             'artist' => [
-            'Dio',
-            'Black Sabbath',
-            'Diamondhead',
-            'Iron Maiden',
-            'Judas Priest'
+                'Dio',
+                'Black Sabbath',
+                'Diamondhead',
+                'Iron Maiden',
+                'Judas Priest'
             ],
             'release_date' => '2001-05-06'
-            ]);
+        ]);
 
         $this->assertSame(3, count($albums));
         $this->assertInstanceOf('BuildAlbum', $albums[0]);
@@ -338,7 +338,7 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
             'length' => function () {
                 return 50;
             }
-            ]);
+        ]);
 
         $this->assertSame(50, $song->length);
     }
@@ -354,7 +354,7 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
             'length' => function ($f, $i) {
                 return $f->name . $i;
             }
-            ]);
+        ]);
 
         $this->assertSame('Suicide solution1', $song->length);
     }
