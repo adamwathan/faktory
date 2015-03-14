@@ -157,6 +157,24 @@ class FaktoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Ozzy Osbourne - Bark at the moon', $album->display_title);
     }
 
+    public function test_calculated_attributes_can_use_other_calculated_attributes()
+    {
+        $this->faktory->define('BuildAlbum', 'album_with_artist', function ($f) {
+            $f->date_released = function () {
+                return new DateTime('1983-11-15');
+            };
+            $f->display_date = function ($f) {
+                return $f->date_released->format('F j, Y');
+            };
+        });
+
+        $album = $this->faktory->build('album_with_artist');
+
+        $this->assertInstanceOf('BuildAlbum', $album);
+        $this->assertEquals(new DateTime('1983-11-15'), $album->date_released);
+        $this->assertEquals('November 15, 1983', $album->display_date);
+    }
+
     public function test_can_add_sequenced_attribute()
     {
         $this->faktory->define('BuildAlbum', 'album_with_artist', function ($f) {
