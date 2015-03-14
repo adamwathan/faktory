@@ -16,6 +16,10 @@
         </blacklist>
         <whitelist>
             <directory suffix=".php">./src</directory>
+            <exclude>
+                <file>./src/Facades/Faktory.php</file>
+                <file>./src/FaktoryServiceProvider.php</file>
+            </exclude>
         </whitelist>
     </filter>
     <testsuites>
