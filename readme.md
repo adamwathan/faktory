@@ -7,17 +7,11 @@ Faktory is a tool for easily building test objects ala [FactoryGirl](https://git
 
 ## Installing with Composer
 
-You can install this package via Composer by including the following in your `composer.json`:
+You can install this package via Composer on the command line from your project's root:
 
-```json
-{
-    "require": {
-        "adamwathan/faktory": "dev-master"
-    }
-}
 ```
-
-> Note: Since this package is still early, I haven't tagged anything at stable yet. Make sure you drop your `minimum-stability` to `dev` if you'd like to play with this before I tag a release.
+composer require adamwathan/faktory
+```
 
 ### Laravel 4
 
