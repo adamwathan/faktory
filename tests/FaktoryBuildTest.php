@@ -359,6 +359,30 @@ class FaktoryBuildTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Suicide solution1', $song->length);
     }
 
+    public function test_can_use_closure_relationship_attributes_in_overrides()
+    {
+        $this->faktory->define('BuildSong', 'hit_song', function ($f) {
+            $f->name = 'Suicide solution';
+            $f->length = 125;
+            $f->album = function () {
+                return $this->faktory->build('album_with_artist');
+            };
+        });
+
+        $this->faktory->define('BuildAlbum', 'album_with_artist', function ($f) {
+            $f->name = function () {
+                return 'Blizzard of Ozz';
+            };
+        });
+
+        $song = $this->faktory->build('hit_song', function ($song) {
+            $song->name = $song->album->name;
+        });
+
+        $this->assertInstanceOf('BuildSong', $song);
+        $this->assertSame('Blizzard of Ozz', $song->name);
+    }
+
     public function test_belongs_to_adds_public_property_on_build()
     {
         $this->faktory->define('BuildAlbum', 'album', function ($f) {
