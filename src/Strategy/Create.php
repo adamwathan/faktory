@@ -1,8 +1,6 @@
 <?php namespace AdamWathan\Faktory\Strategy;
 
 use AdamWathan\Faktory\Relationship\BelongsTo;
-use AdamWathan\Faktory\Relationship\HasOne;
-use AdamWathan\Faktory\Relationship\HasMany;
 use AdamWathan\Faktory\Relationship\Relationship;
 use AdamWathan\Faktory\Relationship\DependentRelationship;
 
