@@ -14,7 +14,8 @@
     "require-dev": {
         "illuminate/database": "4.*",
         "mockery/mockery": "0.9.*",
-        "codeclimate/php-test-reporter": "0.1.*"
+        "codeclimate/php-test-reporter": "0.1.*",
+        "satooshi/php-coveralls": "dev-master"
     },
     "autoload": {
         "psr-4": {
