@@ -3,7 +3,7 @@
 [![Travis CI](https://travis-ci.org/adamwathan/faktory.svg)](https://travis-ci.org/adamwathan/faktory)
 [![Code Climate](https://codeclimate.com/github/adamwathan/faktory/badges/gpa.svg)](https://codeclimate.com/github/adamwathan/faktory)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/adamwathan/faktory/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/adamwathan/faktory/?branch=master)
-[![Test Coverage](https://codeclimate.com/github/adamwathan/faktory/badges/coverage.svg)](https://codeclimate.com/github/adamwathan/faktory)
+[![Coverage Status](https://coveralls.io/repos/adamwathan/faktory/badge.svg?branch=master)](https://coveralls.io/r/adamwathan/faktory?branch=master)
 
 Faktory is a tool for easily building test objects ala [FactoryGirl](https://github.com/thoughtbot/factory_girl/), but for PHP. It's still in it's early stages, but give it a go if you're interested, and open issues for the features it's missing that you think are really important.
 
