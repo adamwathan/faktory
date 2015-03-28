@@ -1,0 +1,275 @@
+Humbug running test suite to generate logs and code coverage data...
+Humbug has completed the initial test run successfully.
+Tests: 63 Line Coverage: 95.21%
+Humbug is analysing source files...
+Mutation Testing is commencing on 14 files...
+(.: killed, M: escaped, S: uncovered, E: fatal error, T: timed out)
+...E.S...S...S.S........S.SEE...EE.E.
+37 mutations were generated:
+      25 mutants were killed
+       6 mutants were not covered by tests
+       0 covered mutants were not detected
+       6 fatal errors were encountered
+       0 time outs were encountered
+
+Out of 31 test covered mutations, 100% were detected.
+Out of 37 total mutations, 84% were detected.
+Out of 37 total mutations, 84% were covered by tests.
+
+Remember that some mutants will inevitably be harmless (i.e. false positives).
+Humbug results are being logged as JSON to: humbuglog.json
+Humbug results are being logged as TEXT to: humbuglog.txt
+------
+Escapes
+------
+
+
+------
+Errors
+------
+
+
+1) \Humbug\Mutator\IfStatement\FunctionCallNegation
+Diff on \AdamWathan\Faktory\Factory\Factory::mergeAttributes() in /home/vagrant/Code/Personal/faktory/src/Factory/Factory.php:
+--- Original
++++ New
+@@ @@
+     {
+-        if (is_callable($override_attributes)) {
++        if (!is_callable($override_attributes)) {
+             $override_attributes = $this->getOverridesFromClosure($override_attributes);
+         }
+         return array_merge($this->attributes, $override_attributes);
+     }
+ 
+     protected function getOverridesFromClosure($closure)
+
+The following output was received on stderr:
+
+PHP Fatal error:  Function name must be a string in /home/vagrant/Code/Personal/faktory/src/Factory/Factory.php on line 91
+PHP Stack trace:
+PHP   1. {main}() -:0
+PHP   2. Humbug\Adapter\Phpunit::main() -:5
+PHP   3. PHPUnit_TextUI_Command->run() /home/vagrant/Code/Personal/humbug/src/Adapter/Phpunit.php:161
+PHP   4. PHPUnit_TextUI_TestRunner->doRun() /home/vagrant/Code/Personal/humbug/vendor/phpunit/phpunit/src/TextUI/Command.php:152
+PHP   5. PHPUnit_Framework_TestSuite->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/TextUI/TestRunner.php:402
+PHP   6. PHPUnit_Framework_TestSuite->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestSuite.php:728
+PHP   7. PHPUnit_Framework_TestCase->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestSuite.php:728
+PHP   8. PHPUnit_Framework_TestResult->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:693
+PHP   9. PHPUnit_Framework_TestCase->runBare() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestResult.php:609
+PHP  10. PHPUnit_Framework_TestCase->runTest() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:737
+PHP  11. ReflectionMethod->invokeArgs() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:860
+PHP  12. FaktoryBuildTest->test_can_define_basic_factory() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:860
+PHP  13. AdamWathan\Faktory\Faktory->build() /home/vagrant/Code/Personal/faktory/tests/FaktoryBuildTest.php:18
+PHP  14. AdamWathan\Faktory\Factory\FactoryProxy->build() /home/vagrant/Code/Personal/faktory/src/Faktory.php:30
+PHP  15. AdamWathan\Faktory\Factory\FactoryProxy->__call() /home/vagrant/Code/Personal/faktory/src/Faktory.php:30
+PHP  16. call_user_func_array:{/home/vagrant/Code/Personal/faktory/src/Factory/FactoryProxy.php:24}() /home/vagrant/Code/Personal/faktory/src/Factory/FactoryProxy.php:24
+PHP  17. AdamWathan\Faktory\Factory\Factory->build() /home/vagrant/Code/Personal/faktory/src/Factory/FactoryProxy.php:24
+PHP  18. AdamWathan\Faktory\Factory\Factory->newInstance() /home/vagrant/Code/Personal/faktory/src/Factory/Factory.php:63
+PHP  19. AdamWathan\Faktory\Factory\Factory->mergeAttributes() /home/vagrant/Code/Personal/faktory/src/Factory/Factory.php:74
+PHP  20. AdamWathan\Faktory\Factory\Factory->getOverridesFromClosure() /home/vagrant/Code/Personal/faktory/src/Factory/Factory.php:83
+
+
+
+2) \Humbug\Mutator\ReturnValue\This
+Diff on \AdamWathan\Faktory\Relationship\HasMany::quantity() in /home/vagrant/Code/Personal/faktory/src/Relationship/HasMany.php:
+--- Original
++++ New
+@@ @@
+         $this->quantity = $quantity;
+-        return $this;
++        return null;
+     }
+ }
+ 
+
+
+The following output was received on stderr:
+
+PHP Fatal error:  Call to a member function attributes() on null in /home/vagrant/Code/Personal/faktory/tests/FaktoryCreateTest.php on line 395
+PHP Stack trace:
+PHP   1. {main}() -:0
+PHP   2. Humbug\Adapter\Phpunit::main() -:5
+PHP   3. PHPUnit_TextUI_Command->run() /home/vagrant/Code/Personal/humbug/src/Adapter/Phpunit.php:161
+PHP   4. PHPUnit_TextUI_TestRunner->doRun() /home/vagrant/Code/Personal/humbug/vendor/phpunit/phpunit/src/TextUI/Command.php:152
+PHP   5. PHPUnit_Framework_TestSuite->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/TextUI/TestRunner.php:402
+PHP   6. PHPUnit_Framework_TestSuite->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestSuite.php:728
+PHP   7. PHPUnit_Framework_TestCase->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestSuite.php:728
+PHP   8. PHPUnit_Framework_TestResult->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:693
+PHP   9. PHPUnit_Framework_TestCase->runBare() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestResult.php:609
+PHP  10. PHPUnit_Framework_TestCase->runTest() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:737
+PHP  11. ReflectionMethod->invokeArgs() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:860
+PHP  12. FaktoryCreateTest->test_can_chain_changes_on_has_many_relationship() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:860
+PHP  13. AdamWathan\Faktory\Faktory->create() /home/vagrant/Code/Personal/faktory/tests/FaktoryCreateTest.php:396
+PHP  14. AdamWathan\Faktory\Factory\FactoryProxy->create() /home/vagrant/Code/Personal/faktory/src/Faktory.php:35
+PHP  15. AdamWathan\Faktory\Factory\FactoryProxy->__call() /home/vagrant/Code/Personal/faktory/src/Faktory.php:35
+PHP  16. call_user_func_array:{/home/vagrant/Code/Personal/faktory/src/Factory/FactoryProxy.php:24}() /home/vagrant/Code/Personal/faktory/src/Factory/FactoryProxy.php:24
+PHP  17. AdamWathan\Faktory\Factory\Factory->create() /home/vagrant/Code/Personal/faktory/src/Factory/FactoryProxy.php:24
+PHP  18. AdamWathan\Faktory\Factory\Factory->newInstance() /home/vagrant/Code/Personal/faktory/src/Factory/Factory.php:69
+PHP  19. AdamWathan\Faktory\Factory\Factory->mergeAttributes() /home/vagrant/Code/Personal/faktory/src/Factory/Factory.php:74
+PHP  20. AdamWathan\Faktory\Factory\Factory->getOverridesFromClosure() /home/vagrant/Code/Personal/faktory/src/Factory/Factory.php:83
+PHP  21. FaktoryCreateTest->{closure:/home/vagrant/Code/Personal/faktory/tests/FaktoryCreateTest.php:393-396}() /home/vagrant/Code/Personal/faktory/src/Factory/Factory.php:91
+
+
+
+3) \Humbug\Mutator\ReturnValue\This
+Diff on \AdamWathan\Faktory\Relationship\Relationship::foreignKey() in /home/vagrant/Code/Personal/faktory/src/Relationship/Relationship.php:
+--- Original
++++ New
+@@ @@
+         $this->foreign_key = $key;
+-        return $this;
++        return null;
+     }
+ 
+     public function getForeignKey()
+     {
+         if (! is_null($this->foreign_key)) {
+             return $this->foreign_key;
+
+The following output was received on stderr:
+
+PHP Fatal error:  Cannot use AdamWathan\Faktory\Factory\Factory as Factory because the name is already in use in /home/vagrant/Code/Personal/faktory/src/Faktory.php on line 3
+PHP Stack trace:
+PHP   1. {main}() -:0
+PHP   2. Humbug\Adapter\Phpunit::main() -:5
+PHP   3. PHPUnit_TextUI_Command->run() /home/vagrant/Code/Personal/humbug/src/Adapter/Phpunit.php:161
+PHP   4. PHPUnit_TextUI_TestRunner->doRun() /home/vagrant/Code/Personal/humbug/vendor/phpunit/phpunit/src/TextUI/Command.php:152
+PHP   5. PHPUnit_Framework_TestSuite->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/TextUI/TestRunner.php:402
+PHP   6. PHPUnit_Framework_TestSuite->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestSuite.php:728
+PHP   7. PHPUnit_Framework_TestCase->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestSuite.php:728
+PHP   8. PHPUnit_Framework_TestResult->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:693
+PHP   9. PHPUnit_Framework_TestCase->runBare() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestResult.php:609
+PHP  10. FaktoryCreateTest->setUp() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:733
+PHP  11. spl_autoload_call() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:12
+PHP  12. Composer\Autoload\ClassLoader->loadClass() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:0
+PHP  13. Composer\Autoload\includeFile() /home/vagrant/Code/Personal/humbug/vendor/composer/ClassLoader.php:301
+
+
+
+4) \Humbug\Mutator\ReturnValue\This
+Diff on \AdamWathan\Faktory\Relationship\Relationship::attributes() in /home/vagrant/Code/Personal/faktory/src/Relationship/Relationship.php:
+--- Original
++++ New
+@@ @@
+         $this->attributes = array_merge($this->attributes, $attributes);
+-        return $this;
++        return null;
+     }
+ 
+     public function __set($key, $value)
+     {
+         $this->attributes[$key] = $value;
+     }
+
+The following output was received on stderr:
+
+PHP Fatal error:  Call to a member function quantity() on null in /home/vagrant/Code/Personal/faktory/tests/FaktoryCreateTest.php on line 406
+PHP Stack trace:
+PHP   1. {main}() -:0
+PHP   2. Humbug\Adapter\Phpunit::main() -:5
+PHP   3. PHPUnit_TextUI_Command->run() /home/vagrant/Code/Personal/humbug/src/Adapter/Phpunit.php:161
+PHP   4. PHPUnit_TextUI_TestRunner->doRun() /home/vagrant/Code/Personal/humbug/vendor/phpunit/phpunit/src/TextUI/Command.php:152
+PHP   5. PHPUnit_Framework_TestSuite->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/TextUI/TestRunner.php:402
+PHP   6. PHPUnit_Framework_TestSuite->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestSuite.php:728
+PHP   7. PHPUnit_Framework_TestCase->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestSuite.php:728
+PHP   8. PHPUnit_Framework_TestResult->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:693
+PHP   9. PHPUnit_Framework_TestCase->runBare() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestResult.php:609
+PHP  10. PHPUnit_Framework_TestCase->runTest() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:737
+PHP  11. ReflectionMethod->invokeArgs() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:860
+PHP  12. FaktoryCreateTest->test_can_chain_changes_on_has_many_relationship() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:860
+PHP  13. AdamWathan\Faktory\Faktory->create() /home/vagrant/Code/Personal/faktory/tests/FaktoryCreateTest.php:407
+PHP  14. AdamWathan\Faktory\Factory\FactoryProxy->create() /home/vagrant/Code/Personal/faktory/src/Faktory.php:35
+PHP  15. AdamWathan\Faktory\Factory\FactoryProxy->__call() /home/vagrant/Code/Personal/faktory/src/Faktory.php:35
+PHP  16. call_user_func_array:{/home/vagrant/Code/Personal/faktory/src/Factory/FactoryProxy.php:24}() /home/vagrant/Code/Personal/faktory/src/Factory/FactoryProxy.php:24
+PHP  17. AdamWathan\Faktory\Factory\Factory->create() /home/vagrant/Code/Personal/faktory/src/Factory/FactoryProxy.php:24
+PHP  18. AdamWathan\Faktory\Factory\Factory->newInstance() /home/vagrant/Code/Personal/faktory/src/Factory/Factory.php:69
+PHP  19. AdamWathan\Faktory\Factory\Factory->mergeAttributes() /home/vagrant/Code/Personal/faktory/src/Factory/Factory.php:74
+PHP  20. AdamWathan\Faktory\Factory\Factory->getOverridesFromClosure() /home/vagrant/Code/Personal/faktory/src/Factory/Factory.php:83
+PHP  21. FaktoryCreateTest->{closure:/home/vagrant/Code/Personal/faktory/tests/FaktoryCreateTest.php:404-407}() /home/vagrant/Code/Personal/faktory/src/Factory/Factory.php:91
+
+
+
+5) \Humbug\Mutator\Boolean\LogicalNot
+Diff on \AdamWathan\Faktory\Strategy\Build::buildRelationships() in /home/vagrant/Code/Personal/faktory/src/Strategy/Build.php:
+--- Original
++++ New
+@@ @@
+         foreach ($this->attributes as $attribute => $value) {
+-            if (! $value instanceof Relationship) {
++            if ( $value instanceof Relationship) {
+                 continue;
+             }
+             $relationship = $this->buildRelationship($value);
+             $this->setAttribute($attribute, $relationship);
+         }
+     }
+
+The following output was received on stderr:
+
+PHP Fatal error:  Call to a member function build() on string in /home/vagrant/Code/Personal/faktory/src/Strategy/Build.php on line 30
+PHP Stack trace:
+PHP   1. {main}() -:0
+PHP   2. Humbug\Adapter\Phpunit::main() -:5
+PHP   3. PHPUnit_TextUI_Command->run() /home/vagrant/Code/Personal/humbug/src/Adapter/Phpunit.php:161
+PHP   4. PHPUnit_TextUI_TestRunner->doRun() /home/vagrant/Code/Personal/humbug/vendor/phpunit/phpunit/src/TextUI/Command.php:152
+PHP   5. PHPUnit_Framework_TestSuite->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/TextUI/TestRunner.php:402
+PHP   6. PHPUnit_Framework_TestSuite->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestSuite.php:728
+PHP   7. PHPUnit_Framework_TestCase->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestSuite.php:728
+PHP   8. PHPUnit_Framework_TestResult->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:693
+PHP   9. PHPUnit_Framework_TestCase->runBare() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestResult.php:609
+PHP  10. PHPUnit_Framework_TestCase->runTest() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:737
+PHP  11. ReflectionMethod->invokeArgs() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:860
+PHP  12. FaktoryBuildTest->test_can_define_basic_factory() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:860
+PHP  13. AdamWathan\Faktory\Faktory->build() /home/vagrant/Code/Personal/faktory/tests/FaktoryBuildTest.php:18
+PHP  14. AdamWathan\Faktory\Factory\FactoryProxy->build() /home/vagrant/Code/Personal/faktory/src/Faktory.php:30
+PHP  15. AdamWathan\Faktory\Factory\FactoryProxy->__call() /home/vagrant/Code/Personal/faktory/src/Faktory.php:30
+PHP  16. call_user_func_array:{/home/vagrant/Code/Personal/faktory/src/Factory/FactoryProxy.php:24}() /home/vagrant/Code/Personal/faktory/src/Factory/FactoryProxy.php:24
+PHP  17. AdamWathan\Faktory\Factory\Factory->build() /home/vagrant/Code/Personal/faktory/src/Factory/FactoryProxy.php:24
+PHP  18. AdamWathan\Faktory\Factory\Factory->newInstance() /home/vagrant/Code/Personal/faktory/src/Factory/Factory.php:63
+PHP  19. AdamWathan\Faktory\Strategy\Build->newInstance() /home/vagrant/Code/Personal/faktory/src/Factory/Factory.php:75
+PHP  20. AdamWathan\Faktory\Strategy\Build->buildRelationships() /home/vagrant/Code/Personal/faktory/src/Strategy/Build.php:9
+PHP  21. AdamWathan\Faktory\Strategy\Build->buildRelationship() /home/vagrant/Code/Personal/faktory/src/Strategy/Build.php:23
+
+
+
+6) \Humbug\Mutator\ReturnValue\NewObject
+Diff on \AdamWathan\Faktory\Strategy\Strategy::make() in /home/vagrant/Code/Personal/faktory/src/Strategy/Strategy.php:
+--- Original
++++ New
+@@ @@
+     {
+-        return new static($model, $sequence);
++        new static($model, $sequence); return null;
+     }
+ 
+     public function attributes($attributes)
+     {
+         $this->attributes = $attributes;
+     }
+
+The following output was received on stderr:
+
+PHP Fatal error:  Call to a member function attributes() on null in /home/vagrant/Code/Personal/faktory/src/Factory/Factory.php on line 74
+PHP Stack trace:
+PHP   1. {main}() -:0
+PHP   2. Humbug\Adapter\Phpunit::main() -:5
+PHP   3. PHPUnit_TextUI_Command->run() /home/vagrant/Code/Personal/humbug/src/Adapter/Phpunit.php:161
+PHP   4. PHPUnit_TextUI_TestRunner->doRun() /home/vagrant/Code/Personal/humbug/vendor/phpunit/phpunit/src/TextUI/Command.php:152
+PHP   5. PHPUnit_Framework_TestSuite->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/TextUI/TestRunner.php:402
+PHP   6. PHPUnit_Framework_TestSuite->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestSuite.php:728
+PHP   7. PHPUnit_Framework_TestCase->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestSuite.php:728
+PHP   8. PHPUnit_Framework_TestResult->run() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:693
+PHP   9. PHPUnit_Framework_TestCase->runBare() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestResult.php:609
+PHP  10. PHPUnit_Framework_TestCase->runTest() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:737
+PHP  11. ReflectionMethod->invokeArgs() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:860
+PHP  12. FaktoryBuildTest->test_can_define_basic_factory() /home/vagrant/Code/Personal/faktory/vendor/phpunit/phpunit/src/Framework/TestCase.php:860
+PHP  13. AdamWathan\Faktory\Faktory->build() /home/vagrant/Code/Personal/faktory/tests/FaktoryBuildTest.php:18
+PHP  14. AdamWathan\Faktory\Factory\FactoryProxy->build() /home/vagrant/Code/Personal/faktory/src/Faktory.php:30
+PHP  15. AdamWathan\Faktory\Factory\FactoryProxy->__call() /home/vagrant/Code/Personal/faktory/src/Faktory.php:30
+PHP  16. call_user_func_array:{/home/vagrant/Code/Personal/faktory/src/Factory/FactoryProxy.php:24}() /home/vagrant/Code/Personal/faktory/src/Factory/FactoryProxy.php:24
+PHP  17. AdamWathan\Faktory\Factory\Factory->build() /home/vagrant/Code/Personal/faktory/src/Factory/FactoryProxy.php:24
+PHP  18. AdamWathan\Faktory\Factory\Factory->newInstance() /home/vagrant/Code/Personal/faktory/src/Factory/Factory.php:63
+
+
+Time: 1.3 minutes Memory: 8.00MB

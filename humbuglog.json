@@ -1,0 +1,449 @@
+{
+    "summary": {
+        "total": 37,
+        "kills": 25,
+        "escapes": 0,
+        "errors": 6,
+        "timeouts": 0,
+        "notests": 6,
+        "covered_score": 100,
+        "combined_score": 84,
+        "mutation_coverage": 84
+    },
+    "escaped": [],
+    "errored": [
+        {
+            "file": "src\/Factory\/Factory.php",
+            "mutator": "\\Humbug\\Mutator\\IfStatement\\FunctionCallNegation",
+            "class": "\\AdamWathan\\Faktory\\Factory\\Factory",
+            "method": "mergeAttributes",
+            "line": 82,
+            "diff": "--- Original\n+++ New\n@@ @@\n     {\n-        if (is_callable($override_attributes)) {\n+        if (!is_callable($override_attributes)) {\n             $override_attributes = $this->getOverridesFromClosure($override_attributes);\n         }\n         return array_merge($this->attributes, $override_attributes);\n     }\n \n     protected function getOverridesFromClosure($closure)",
+            "stdout": "",
+            "stderr": "PHP Fatal error:  Function name must be a string in \/home\/vagrant\/Code\/Personal\/faktory\/src\/Factory\/Factory.php on line 91",
+            "tests": {
+                "0": "FaktoryBuildTest",
+                "28": "FaktoryCreateTest"
+            }
+        },
+        {
+            "file": "src\/Relationship\/HasMany.php",
+            "mutator": "\\Humbug\\Mutator\\ReturnValue\\This",
+            "class": "\\AdamWathan\\Faktory\\Relationship\\HasMany",
+            "method": "quantity",
+            "line": 26,
+            "diff": "--- Original\n+++ New\n@@ @@\n         $this->quantity = $quantity;\n-        return $this;\n+        return null;\n     }\n }\n \n",
+            "stdout": "",
+            "stderr": "PHP Fatal error:  Call to a member function attributes() on null in \/home\/vagrant\/Code\/Personal\/faktory\/tests\/FaktoryCreateTest.php on line 395",
+            "tests": [
+                "FaktoryBuildTest",
+                "FaktoryCreateTest"
+            ]
+        },
+        {
+            "file": "src\/Relationship\/Relationship.php",
+            "mutator": "\\Humbug\\Mutator\\ReturnValue\\This",
+            "class": "\\AdamWathan\\Faktory\\Relationship\\Relationship",
+            "method": "foreignKey",
+            "line": 21,
+            "diff": "--- Original\n+++ New\n@@ @@\n         $this->foreign_key = $key;\n-        return $this;\n+        return null;\n     }\n \n     public function getForeignKey()\n     {\n         if (! is_null($this->foreign_key)) {\n             return $this->foreign_key;",
+            "stdout": "",
+            "stderr": "PHP Fatal error:  Cannot use AdamWathan\\Faktory\\Factory\\Factory as Factory because the name is already in use in \/home\/vagrant\/Code\/Personal\/faktory\/src\/Faktory.php on line 3",
+            "tests": {
+                "0": "FaktoryCreateTest",
+                "3": "BelongsToTest",
+                "4": "RelationshipTest"
+            }
+        },
+        {
+            "file": "src\/Relationship\/Relationship.php",
+            "mutator": "\\Humbug\\Mutator\\ReturnValue\\This",
+            "class": "\\AdamWathan\\Faktory\\Relationship\\Relationship",
+            "method": "attributes",
+            "line": 61,
+            "diff": "--- Original\n+++ New\n@@ @@\n         $this->attributes = array_merge($this->attributes, $attributes);\n-        return $this;\n+        return null;\n     }\n \n     public function __set($key, $value)\n     {\n         $this->attributes[$key] = $value;\n     }",
+            "stdout": "",
+            "stderr": "PHP Fatal error:  Call to a member function quantity() on null in \/home\/vagrant\/Code\/Personal\/faktory\/tests\/FaktoryCreateTest.php on line 406",
+            "tests": {
+                "0": "FaktoryBuildTest",
+                "2": "FaktoryCreateTest"
+            }
+        },
+        {
+            "file": "src\/Strategy\/Build.php",
+            "mutator": "\\Humbug\\Mutator\\Boolean\\LogicalNot",
+            "class": "\\AdamWathan\\Faktory\\Strategy\\Build",
+            "method": "buildRelationships",
+            "line": 20,
+            "diff": "--- Original\n+++ New\n@@ @@\n         foreach ($this->attributes as $attribute => $value) {\n-            if (! $value instanceof Relationship) {\n+            if ( $value instanceof Relationship) {\n                 continue;\n             }\n             $relationship = $this->buildRelationship($value);\n             $this->setAttribute($attribute, $relationship);\n         }\n     }",
+            "stdout": "",
+            "stderr": "PHP Fatal error:  Call to a member function build() on string in \/home\/vagrant\/Code\/Personal\/faktory\/src\/Strategy\/Build.php on line 30",
+            "tests": [
+                "FaktoryBuildTest"
+            ]
+        },
+        {
+            "file": "src\/Strategy\/Strategy.php",
+            "mutator": "\\Humbug\\Mutator\\ReturnValue\\NewObject",
+            "class": "\\AdamWathan\\Faktory\\Strategy\\Strategy",
+            "method": "make",
+            "line": 17,
+            "diff": "--- Original\n+++ New\n@@ @@\n     {\n-        return new static($model, $sequence);\n+        new static($model, $sequence); return null;\n     }\n \n     public function attributes($attributes)\n     {\n         $this->attributes = $attributes;\n     }",
+            "stdout": "",
+            "stderr": "PHP Fatal error:  Call to a member function attributes() on null in \/home\/vagrant\/Code\/Personal\/faktory\/src\/Factory\/Factory.php on line 74",
+            "tests": {
+                "0": "FaktoryBuildTest",
+                "28": "FaktoryCreateTest"
+            }
+        }
+    ],
+    "timeouts": [],
+    "killed": [
+        {
+            "file": "src\/Factory\/Factory.php",
+            "mutator": "\\Humbug\\Mutator\\ReturnValue\\NewObject",
+            "class": "\\AdamWathan\\Faktory\\Factory\\Factory",
+            "method": "make",
+            "line": 24,
+            "diff": "--- Original\n+++ New\n@@ @@\n     {\n-        return new static($model, $factory_repository);\n+        new static($model, $factory_repository); return null;\n     }\n \n     public function getModel()\n     {\n         return $this->model;\n     }",
+            "stdout": "",
+            "stderr": "",
+            "tests": {
+                "0": "FaktoryBuildTest",
+                "28": "FaktoryCreateTest"
+            }
+        },
+        {
+            "file": "src\/Factory\/Factory.php",
+            "mutator": "\\Humbug\\Mutator\\IfStatement\\FunctionCallNegation",
+            "class": "\\AdamWathan\\Faktory\\Factory\\Factory",
+            "method": "getAttribute",
+            "line": 44,
+            "diff": "--- Original\n+++ New\n@@ @@\n     {\n-        if (is_callable($this->attributes[$key])) {\n+        if (!is_callable($this->attributes[$key])) {\n             return $this->attributes[$key]($this, $this->sequence);\n         }\n         return $this->attributes[$key];\n     }\n \n     public function setAttributes($attributes)",
+            "stdout": "",
+            "stderr": "",
+            "tests": {
+                "0": "FaktoryBuildTest",
+                "5": "FaktoryCreateTest"
+            }
+        },
+        {
+            "file": "src\/Factory\/Factory.php",
+            "mutator": "\\Humbug\\Mutator\\Increment\\Increment",
+            "class": "\\AdamWathan\\Faktory\\Factory\\Factory",
+            "method": "newInstance",
+            "line": 76,
+            "diff": "--- Original\n+++ New\n@@ @@\n         $instance = $strategy->newInstance();\n-        $this->sequence++;\n+        $this->sequence--;\n         return $instance;\n     }\n \n     protected function mergeAttributes($override_attributes)\n     {\n         if (is_callable($override_attributes)) {",
+            "stdout": "",
+            "stderr": "",
+            "tests": {
+                "0": "FaktoryBuildTest",
+                "28": "FaktoryCreateTest"
+            }
+        },
+        {
+            "file": "src\/Factory\/Factory.php",
+            "mutator": "\\Humbug\\Mutator\\ReturnValue\\FunctionCall",
+            "class": "\\AdamWathan\\Faktory\\Factory\\Factory",
+            "method": "mergeAttributes",
+            "line": 85,
+            "diff": "--- Original\n+++ New\n@@ @@\n         }\n-        return array_merge($this->attributes, $override_attributes);\n+        array_merge($this->attributes, $override_attributes); return null;\n     }\n \n     protected function getOverridesFromClosure($closure)\n     {\n         $that = clone $this;\n         $closure($that);",
+            "stdout": "",
+            "stderr": "",
+            "tests": {
+                "0": "FaktoryBuildTest",
+                "28": "FaktoryCreateTest"
+            }
+        },
+        {
+            "file": "src\/Factory\/Factory.php",
+            "mutator": "\\Humbug\\Mutator\\Number\\IntegerValue",
+            "class": "\\AdamWathan\\Faktory\\Factory\\Factory",
+            "method": "buildMany",
+            "line": 100,
+            "diff": "--- Original\n+++ New\n@@ @@\n             return $this->build($override_attributes[$i]);\n-        }, range(0, $count - 1));\n+        }, range(1, $count - 1));\n     }\n \n     protected function expandAttributesForList($attributes, $count)\n     {\n         return array_map(function ($i) use ($attributes) {\n             return $this->extractAttributesForIndex($i, $attributes);",
+            "stdout": "",
+            "stderr": "",
+            "tests": [
+                "FaktoryBuildTest"
+            ]
+        },
+        {
+            "file": "src\/Factory\/Factory.php",
+            "mutator": "\\Humbug\\Mutator\\Arithmetic\\Subtraction",
+            "class": "\\AdamWathan\\Faktory\\Factory\\Factory",
+            "method": "buildMany",
+            "line": 100,
+            "diff": "--- Original\n+++ New\n@@ @@\n             return $this->build($override_attributes[$i]);\n-        }, range(0, $count - 1));\n+        }, range(0, $count + 1));\n     }\n \n     protected function expandAttributesForList($attributes, $count)\n     {\n         return array_map(function ($i) use ($attributes) {\n             return $this->extractAttributesForIndex($i, $attributes);",
+            "stdout": "",
+            "stderr": "",
+            "tests": [
+                "FaktoryBuildTest"
+            ]
+        },
+        {
+            "file": "src\/Factory\/Factory.php",
+            "mutator": "\\Humbug\\Mutator\\Number\\IntegerValue",
+            "class": "\\AdamWathan\\Faktory\\Factory\\Factory",
+            "method": "buildMany",
+            "line": 100,
+            "diff": "--- Original\n+++ New\n@@ @@\n             return $this->build($override_attributes[$i]);\n-        }, range(0, $count - 1));\n+        }, range(0, $count - 0));\n     }\n \n     protected function expandAttributesForList($attributes, $count)\n     {\n         return array_map(function ($i) use ($attributes) {\n             return $this->extractAttributesForIndex($i, $attributes);",
+            "stdout": "",
+            "stderr": "",
+            "tests": [
+                "FaktoryBuildTest"
+            ]
+        },
+        {
+            "file": "src\/Factory\/Factory.php",
+            "mutator": "\\Humbug\\Mutator\\Number\\IntegerValue",
+            "class": "\\AdamWathan\\Faktory\\Factory\\Factory",
+            "method": "expandAttributesForList",
+            "line": 107,
+            "diff": "--- Original\n+++ New\n@@ @@\n             return $this->extractAttributesForIndex($i, $attributes);\n-        }, range(0, $count - 1));\n+        }, range(1, $count - 1));\n     }\n \n     protected function extractAttributesForIndex($i, $attributes)\n     {\n         return array_map(function ($value) use ($i) {\n             return is_array($value) ? $value[$i] : $value;",
+            "stdout": "",
+            "stderr": "",
+            "tests": {
+                "0": "FaktoryBuildTest",
+                "6": "FaktoryCreateTest"
+            }
+        },
+        {
+            "file": "src\/Factory\/Factory.php",
+            "mutator": "\\Humbug\\Mutator\\Arithmetic\\Subtraction",
+            "class": "\\AdamWathan\\Faktory\\Factory\\Factory",
+            "method": "expandAttributesForList",
+            "line": 107,
+            "diff": "--- Original\n+++ New\n@@ @@\n             return $this->extractAttributesForIndex($i, $attributes);\n-        }, range(0, $count - 1));\n+        }, range(0, $count + 1));\n     }\n \n     protected function extractAttributesForIndex($i, $attributes)\n     {\n         return array_map(function ($value) use ($i) {\n             return is_array($value) ? $value[$i] : $value;",
+            "stdout": "",
+            "stderr": "",
+            "tests": {
+                "0": "FaktoryBuildTest",
+                "6": "FaktoryCreateTest"
+            }
+        },
+        {
+            "file": "src\/Factory\/Factory.php",
+            "mutator": "\\Humbug\\Mutator\\Number\\IntegerValue",
+            "class": "\\AdamWathan\\Faktory\\Factory\\Factory",
+            "method": "expandAttributesForList",
+            "line": 107,
+            "diff": "--- Original\n+++ New\n@@ @@\n             return $this->extractAttributesForIndex($i, $attributes);\n-        }, range(0, $count - 1));\n+        }, range(0, $count - 0));\n     }\n \n     protected function extractAttributesForIndex($i, $attributes)\n     {\n         return array_map(function ($value) use ($i) {\n             return is_array($value) ? $value[$i] : $value;",
+            "stdout": "",
+            "stderr": "",
+            "tests": {
+                "0": "FaktoryBuildTest",
+                "6": "FaktoryCreateTest"
+            }
+        },
+        {
+            "file": "src\/Factory\/Factory.php",
+            "mutator": "\\Humbug\\Mutator\\ReturnValue\\FunctionCall",
+            "class": "\\AdamWathan\\Faktory\\Factory\\Factory",
+            "method": "extractAttributesForIndex",
+            "line": 113,
+            "diff": "--- Original\n+++ New\n@@ @@\n         return array_map(function ($value) use ($i) {\n-            return is_array($value) ? $value[$i] : $value;\n+            is_array($value) ? $value[$i] : $value; return null;\n         }, $attributes);\n     }\n \n     public function createMany($count, $override_attributes)\n     {\n         $override_attributes = $this->expandAttributesForList($override_attributes, $count);",
+            "stdout": "",
+            "stderr": "",
+            "tests": {
+                "0": "FaktoryBuildTest",
+                "3": "FaktoryCreateTest"
+            }
+        },
+        {
+            "file": "src\/Factory\/Factory.php",
+            "mutator": "\\Humbug\\Mutator\\Number\\IntegerValue",
+            "class": "\\AdamWathan\\Faktory\\Factory\\Factory",
+            "method": "createMany",
+            "line": 122,
+            "diff": "--- Original\n+++ New\n@@ @@\n             return $this->create($override_attributes[$i]);\n-        }, range(0, $count - 1));\n+        }, range(1, $count - 1));\n     }\n \n     public function define($name, $definitionCallback)\n     {\n         $callback = function ($f) use ($definitionCallback) {\n             $f->setAttributes($this->attributes);",
+            "stdout": "",
+            "stderr": "",
+            "tests": [
+                "FaktoryCreateTest"
+            ]
+        },
+        {
+            "file": "src\/Factory\/Factory.php",
+            "mutator": "\\Humbug\\Mutator\\Arithmetic\\Subtraction",
+            "class": "\\AdamWathan\\Faktory\\Factory\\Factory",
+            "method": "createMany",
+            "line": 122,
+            "diff": "--- Original\n+++ New\n@@ @@\n             return $this->create($override_attributes[$i]);\n-        }, range(0, $count - 1));\n+        }, range(0, $count + 1));\n     }\n \n     public function define($name, $definitionCallback)\n     {\n         $callback = function ($f) use ($definitionCallback) {\n             $f->setAttributes($this->attributes);",
+            "stdout": "",
+            "stderr": "",
+            "tests": [
+                "FaktoryCreateTest"
+            ]
+        },
+        {
+            "file": "src\/Factory\/Factory.php",
+            "mutator": "\\Humbug\\Mutator\\Number\\IntegerValue",
+            "class": "\\AdamWathan\\Faktory\\Factory\\Factory",
+            "method": "createMany",
+            "line": 122,
+            "diff": "--- Original\n+++ New\n@@ @@\n             return $this->create($override_attributes[$i]);\n-        }, range(0, $count - 1));\n+        }, range(0, $count - 0));\n     }\n \n     public function define($name, $definitionCallback)\n     {\n         $callback = function ($f) use ($definitionCallback) {\n             $f->setAttributes($this->attributes);",
+            "stdout": "",
+            "stderr": "",
+            "tests": [
+                "FaktoryCreateTest"
+            ]
+        },
+        {
+            "file": "src\/Factory\/Factory.php",
+            "mutator": "\\Humbug\\Mutator\\ReturnValue\\NewObject",
+            "class": "\\AdamWathan\\Faktory\\Factory\\Factory",
+            "method": "belongsTo",
+            "line": 137,
+            "diff": "--- Original\n+++ New\n@@ @@\n         $factory = $this->factory_repository->getFactory($name);\n-        return new BelongsTo($this->model, $factory, $foreign_key, $attributes);\n+        new BelongsTo($this->model, $factory, $foreign_key, $attributes); return null;\n     }\n \n     public function hasMany($name, $count, $foreign_key = null, $attributes = [])\n     {\n         $factory = $this->factory_repository->getFactory($name);\n         return new HasMany($this->model, $factory, $count, $foreign_key, $attributes);",
+            "stdout": "",
+            "stderr": "",
+            "tests": {
+                "0": "FaktoryBuildTest",
+                "2": "FaktoryCreateTest"
+            }
+        },
+        {
+            "file": "src\/Factory\/Factory.php",
+            "mutator": "\\Humbug\\Mutator\\ReturnValue\\NewObject",
+            "class": "\\AdamWathan\\Faktory\\Factory\\Factory",
+            "method": "hasMany",
+            "line": 143,
+            "diff": "--- Original\n+++ New\n@@ @@\n         $factory = $this->factory_repository->getFactory($name);\n-        return new HasMany($this->model, $factory, $count, $foreign_key, $attributes);\n+        new HasMany($this->model, $factory, $count, $foreign_key, $attributes); return null;\n     }\n \n     public function hasOne($name, $foreign_key = null, $attributes = [])\n     {\n         $factory = $this->factory_repository->getFactory($name);\n         return new HasOne($this->model, $factory, $foreign_key, $attributes);",
+            "stdout": "",
+            "stderr": "",
+            "tests": {
+                "0": "FaktoryBuildTest",
+                "2": "FaktoryCreateTest"
+            }
+        },
+        {
+            "file": "src\/Factory\/Factory.php",
+            "mutator": "\\Humbug\\Mutator\\ReturnValue\\NewObject",
+            "class": "\\AdamWathan\\Faktory\\Factory\\Factory",
+            "method": "hasOne",
+            "line": 149,
+            "diff": "--- Original\n+++ New\n@@ @@\n         $factory = $this->factory_repository->getFactory($name);\n-        return new HasOne($this->model, $factory, $foreign_key, $attributes);\n+        new HasOne($this->model, $factory, $foreign_key, $attributes); return null;\n     }\n }\n \n",
+            "stdout": "",
+            "stderr": "",
+            "tests": {
+                "0": "FaktoryBuildTest",
+                "3": "FaktoryCreateTest"
+            }
+        },
+        {
+            "file": "src\/Factory\/FactoryProxy.php",
+            "mutator": "\\Humbug\\Mutator\\Boolean\\LogicalNot",
+            "class": "\\AdamWathan\\Faktory\\Factory\\FactoryProxy",
+            "method": "getInstance",
+            "line": 15,
+            "diff": "--- Original\n+++ New\n@@ @@\n     {\n-        if (! isset($this->instance)) {\n+        if ( isset($this->instance)) {\n             $this->instance = $this->factory_loader->__invoke();\n         }\n         return $this->instance;\n     }\n \n     public function __call($method, $parameters)",
+            "stdout": "",
+            "stderr": "",
+            "tests": {
+                "0": "FaktoryBuildTest",
+                "29": "FaktoryCreateTest"
+            }
+        },
+        {
+            "file": "src\/Factory\/FactoryProxy.php",
+            "mutator": "\\Humbug\\Mutator\\ReturnValue\\FunctionCall",
+            "class": "\\AdamWathan\\Faktory\\Factory\\FactoryProxy",
+            "method": "__call",
+            "line": 24,
+            "diff": "--- Original\n+++ New\n@@ @@\n         $instance = $this->getInstance();\n-        return call_user_func_array([$instance, $method], $parameters);\n+        call_user_func_array([$instance, $method], $parameters); return null;\n     }\n }\n \n",
+            "stdout": "",
+            "stderr": "",
+            "tests": {
+                "0": "FaktoryBuildTest",
+                "28": "FaktoryCreateTest"
+            }
+        },
+        {
+            "file": "src\/Faktory.php",
+            "mutator": "\\Humbug\\Mutator\\Boolean\\LogicalNot",
+            "class": "\\AdamWathan\\Faktory\\Faktory",
+            "method": "fetchFactory",
+            "line": 62,
+            "diff": "--- Original\n+++ New\n@@ @@\n     {\n-        if (! isset($this->factories[$name])) {\n+        if ( isset($this->factories[$name])) {\n             throw new FactoryNotRegisteredException(\"'{$name}' is not a registered factory.\");\n         }\n         return $this->factories[$name];\n     }\n }\n ",
+            "stdout": "",
+            "stderr": "",
+            "tests": {
+                "0": "FaktoryBuildTest",
+                "29": "FaktoryCreateTest"
+            }
+        },
+        {
+            "file": "src\/Relationship\/Relationship.php",
+            "mutator": "\\Humbug\\Mutator\\Boolean\\LogicalNot",
+            "class": "\\AdamWathan\\Faktory\\Relationship\\Relationship",
+            "method": "getForeignKey",
+            "line": 26,
+            "diff": "--- Original\n+++ New\n@@ @@\n     {\n-        if (! is_null($this->foreign_key)) {\n+        if ( is_null($this->foreign_key)) {\n             return $this->foreign_key;\n         }\n         return $this->guessForeignKey();\n     }\n \n     protected function guessForeignKey()",
+            "stdout": "",
+            "stderr": "",
+            "tests": {
+                "0": "FaktoryCreateTest",
+                "24": "BelongsToTest",
+                "28": "RelationshipTest"
+            }
+        },
+        {
+            "file": "src\/Relationship\/Relationship.php",
+            "mutator": "\\Humbug\\Mutator\\ReturnValue\\FunctionCall",
+            "class": "\\AdamWathan\\Faktory\\Relationship\\Relationship",
+            "method": "snakeCase",
+            "line": 39,
+            "diff": "--- Original\n+++ New\n@@ @@\n     {\n-        return ctype_lower($value) ? $value : strtolower(preg_replace('\/(.)([A-Z])\/', '$1_$2', $value));\n+        ctype_lower($value) ? $value : strtolower(preg_replace('\/(.)([A-Z])\/', '$1_$2', $value)); return null;\n     }\n \n     protected function relatedModelBase()\n     {\n         return $this->extractClassBase($this->getRelatedModel());\n     }",
+            "stdout": "",
+            "stderr": "",
+            "tests": {
+                "0": "FaktoryCreateTest",
+                "4": "BelongsToTest",
+                "6": "RelationshipTest"
+            }
+        },
+        {
+            "file": "src\/Relationship\/Relationship.php",
+            "mutator": "\\Humbug\\Mutator\\ReturnValue\\FunctionCall",
+            "class": "\\AdamWathan\\Faktory\\Relationship\\Relationship",
+            "method": "extractClassBase",
+            "line": 55,
+            "diff": "--- Original\n+++ New\n@@ @@\n         $class_pieces = explode('\\\\', $class);\n-        return array_pop($class_pieces);\n+        array_pop($class_pieces); return null;\n     }\n \n     public function attributes($attributes)\n     {\n         $this->attributes = array_merge($this->attributes, $attributes);\n         return $this;",
+            "stdout": "",
+            "stderr": "",
+            "tests": {
+                "0": "FaktoryCreateTest",
+                "4": "BelongsToTest",
+                "6": "RelationshipTest"
+            }
+        },
+        {
+            "file": "src\/Strategy\/Create.php",
+            "mutator": "\\Humbug\\Mutator\\Boolean\\LogicalNot",
+            "class": "\\AdamWathan\\Faktory\\Strategy\\Create",
+            "method": "independentAttributes",
+            "line": 41,
+            "diff": "--- Original\n+++ New\n@@ @@\n         foreach ($this->attributes as $attribute => $value) {\n-            if (! $value instanceof Relationship) {\n+            if ( $value instanceof Relationship) {\n                 $result[$attribute] = $value;\n             }\n         }\n         return $result;\n     }\n ",
+            "stdout": "",
+            "stderr": "",
+            "tests": [
+                "FaktoryCreateTest"
+            ]
+        },
+        {
+            "file": "src\/Strategy\/Strategy.php",
+            "mutator": "\\Humbug\\Mutator\\ReturnValue\\NewObject",
+            "class": "\\AdamWathan\\Faktory\\Strategy\\Strategy",
+            "method": "newModel",
+            "line": 27,
+            "diff": "--- Original\n+++ New\n@@ @@\n     {\n-        return new $this->model;\n+        new $this->model; return null;\n     }\n \n     protected function setAttribute($attribute, $value)\n     {\n         $this->attributes[$attribute] = $value;\n     }",
+            "stdout": "",
+            "stderr": "",
+            "tests": {
+                "0": "FaktoryBuildTest",
+                "28": "FaktoryCreateTest"
+            }
+        }
+    ]
+}

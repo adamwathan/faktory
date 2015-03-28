@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1427551518">
+  <project timestamp="1427551518">
+    <package name="AdamWathan\Faktory\Factory">
+      <file name="/home/vagrant/Code/Personal/faktory/src/Factory/Factory.php">
+        <class name="Factory" namespace="AdamWathan\Faktory\Factory">
+          <metrics methods="21" coveredmethods="21" conditionals="0" coveredconditionals="0" statements="49" coveredstatements="49" elements="70" coveredelements="70"/>
+        </class>
+        <line num="16" type="method" name="__construct" crap="1" count="53"/>
+        <line num="18" type="stmt" count="53"/>
+        <line num="19" type="stmt" count="53"/>
+        <line num="20" type="stmt" count="53"/>
+        <line num="22" type="method" name="make" crap="1" count="53"/>
+        <line num="24" type="stmt" count="53"/>
+        <line num="27" type="method" name="getModel" crap="1" count="1"/>
+        <line num="29" type="stmt" count="1"/>
+        <line num="32" type="method" name="__set" crap="1" count="53"/>
+        <line num="34" type="stmt" count="53"/>
+        <line num="35" type="stmt" count="53"/>
+        <line num="37" type="method" name="__get" crap="1" count="13"/>
+        <line num="39" type="stmt" count="13"/>
+        <line num="42" type="method" name="getAttribute" crap="2" count="13"/>
+        <line num="44" type="stmt" count="13"/>
+        <line num="45" type="stmt" count="1"/>
+        <line num="47" type="stmt" count="12"/>
+        <line num="50" type="method" name="setAttributes" crap="1" count="5"/>
+        <line num="52" type="stmt" count="5"/>
+        <line num="53" type="stmt" count="5"/>
+        <line num="55" type="method" name="setAttribute" crap="1" count="53"/>
+        <line num="57" type="stmt" count="53"/>
+        <line num="58" type="stmt" count="53"/>
+        <line num="60" type="method" name="build" crap="1" count="28"/>
+        <line num="62" type="stmt" count="28"/>
+        <line num="63" type="stmt" count="28"/>
+        <line num="66" type="method" name="create" crap="1" count="25"/>
+        <line num="68" type="stmt" count="25"/>
+        <line num="69" type="stmt" count="25"/>
+        <line num="72" type="method" name="newInstance" crap="1" count="53"/>
+        <line num="74" type="stmt" count="53"/>
+        <line num="75" type="stmt" count="53"/>
+        <line num="76" type="stmt" count="53"/>
+        <line num="77" type="stmt" count="53"/>
+        <line num="80" type="method" name="mergeAttributes" crap="2" count="53"/>
+        <line num="82" type="stmt" count="53"/>
+        <line num="83" type="stmt" count="15"/>
+        <line num="84" type="stmt" count="15"/>
+        <line num="85" type="stmt" count="53"/>
+        <line num="88" type="method" name="getOverridesFromClosure" crap="1" count="15"/>
+        <line num="90" type="stmt" count="15"/>
+        <line num="91" type="stmt" count="15"/>
+        <line num="92" type="stmt" count="15"/>
+        <line num="95" type="method" name="buildMany" crap="1" count="6"/>
+        <line num="97" type="stmt" count="6"/>
+        <line num="99" type="stmt" count="6"/>
+        <line num="100" type="stmt" count="6"/>
+        <line num="103" type="method" name="expandAttributesForList" crap="1" count="21"/>
+        <line num="106" type="stmt" count="21"/>
+        <line num="107" type="stmt" count="21"/>
+        <line num="110" type="method" name="extractAttributesForIndex" crap="2" count="21"/>
+        <line num="113" type="stmt" count="17"/>
+        <line num="114" type="stmt" count="21"/>
+        <line num="117" type="method" name="createMany" crap="1" count="15"/>
+        <line num="119" type="stmt" count="15"/>
+        <line num="121" type="stmt" count="15"/>
+        <line num="122" type="stmt" count="15"/>
+        <line num="127" type="method" name="anonymous function" crap="1" count="5"/>
+        <line num="128" type="stmt" count="5"/>
+        <line num="129" type="stmt" count="5"/>
+        <line num="130" type="stmt" count="5"/>
+        <line num="131" type="stmt" count="5"/>
+        <line num="132" type="stmt" count="5"/>
+        <line num="134" type="method" name="belongsTo" crap="1" count="8"/>
+        <line num="136" type="stmt" count="8"/>
+        <line num="137" type="stmt" count="8"/>
+        <line num="140" type="method" name="hasMany" crap="1" count="16"/>
+        <line num="142" type="stmt" count="16"/>
+        <line num="143" type="stmt" count="16"/>
+        <line num="146" type="method" name="hasOne" crap="1" count="7"/>
+        <line num="148" type="stmt" count="7"/>
+        <line num="149" type="stmt" count="7"/>
+        <metrics loc="151" ncloc="151" classes="1" methods="21" coveredmethods="21" conditionals="0" coveredconditionals="0" statements="51" coveredstatements="51" elements="72" coveredelements="72"/>
+      </file>
+      <file name="/home/vagrant/Code/Personal/faktory/src/Factory/FactoryProxy.php">
+        <class name="FactoryProxy" namespace="AdamWathan\Faktory\Factory">
+          <metrics methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="8" elements="11" coveredelements="11"/>
+        </class>
+        <line num="8" type="method" name="__construct" crap="1" count="55"/>
+        <line num="10" type="stmt" count="55"/>
+        <line num="11" type="stmt" count="55"/>
+        <line num="13" type="method" name="getInstance" crap="2" count="55"/>
+        <line num="15" type="stmt" count="55"/>
+        <line num="16" type="stmt" count="55"/>
+        <line num="17" type="stmt" count="53"/>
+        <line num="18" type="stmt" count="53"/>
+        <line num="21" type="method" name="__call" crap="1" count="55"/>
+        <line num="23" type="stmt" count="55"/>
+        <line num="24" type="stmt" count="53"/>
+        <metrics loc="26" ncloc="26" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="8" elements="11" coveredelements="11"/>
+      </file>
+    </package>
+    <package name="AdamWathan\Faktory">
+      <file name="/home/vagrant/Code/Personal/faktory/src/FactoryNotRegisteredException.php">
+        <class name="FactoryNotRegisteredException" namespace="AdamWathan\Faktory">
+          <metrics methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="3" ncloc="3" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="/home/vagrant/Code/Personal/faktory/src/Faktory.php">
+        <class name="Faktory" namespace="AdamWathan\Faktory">
+          <metrics methods="9" coveredmethods="9" conditionals="0" coveredconditionals="0" statements="20" coveredstatements="20" elements="29" coveredelements="29"/>
+        </class>
+        <line num="11" type="method" name="define" crap="2" count="53"/>
+        <line num="13" type="stmt" count="53"/>
+        <line num="14" type="stmt" count="5"/>
+        <line num="15" type="stmt" count="5"/>
+        <line num="16" type="stmt" count="5"/>
+        <line num="18" type="stmt" count="53"/>
+        <line num="19" type="stmt" count="53"/>
+        <line num="20" type="stmt" count="53"/>
+        <line num="21" type="stmt" count="53"/>
+        <line num="23" type="method" name="addFactory" crap="1" count="53"/>
+        <line num="25" type="stmt" count="53"/>
+        <line num="26" type="stmt" count="53"/>
+        <line num="28" type="method" name="build" crap="1" count="25"/>
+        <line num="30" type="stmt" count="25"/>
+        <line num="33" type="method" name="create" crap="1" count="25"/>
+        <line num="35" type="stmt" count="25"/>
+        <line num="38" type="method" name="buildMany" crap="1" count="4"/>
+        <line num="40" type="stmt" count="4"/>
+        <line num="43" type="method" name="createMany" crap="1" count="1"/>
+        <line num="45" type="stmt" count="1"/>
+        <line num="48" type="method" name="getFactory" crap="1" count="55"/>
+        <line num="50" type="stmt" count="55"/>
+        <line num="55" type="method" name="anonymous function" crap="1" count="55"/>
+        <line num="56" type="stmt" count="55"/>
+        <line num="57" type="stmt" count="55"/>
+        <line num="60" type="method" name="fetchFactory" crap="2" count="55"/>
+        <line num="62" type="stmt" count="55"/>
+        <line num="63" type="stmt" count="2"/>
+        <line num="65" type="stmt" count="53"/>
+        <metrics loc="67" ncloc="67" classes="1" methods="9" coveredmethods="9" conditionals="0" coveredconditionals="0" statements="20" coveredstatements="20" elements="29" coveredelements="29"/>
+      </file>
+    </package>
+    <package name="AdamWathan\Faktory\Relationship">
+      <file name="/home/vagrant/Code/Personal/faktory/src/Relationship/BelongsTo.php">
+        <class name="BelongsTo" namespace="AdamWathan\Faktory\Relationship">
+          <metrics methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="6" coveredelements="6"/>
+        </class>
+        <line num="5" type="method" name="build" crap="1" count="2"/>
+        <line num="7" type="stmt" count="2"/>
+        <line num="10" type="method" name="create" crap="1" count="6"/>
+        <line num="12" type="stmt" count="6"/>
+        <line num="15" type="method" name="getRelatedModel" crap="1" count="3"/>
+        <line num="17" type="stmt" count="3"/>
+        <metrics loc="19" ncloc="19" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="6" coveredelements="6"/>
+      </file>
+      <file name="/home/vagrant/Code/Personal/faktory/src/Relationship/DependentRelationship.php">
+        <class name="DependentRelationship" namespace="AdamWathan\Faktory\Relationship">
+          <metrics methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="3" coveredelements="3"/>
+        </class>
+        <line num="5" type="method" name="create" crap="1" count="18"/>
+        <line num="7" type="stmt" count="18"/>
+        <line num="8" type="stmt" count="18"/>
+        <metrics loc="12" ncloc="12" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="3" coveredelements="3"/>
+      </file>
+      <file name="/home/vagrant/Code/Personal/faktory/src/Relationship/HasMany.php">
+        <class name="HasMany" namespace="AdamWathan\Faktory\Relationship">
+          <metrics methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="11" coveredelements="11"/>
+        </class>
+        <line num="7" type="method" name="__construct" crap="1" count="16"/>
+        <line num="9" type="stmt" count="16"/>
+        <line num="10" type="stmt" count="16"/>
+        <line num="11" type="stmt" count="16"/>
+        <line num="13" type="method" name="build" crap="1" count="2"/>
+        <line num="15" type="stmt" count="2"/>
+        <line num="18" type="method" name="createRelated" crap="1" count="14"/>
+        <line num="20" type="stmt" count="14"/>
+        <line num="23" type="method" name="quantity" crap="1" count="4"/>
+        <line num="25" type="stmt" count="4"/>
+        <line num="26" type="stmt" count="4"/>
+        <metrics loc="28" ncloc="28" classes="1" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="7" coveredstatements="7" elements="11" coveredelements="11"/>
+      </file>
+      <file name="/home/vagrant/Code/Personal/faktory/src/Relationship/HasOne.php">
+        <class name="HasOne" namespace="AdamWathan\Faktory\Relationship">
+          <metrics methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="4" coveredelements="4"/>
+        </class>
+        <line num="5" type="method" name="build" crap="1" count="3"/>
+        <line num="7" type="stmt" count="3"/>
+        <line num="10" type="method" name="createRelated" crap="1" count="4"/>
+        <line num="12" type="stmt" count="4"/>
+        <metrics loc="14" ncloc="14" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="4" coveredelements="4"/>
+      </file>
+      <file name="/home/vagrant/Code/Personal/faktory/src/Relationship/Relationship.php">
+        <class name="Relationship" namespace="AdamWathan\Faktory\Relationship">
+          <metrics methods="10" coveredmethods="10" conditionals="0" coveredconditionals="0" statements="20" coveredstatements="20" elements="30" coveredelements="30"/>
+        </class>
+        <line num="10" type="method" name="__construct" crap="1" count="39"/>
+        <line num="12" type="stmt" count="39"/>
+        <line num="13" type="stmt" count="39"/>
+        <line num="14" type="stmt" count="39"/>
+        <line num="15" type="stmt" count="39"/>
+        <line num="16" type="stmt" count="39"/>
+        <line num="18" type="method" name="foreignKey" crap="1" count="5"/>
+        <line num="20" type="stmt" count="5"/>
+        <line num="21" type="stmt" count="5"/>
+        <line num="24" type="method" name="getForeignKey" crap="2" count="32"/>
+        <line num="26" type="stmt" count="32"/>
+        <line num="27" type="stmt" count="24"/>
+        <line num="29" type="stmt" count="8"/>
+        <line num="32" type="method" name="guessForeignKey" crap="1" count="8"/>
+        <line num="34" type="stmt" count="8"/>
+        <line num="37" type="method" name="snakeCase" crap="2" count="8"/>
+        <line num="39" type="stmt" count="8"/>
+        <line num="42" type="method" name="relatedModelBase" crap="1" count="8"/>
+        <line num="44" type="stmt" count="8"/>
+        <line num="47" type="method" name="getRelatedModel" crap="1" count="5"/>
+        <line num="49" type="stmt" count="5"/>
+        <line num="52" type="method" name="extractClassBase" crap="1" count="8"/>
+        <line num="54" type="stmt" count="8"/>
+        <line num="55" type="stmt" count="8"/>
+        <line num="58" type="method" name="attributes" crap="1" count="9"/>
+        <line num="60" type="stmt" count="9"/>
+        <line num="61" type="stmt" count="9"/>
+        <line num="64" type="method" name="__set" crap="1" count="1"/>
+        <line num="66" type="stmt" count="1"/>
+        <line num="67" type="stmt" count="1"/>
+        <metrics loc="70" ncloc="70" classes="1" methods="10" coveredmethods="10" conditionals="0" coveredconditionals="0" statements="20" coveredstatements="20" elements="30" coveredelements="30"/>
+      </file>
+    </package>
+    <package name="AdamWathan\Faktory\Strategy">
+      <file name="/home/vagrant/Code/Personal/faktory/src/Strategy/Build.php">
+        <class name="Build" namespace="AdamWathan\Faktory\Strategy">
+          <metrics methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="14" coveredstatements="14" elements="17" coveredelements="17"/>
+        </class>
+        <line num="7" type="method" name="newInstance" crap="2" count="28"/>
+        <line num="9" type="stmt" count="28"/>
+        <line num="10" type="stmt" count="28"/>
+        <line num="11" type="stmt" count="28"/>
+        <line num="12" type="stmt" count="28"/>
+        <line num="13" type="stmt" count="28"/>
+        <line num="14" type="stmt" count="28"/>
+        <line num="17" type="method" name="buildRelationships" crap="3" count="28"/>
+        <line num="19" type="stmt" count="28"/>
+        <line num="20" type="stmt" count="28"/>
+        <line num="21" type="stmt" count="28"/>
+        <line num="23" type="stmt" count="7"/>
+        <line num="24" type="stmt" count="7"/>
+        <line num="25" type="stmt" count="28"/>
+        <line num="26" type="stmt" count="28"/>
+        <line num="28" type="method" name="buildRelationship" crap="1" count="7"/>
+        <line num="30" type="stmt" count="7"/>
+        <metrics loc="32" ncloc="32" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="14" coveredstatements="14" elements="17" coveredelements="17"/>
+      </file>
+      <file name="/home/vagrant/Code/Personal/faktory/src/Strategy/Create.php">
+        <class name="Create" namespace="AdamWathan\Faktory\Strategy">
+          <metrics methods="7" coveredmethods="7" conditionals="0" coveredconditionals="0" statements="37" coveredstatements="37" elements="44" coveredelements="44"/>
+        </class>
+        <line num="9" type="method" name="newInstance" crap="2" count="25"/>
+        <line num="11" type="stmt" count="25"/>
+        <line num="12" type="stmt" count="25"/>
+        <line num="13" type="stmt" count="25"/>
+        <line num="14" type="stmt" count="25"/>
+        <line num="15" type="stmt" count="25"/>
+        <line num="16" type="stmt" count="25"/>
+        <line num="17" type="stmt" count="25"/>
+        <line num="18" type="stmt" count="25"/>
+        <line num="21" type="method" name="createPrecedents" crap="3" count="25"/>
+        <line num="23" type="stmt" count="25"/>
+        <line num="24" type="stmt" count="25"/>
+        <line num="25" type="stmt" count="6"/>
+        <line num="26" type="stmt" count="6"/>
+        <line num="27" type="stmt" count="6"/>
+        <line num="28" type="stmt" count="25"/>
+        <line num="29" type="stmt" count="25"/>
+        <line num="31" type="method" name="createPrecedent" crap="1" count="6"/>
+        <line num="33" type="stmt" count="6"/>
+        <line num="34" type="stmt" count="6"/>
+        <line num="35" type="stmt" count="6"/>
+        <line num="37" type="method" name="independentAttributes" crap="3" count="25"/>
+        <line num="39" type="stmt" count="25"/>
+        <line num="40" type="stmt" count="25"/>
+        <line num="41" type="stmt" count="25"/>
+        <line num="42" type="stmt" count="25"/>
+        <line num="43" type="stmt" count="25"/>
+        <line num="44" type="stmt" count="25"/>
+        <line num="45" type="stmt" count="25"/>
+        <line num="48" type="method" name="createDependents" crap="2" count="25"/>
+        <line num="50" type="stmt" count="25"/>
+        <line num="51" type="stmt" count="18"/>
+        <line num="52" type="stmt" count="25"/>
+        <line num="53" type="stmt" count="25"/>
+        <line num="55" type="method" name="dependentRelationships" crap="3" count="25"/>
+        <line num="57" type="stmt" count="25"/>
+        <line num="58" type="stmt" count="25"/>
+        <line num="59" type="stmt" count="25"/>
+        <line num="60" type="stmt" count="18"/>
+        <line num="61" type="stmt" count="18"/>
+        <line num="62" type="stmt" count="25"/>
+        <line num="63" type="stmt" count="25"/>
+        <line num="66" type="method" name="isDependentRelationship" crap="1" count="25"/>
+        <line num="68" type="stmt" count="25"/>
+        <metrics loc="70" ncloc="70" classes="1" methods="7" coveredmethods="7" conditionals="0" coveredconditionals="0" statements="37" coveredstatements="37" elements="44" coveredelements="44"/>
+      </file>
+      <file name="/home/vagrant/Code/Personal/faktory/src/Strategy/Strategy.php">
+        <class name="Strategy" namespace="AdamWathan\Faktory\Strategy">
+          <metrics methods="8" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="15" coveredstatements="15" elements="23" coveredelements="23"/>
+        </class>
+        <line num="9" type="method" name="__construct" crap="1" count="53"/>
+        <line num="11" type="stmt" count="53"/>
+        <line num="12" type="stmt" count="53"/>
+        <line num="13" type="stmt" count="53"/>
+        <line num="15" type="method" name="make" crap="1" count="53"/>
+        <line num="17" type="stmt" count="53"/>
+        <line num="20" type="method" name="attributes" crap="1" count="53"/>
+        <line num="22" type="stmt" count="53"/>
+        <line num="23" type="stmt" count="53"/>
+        <line num="25" type="method" name="newModel" crap="1" count="53"/>
+        <line num="27" type="stmt" count="53"/>
+        <line num="30" type="method" name="setAttribute" crap="1" count="13"/>
+        <line num="32" type="stmt" count="13"/>
+        <line num="33" type="stmt" count="13"/>
+        <line num="35" type="method" name="unsetAttribute" crap="1" count="6"/>
+        <line num="37" type="stmt" count="6"/>
+        <line num="38" type="stmt" count="6"/>
+        <line num="40" type="method" name="__get" crap="1" count="4"/>
+        <line num="42" type="stmt" count="4"/>
+        <line num="45" type="method" name="getAttributeValue" crap="2" count="53"/>
+        <line num="47" type="stmt" count="53"/>
+        <line num="48" type="stmt" count="8"/>
+        <line num="50" type="stmt" count="52"/>
+        <metrics loc="54" ncloc="54" classes="1" methods="8" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="15" coveredstatements="15" elements="23" coveredelements="23"/>
+      </file>
+    </package>
+    <metrics files="12" loc="546" ncloc="546" classes="12" methods="71" coveredmethods="71" conditionals="0" coveredconditionals="0" statements="179" coveredstatements="179" elements="250" coveredelements="250"/>
+  </project>
+</coverage>
