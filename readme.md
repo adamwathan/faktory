@@ -372,13 +372,13 @@ Profile::first();
 
 Define a `hasMany` relationship by assigning a `hasMany` call to an attribute.
 
-`hasMany()` takes the name of the factory that should be used to generate the related objects as the first argument, the name of the foreign key column (on the related object) as the second argument, the number of objects to generate as the third argument, and an optional array of override attributes as the final argument.
+`hasMany()` takes the name of the factory that should be used to generate the related objects as the first argument, the number of objects to generate as the second argument, the name of the foreign key column (on the related object) as the third argument, and an optional array of override attributes as the final argument.
 
 ```php
 $faktory->define('Album', 'album_with_songs', function ($f) {
     $f->name = 'Master of Puppets';
     $f->release_date = new DateTime('1986-02-24');
-    $f->songs = $f->hasMany('song', 'album_id', 8);
+    $f->songs = $f->hasMany('song', 8, 'album_id');
 });
 
 $faktory->define('Song', 'song', function ($f) {
