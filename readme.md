@@ -1,5 +1,8 @@
+> **Important: This package is not actively maintained.** For bug fixes and new features, please fork.
+
 # Faktory
 
+[![This Project Has Been Deprecated.](http://www.repostatus.org/badges/0.1.0/abandoned.svg)](http://www.repostatus.org/#abandoned)
 [![Travis CI](https://travis-ci.org/adamwathan/faktory.svg)](https://travis-ci.org/adamwathan/faktory)
 [![Code Climate](https://codeclimate.com/github/adamwathan/faktory/badges/gpa.svg)](https://codeclimate.com/github/adamwathan/faktory)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/adamwathan/faktory/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/adamwathan/faktory/?branch=master)
